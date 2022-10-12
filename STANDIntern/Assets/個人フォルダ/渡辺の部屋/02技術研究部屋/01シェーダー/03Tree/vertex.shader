@@ -1,26 +1,18 @@
-Shader "Custom/tree_wind"
+Shader "Custom/vertex"
 {
     Properties
     {
-        [Header(Texture)]
-        [Space(5)]
-        [NoScaleOffset]_Maintex("Main Texture",2D) = "white"{}
-        [Space(15)]
-
-        [Header(Wind)]
-        [Space(5)]
-        [PowerSlider(2)]_WindSpeed("WindSpeed",Range(0,10)) = 1
-        _WindDirection("WindDirection",Vector) = (1,1,0)
-        [PowerSlider(2)]_WindScale("WindScale",Range(0,0.2)) = 1
-        [PowerSlider(2)]_WindStrength("WindStrength",Range(0,1.0)) = 0.01
-        [PowerSlider(2)]_WindInfluence("WindInfluence",Range(0,10)) = 0.01
+        _Maintex("Main Texture",2D) = "white"{}
+        _WindSpeed("WindSpeed",Float) = 1
+        _WindDirection("WindDirection",Vector) = (1,1,0,0)
+        _WindScale("WindScale",Float) = 1
+        _WindStrength("WindStrength",Float) = 0.01
+        _WindInfluence("WindInfluence",Float) = 0.01
     }
 
     SubShader
     {
-        //ブレンドモード
-        Blend SrcAlpha OneMinusSrcAlpha
-        //レンダラーモード
+            Blend SrcAlpha OneMinusSrcAlpha
         Tags { "RenderType" = "Opaque" }
 
         Pass
@@ -31,20 +23,17 @@ Shader "Custom/tree_wind"
 
            #include "UnityCG.cginc"
 
-            //頂点シェーダー
             struct appdata
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
-            //フラグメントシェーダー
             struct v2f
             {
                 float4 vertex : SV_POSITION;
                 float2 uv:TEXCOORD0;
             };
-
             //タイリングUV
             float2 TileUV(float2 UV, float2 Tile, float2 Offset)
             {
@@ -78,8 +67,10 @@ Shader "Custom/tree_wind"
             }
 
             //変数
+            float2 uv;
             float2 noisedirection;
-            float2 st;
+            float3 transform;
+            float3 noisepos;
 
             //プロパティ
             sampler _Maintex;
@@ -92,12 +83,12 @@ Shader "Custom/tree_wind"
             v2f vert(appdata v)
             {
                 v2f o;
-                //UVのデータをわたす
-                o.uv = v.uv;
                 //頂点を受け取る
                 float3 pos = v.vertex;
-                
-                //風の処理
+                float2 xy = pos.xy;
+                float2 uv = v.uv;
+                o.uv = v.uv;
+
                 //風のスピードを計算
                 float windspeed = mul(_Time.y, _WindSpeed);
                 //風の向き
@@ -106,35 +97,34 @@ Shader "Custom/tree_wind"
                 float2 windvec = mul(windspeed, winddirection);
 
                 //風の向きとベクトルを得たUV
-                st= TileUV(pos.xy, float2(1, 1), windvec);
-
-                //ノイズ
+                uv = TileUV(xy, float2(1, 1), windvec);
                 //グラデーションノイズにUVをいれる
-                float noise = Unity_GradientNoise_float(st, _WindScale);
+                float noise = Unity_GradientNoise_float(uv, _WindScale);
+
                 noise = noise - 0.5;
                 //ノイズに風の強さをかけ合わせる
                 noise = mul(noise, _WindStrength);
                 //ノイズに風の向きをかけ合わせる
                 noisedirection = mul(noise, _WindDirection);
-
+                
                 //マスク計算
-                float mask = abs(st.y);//yが高ければ影響を受けやすい
+                float mask = abs(uv.y);
                 mask = clamp(pow(mask, _WindInfluence),0,1);
-
+                
                 //マスクとノイズをかけ合わせる
                 noisedirection = mul(mask, noisedirection);
+                
+                noisepos = float3(noisedirection.x, noisedirection.y, 0);
+                
+                transform = noisepos + pos;
 
-                //頂点データ(x,y)に頂点情報とノイズを足したものを渡す
-                v.vertex.xy = float3(noisedirection.x, noisedirection.y, 0) + pos;
-                //スクリーン座標に対応し出力
+                v.vertex.xy=transform;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-
                 return o;
             }
 
             fixed4 frag(v2f i) : SV_Target
             {
-                //テクスチャの設定
                  fixed4 color = tex2D(_Maintex,i.uv);
                  return color;
             }
