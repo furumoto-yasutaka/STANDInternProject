@@ -75,32 +75,32 @@ class InputManager
 
         int i = 0;
         // ボタン
-        keys[i++] = new Button((int)KeyIdList.A);
-        keys[i++] = new Button((int)KeyIdList.B);
-        keys[i++] = new Button((int)KeyIdList.X);
-        keys[i++] = new Button((int)KeyIdList.Y);
-        keys[i++] = new Button((int)KeyIdList.LB);
-        keys[i++] = new Button((int)KeyIdList.RB);
-        keys[i++] = new Button((int)KeyIdList.Back);
-        keys[i++] = new Button((int)KeyIdList.Start);
-        keys[i++] = new Button((int)KeyIdList.LSB);
-        keys[i++] = new Button((int)KeyIdList.RSB);
+        keys[i++] = new InputButton((int)KeyIdList.A);
+        keys[i++] = new InputButton((int)KeyIdList.B);
+        keys[i++] = new InputButton((int)KeyIdList.X);
+        keys[i++] = new InputButton((int)KeyIdList.Y);
+        keys[i++] = new InputButton((int)KeyIdList.LB);
+        keys[i++] = new InputButton((int)KeyIdList.RB);
+        keys[i++] = new InputButton((int)KeyIdList.Back);
+        keys[i++] = new InputButton((int)KeyIdList.Start);
+        keys[i++] = new InputButton((int)KeyIdList.LSB);
+        keys[i++] = new InputButton((int)KeyIdList.RSB);
         // トリガー
-        keys[i++] = new Trigger((int)KeyIdList.LT);
-        keys[i++] = new Trigger((int)KeyIdList.RT);
+        keys[i++] = new InputTrigger((int)KeyIdList.LT);
+        keys[i++] = new InputTrigger((int)KeyIdList.RT);
         // スティック
-        keys[i++] = new Stick((int)KeyIdList.LS_H);
-        keys[i++] = new Stick((int)KeyIdList.LS_V);
-        keys[i++] = new Stick((int)KeyIdList.RS_H);
-        keys[i++] = new Stick((int)KeyIdList.RS_V);
+        keys[i++] = new InputStick((int)KeyIdList.LS_H);
+        keys[i++] = new InputStick((int)KeyIdList.LS_V);
+        keys[i++] = new InputStick((int)KeyIdList.RS_H);
+        keys[i++] = new InputStick((int)KeyIdList.RS_V);
         // マウス移動
-        keys[i++] = new MouseMove((int)KeyIdList.Mouse_X);
-        keys[i++] = new MouseMove((int)KeyIdList.Mouse_Y);
-        keys[i++] = new MouseMove((int)KeyIdList.Mouse_Z);
+        keys[i++] = new InputMouseMove((int)KeyIdList.Mouse_X);
+        keys[i++] = new InputMouseMove((int)KeyIdList.Mouse_Y);
+        keys[i++] = new InputMouseMove((int)KeyIdList.Mouse_Z);
         // マウスボタン
-        keys[i++] = new MouseButton((int)KeyIdList.Mouse_LB);
-        keys[i++] = new MouseButton((int)KeyIdList.Mouse_RB);
-        keys[i++] = new MouseButton((int)KeyIdList.Mouse_CB);
+        keys[i++] = new InputMouseButton((int)KeyIdList.Mouse_LB);
+        keys[i++] = new InputMouseButton((int)KeyIdList.Mouse_RB);
+        keys[i++] = new InputMouseButton((int)KeyIdList.Mouse_CB);
     }
 
     // 更新処理(別クラスに呼び出しを任せる)
@@ -190,9 +190,9 @@ public abstract class Key
 //-----------↓派生クラス↓-----------
 
 /// <summary> ボタン専用 </summary>
-public class Button : Key
+public class InputButton : Key
 {
-    public Button(int id) : base(id) { }
+    public InputButton(int id) : base(id) { }
 
     public override void UpdateInput()
     {
@@ -211,12 +211,12 @@ public class Button : Key
 }
 
 /// <summary> トリガー専用 </summary>
-public class Trigger : Key
+public class InputTrigger : Key
 {
     private bool isPreviousPush = false;    // 前フレームに入力があったか
     private const float threshold = 0.7f;   // ボタンのように押した扱いとするしきい値
 
-    public Trigger(int id) : base(id) { }
+    public InputTrigger(int id) : base(id) { }
     public override void UpdateInput()
     {
         Value = Input.GetAxis(InputName);
@@ -237,12 +237,12 @@ public class Trigger : Key
 }
 
 /// <summary> スティック専用 </summary>
-public class Stick : Key
+public class InputStick : Key
 {
     private bool isPreviousPush = false;    // 前フレームに入力があったか
     private const float threshold = 0.7f;   // ボタンのように押した扱いとするしきい値
 
-    public Stick(int id) : base(id) { }
+    public InputStick(int id) : base(id) { }
     public override void UpdateInput()
     {
         Value = Input.GetAxis(InputName);
@@ -263,12 +263,12 @@ public class Stick : Key
 }
 
 /// <summary> マウス移動値専用 </summary>
-public class MouseMove : Key
+public class InputMouseMove : Key
 {
     private bool isPreviousPush = false;    // 前フレームに入力があったか
     private const float threshold = 0.7f;   // ボタンのように押した扱いとするしきい値
 
-    public MouseMove(int id) : base(id) { }
+    public InputMouseMove(int id) : base(id) { }
     public override void UpdateInput()
     {
         Value = Input.GetAxis(InputName);
@@ -289,9 +289,9 @@ public class MouseMove : Key
 }
 
 /// <summary> マウスボタン専用 </summary>
-public class MouseButton : Key
+public class InputMouseButton : Key
 {
-    public MouseButton(int id) : base(id) { }
+    public InputMouseButton(int id) : base(id) { }
     public override void UpdateInput()
     {
         int num = Id - (int)InputManager.KeyIdList.Mouse_LB;
