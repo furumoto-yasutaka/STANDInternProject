@@ -11,7 +11,7 @@ public class SceneChange : MonoBehaviour
 {
     [SerializeField, RenameField("使用するトランジションプレハブ")]
     private GameObject transition;
-
+    [SerializeField, RenameField("遷移先シーン(OnClick用)")]
     private SceneNameEnum scene = SceneNameEnum.TitleScene;
 
     public void StartSceneChange(SceneNameEnum s)
@@ -21,7 +21,20 @@ public class SceneChange : MonoBehaviour
 
         GameObject parent = GameObject.Find("Canvas");
         GameObject t = Instantiate(transition, parent.transform);
-        //t.transform.parent = parent.transform;
+    }
+
+    public void StartSceneChange()
+    {
+        TransitionCallBack.SetTransitionCallBack(ChangeScene);
+
+        GameObject parent = GameObject.Find("Canvas");
+        GameObject t = Instantiate(transition, parent.transform);
+
+        GameObject obj = GameObject.FindGameObjectWithTag("InputLockManager");
+        if (obj != null)
+        {
+            obj.GetComponent<InputLockManager>().LockAll();
+        }
     }
 
     public void ChangeScene()
