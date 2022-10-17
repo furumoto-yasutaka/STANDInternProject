@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    [SerializeField]
     private Transform PlayerTrans;
 
     void Start()
     {
-        PlayerTrans = GameObject.FindGameObjectWithTag("Player").transform;
+        //PlayerTrans = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()

@@ -15,5 +15,9 @@ public class PlayerLegCollision : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         playerController.KickAddForce();
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player2"))
+        {
+            collision.transform.parent.GetComponent<Player2Controller>().KickAddForce(collision.transform.position - transform.position);
+        }
     }
 }

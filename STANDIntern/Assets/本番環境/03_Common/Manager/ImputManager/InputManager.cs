@@ -18,6 +18,8 @@ class InputManager
         Start,
         LSB,
         RSB,
+        DPAD_H,
+        DPAD_V,
         LT,
         RT,
         LS_H,
@@ -46,6 +48,8 @@ class InputManager
         "joystick button 7",    // Start
         "joystick button 8",    // LSB
         "joystick button 9",    // RSB
+        "D_Pad_H",              // DPAD_H
+        "D_Pad_V",              // DPAD_V
         "L_Trigger",            // LT
         "R_Trigger",            // RT
         "L_Stick_H",            // LS_H
@@ -89,6 +93,8 @@ class InputManager
         keys[i++] = new InputTrigger((int)KeyIdList.LT);
         keys[i++] = new InputTrigger((int)KeyIdList.RT);
         // スティック
+        keys[i++] = new InputStick((int)KeyIdList.DPAD_H);
+        keys[i++] = new InputStick((int)KeyIdList.DPAD_V);
         keys[i++] = new InputStick((int)KeyIdList.LS_H);
         keys[i++] = new InputStick((int)KeyIdList.LS_V);
         keys[i++] = new InputStick((int)KeyIdList.RS_H);

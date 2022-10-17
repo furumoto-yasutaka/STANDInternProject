@@ -531,6 +531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ed7f371e24d1d4e8b02c7905d0b0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerTrans: {fileID: 2039810673}
 --- !u!1 &688261432
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,7 +705,7 @@ MonoBehaviour:
   KickRange: 0.77
   KickTime: 0.1
   KickReturnTime: 0.15
-  KickPower: 4.5
+  KickPower: 3.7
   KickMagX: 1.3
   KickAngularPower: 100
   KickState: 0
@@ -13589,6 +13590,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &1300816509
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3745959704233719602, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_Name
+      value: JoyconManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745959704233719604, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fc3b01e9d918e8543b8bcccada8bc858, type: 3}
 --- !u!1 &1435970195
 GameObject:
   m_ObjectHideFlags: 0
@@ -13835,7 +13893,7 @@ MonoBehaviour:
   KickRange: 0.77
   KickTime: 0.1
   KickReturnTime: 0.15
-  KickPower: 4.5
+  KickPower: 3.7
   KickMagX: 1.3
   KickAngularPower: 100
   KickState: 0

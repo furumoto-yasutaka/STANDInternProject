@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -48,6 +50,20 @@ public class PlayerController : MonoBehaviour
     private float KickTimeCount = 0.0f;
     //private float KickExecCoolTimeCount = 0.0f;
 
+
+    // JoyCon関係
+    private static readonly Joycon.Button[] m_buttons =
+        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
+    private List<Joycon> m_joycons;
+    private Joycon m_joyconL;
+    private Joycon m_joyconR;
+    private Vector2 jumpAngleL;
+    private Vector2 jumpAngleR;
+
+    private float rotL = 0.0f;
+    private float rotR = 0.0f;
+    private Vector3 v;
+
     void Start()
     {
         Body = transform.GetChild(0);
@@ -56,6 +72,14 @@ public class PlayerController : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
         KickAction = new System.Action[(int)KickStateId.Length]
             { Kick_NoneAction, Kick_KickAction, Kick_LegReturnAction };
+
+        // JoyCon関係
+        m_joycons = JoyconManager.Instance.j;
+
+        if (m_joycons == null || m_joycons.Count <= 0) return;
+
+        m_joyconL = m_joycons.Find(c => c.isLeft);
+        m_joyconR = m_joycons.Find(c => !c.isLeft);
     }
 
     void Update()
@@ -63,7 +87,14 @@ public class PlayerController : MonoBehaviour
         float decaySpeed;
         float defaultSpeed;
 
-        if (Input.GetKey(KeyCode.A) && Rb.velocity.x >= -MoveThreshold)
+        if ((Input.GetKey(KeyCode.A)
+            //||
+            //m_joyconL.GetButton(Joycon.Button.DPAD_LEFT) ||
+            //m_joyconL.GetStick()[0] < -0.5f ||
+            //m_joyconR.GetButton(Joycon.Button.DPAD_LEFT) ||
+            //m_joyconR.GetStick()[0] < -0.5f
+            ) &&
+            Rb.velocity.x >= -MoveThreshold)
         {
             decaySpeed = Rb.velocity.x * -MoveDecaySpeed * Time.deltaTime;
             defaultSpeed = -MoveSpeed * Time.deltaTime;
@@ -76,7 +107,14 @@ public class PlayerController : MonoBehaviour
                 Rb.velocity += new Vector2(defaultSpeed, 0.0f);
             }
         }
-        if (Input.GetKey(KeyCode.D) && Rb.velocity.x <= MoveThreshold)
+        if ((Input.GetKey(KeyCode.D)
+            //||
+            //m_joyconL.GetButton(Joycon.Button.DPAD_RIGHT) ||
+            //m_joyconL.GetStick()[0] > 0.5f ||
+            //m_joyconR.GetButton(Joycon.Button.DPAD_RIGHT) ||
+            //m_joyconR.GetStick()[0] > 0.5f
+            ) &&
+            Rb.velocity.x <= MoveThreshold)
         {
             decaySpeed = Rb.velocity.x * MoveDecaySpeed * Time.deltaTime;
             defaultSpeed = MoveSpeed * Time.deltaTime;
@@ -89,6 +127,26 @@ public class PlayerController : MonoBehaviour
                 Rb.velocity += new Vector2(defaultSpeed, 0.0f);
             }
         }
+
+        //Vector3 accel = m_joyconL.GetAccel();
+        //float sqrMag = accel.sqrMagnitude;
+        //if (sqrMag <= 1.04f && sqrMag >= 0.92f/* && gyroZDistance <= 1.5f*/)
+        //{
+        //    //jumpAngleL = new Vector2(accel.z, -accel.y).normalized;
+        //    rotL = Mathf.Atan2(accel.y, accel.z) * Mathf.Rad2Deg;
+        //    jumpAngleL = Quaternion.Euler(0, 0, -rotL) * Vector2.right;
+        //}
+
+        //accel = m_joyconR.GetAccel();
+        //v = accel;
+        //sqrMag = accel.sqrMagnitude;
+        //if (sqrMag <= 1.04f && sqrMag >= 0.92f/* && gyroZDistance <= 1.5f*/)
+        //{
+        //    //jumpAngleR = new Vector2(accel.z, -accel.y).normalized;
+        //    rotR = Mathf.Atan2(accel.y, accel.z) * Mathf.Rad2Deg;
+        //    Debug.Log(rotR);
+        //    jumpAngleR = Quaternion.Euler(0, 0, -rotR) * Vector2.right;
+        //}
 
         KickAction[(int)KickState]();
     }
@@ -114,6 +172,58 @@ public class PlayerController : MonoBehaviour
                 Leg.gameObject.SetActive(true);
             }
         }
+
+
+        
+        //Vector3 gyro = m_joyconL.GetGyro();
+        //if (gyro.z <= -5.0f)
+        //{
+        //    KickState = KickStateId.Kick;
+
+        //    Vector3 accel = m_joyconR.GetAccel();
+        //    if (accel.z > 0.5f)
+        //    {
+        //        float num = accel.z - 0.5f * 10;
+        //        jumpAngleL = Quaternion.Euler(0.0f, 0.0f, num) * jumpAngleL;
+        //    }
+        //    else if (accel.z < -0.5f)
+        //    {
+        //        float num = accel.z + 0.5f * 10;
+        //        jumpAngleL = Quaternion.Euler(0.0f, 0.0f, num) * jumpAngleL;
+        //    }
+
+        //    KickTimeCount = 0.0f;
+        //    KickDirection = jumpAngleL;
+
+        //    Leg.position = transform.position;
+        //    Leg.rotation = Quaternion.FromToRotation(Vector3.up, jumpAngleL);
+        //    Leg.gameObject.SetActive(true);
+        //}
+
+        //gyro = m_joyconR.GetGyro();
+        //if (gyro.z <= -5.0f)
+        //{
+        //    KickState = KickStateId.Kick;
+
+        //    Vector3 accel = m_joyconR.GetAccel();
+        //    if (accel.z > 0.5f)
+        //    {
+        //        float num = accel.z - 0.5f * 10;
+        //        jumpAngleL = Quaternion.Euler(0.0f, 0.0f, num) * jumpAngleL;
+        //    }
+        //    else if (accel.z < -0.5f)
+        //    {
+        //        float num = accel.z + 0.5f * 10;
+        //        jumpAngleL = Quaternion.Euler(0.0f, 0.0f, num) * jumpAngleL;
+        //    }
+
+        //    KickTimeCount = 0.0f;
+        //    KickDirection = jumpAngleR;
+
+        //    Leg.position = transform.position;
+        //    Leg.rotation = Quaternion.FromToRotation(Vector3.up, jumpAngleR);
+        //    Leg.gameObject.SetActive(true);
+        //}
     }
 
     void Kick_KickAction()
@@ -185,4 +295,54 @@ public class PlayerController : MonoBehaviour
             AudioManager.Instance.PlaySe("ジャンプ");
         }
     }
+
+    public void KickAddForce(Vector2 angle)
+    {
+        if (!IsJump)
+        {
+            IsJump = true;
+            Vector2 resultVel;
+            Vector2 jumpVel = angle.normalized * KickPower * 2.5f;
+            jumpVel.x *= KickMagX;
+
+            if ((Rb.velocity.x > 0 && jumpVel.x > 0) || (Rb.velocity.x < 0 && jumpVel.x < 0))
+            {
+                resultVel.x = Rb.velocity.x + jumpVel.x;
+            }
+            else
+            {
+                resultVel.x = jumpVel.x - Rb.velocity.x;
+            }
+
+            if ((Rb.velocity.y > 0 && jumpVel.y > 0) || (Rb.velocity.y < 0 && jumpVel.y < 0))
+            {
+                resultVel.y = jumpVel.y + Rb.velocity.y;
+            }
+            else
+            {
+                resultVel.y = jumpVel.y - Rb.velocity.y * 0.25f;
+            }
+
+            Rb.velocity = resultVel;
+            Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
+
+            AudioManager.Instance.PlaySe("ジャンプ");
+        }
+    }
+
+    //private void OnGUI()
+    //{
+    //    var style = GUI.skin.GetStyle("label");
+    //    style.fontSize = 32;
+
+    //    GUILayout.BeginHorizontal(GUILayout.Width(1920));
+    //    GUILayout.BeginVertical(GUILayout.Width(1080));
+
+    //    GUILayout.Label(rotR.ToString("f3"));
+    //    GUILayout.Label(jumpAngleR.x.ToString("f3") + "　" + jumpAngleR.y.ToString("f3"));
+    //    GUILayout.Label(v.x.ToString("f3") + "　" + v.y.ToString("f3") + "　" + v.z.ToString("f3"));
+
+    //    GUILayout.EndVertical();
+    //    GUILayout.EndHorizontal();
+    //}
 }

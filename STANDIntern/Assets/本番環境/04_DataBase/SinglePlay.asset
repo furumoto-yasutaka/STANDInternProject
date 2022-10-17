@@ -21,10 +21,10 @@ MonoBehaviour:
     StageSelectDrawPos: {x: 300, y: 100}
   - StageName: 
     CollectItemNum: 2
-    StageSelectDrawPos: {x: 300, y: -200}
+    StageSelectDrawPos: {x: 300, y: 100}
   - StageName: 
     CollectItemNum: 2
-    StageSelectDrawPos: {x: 300, y: -200}
+    StageSelectDrawPos: {x: 300, y: -400}
   - StageName: 
     CollectItemNum: 2
-    StageSelectDrawPos: {x: 300, y: 500}
+    StageSelectDrawPos: {x: 300, y: 300}
