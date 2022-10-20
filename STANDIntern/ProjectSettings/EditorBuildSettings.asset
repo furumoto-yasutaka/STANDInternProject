@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/StageSelect_SinglePlay.unity"
     guid: ce70cd681d3e4194eadbad0605857458
   - enabled: 1
-    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Test/TestGameScene.unity"
+    path: "Assets/\u500B\u4EBA\u30D5\u30A9\u30EB\u30C0/\u53E4\u672C\u306E\u90E8\u5C4B/TestScene/TestGameScene.unity"
     guid: 0f112ff96067d4848b5c764cd35f8179
   - enabled: 1
     path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/ControllerConnect_CoopPlay.unity"
