@@ -14,6 +14,12 @@ Shader "Custom/tree_wind"
         [PowerSlider(2)]_WindScale("WindScale",Range(0,0.2)) = 1
         [PowerSlider(2)]_WindStrength("WindStrength",Range(0,1.0)) = 0.01
         [PowerSlider(2)]_WindInfluence("WindInfluence",Range(0,10)) = 0.01
+
+        [Space(15)]
+        [Header(Color)]
+        [Space(5)]
+        _Tint("Tint",Color)=(1,1,1,1)
+        _FogColor("FogColor",Color)= (0.2588236, 0.6790779, 0.8784314, 0.4901961)
     }
 
     SubShader
@@ -21,7 +27,9 @@ Shader "Custom/tree_wind"
         //ブレンドモード
         Blend SrcAlpha OneMinusSrcAlpha
         //レンダラーモード
-        Tags { "RenderType" = "Opaque" }
+        Tags { "RenderType" = "Opaque"
+            "Queue" = "Geometry"
+        }
 
         Pass
         {
@@ -88,6 +96,8 @@ Shader "Custom/tree_wind"
             float _WindScale;
             float _WindStrength;
             float _WindInfluence;
+            fixed4 _Tint;
+            fixed4 _FogColor;
 
             v2f vert(appdata v)
             {
@@ -134,9 +144,14 @@ Shader "Custom/tree_wind"
 
             fixed4 frag(v2f i) : SV_Target
             {
+                float alpha;
+                fixed4 combinecolor;
                 //テクスチャの設定
-                 fixed4 color = tex2D(_Maintex,i.uv);
-                 return color;
+                fixed4 color = tex2D(_Maintex,i.uv);
+                //color = mul(_Tint, color);
+                color.rgb = lerp( _FogColor.rgb, color.rgb, _FogColor.a);
+                
+                return color;
             }
             ENDCG
         }
