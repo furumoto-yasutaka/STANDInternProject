@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,7 +17,6 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D Rb;
     private Transform Body;
-    [SerializeField, RenameField("足オブジェクト")]
     private Transform Leg;
 
     [SerializeField, RenameField("プレイヤーの移動速度")]
@@ -25,8 +25,10 @@ public class PlayerController : MonoBehaviour
     private float MoveDecaySpeed = 0.8f;
     [SerializeField, RenameField("プレイヤーの移動入力のしきい値")]
     private float MoveThreshold = 2.0f;
-    [SerializeField, RenameField("蹴りを発動させる速度のしきい値")]
-    private float KickExecSpeed = 0.7f;
+    [SerializeField, RenameField("蹴りを発動させる入力しきい値(スティック)")]
+    private float KickExecStickFall = 0.7f;
+    [SerializeField, RenameField("蹴りを発動させる速度のしきい値(マウス)")]
+    private float KickExecSpeed = 0.5f;
     //[SerializeField, RenameField("蹴り発動後のクールタイム")]
     //private float KickExecCoolTime = 1.0f;
     [SerializeField, RenameField("足を伸ばす距離")]
@@ -41,63 +43,54 @@ public class PlayerController : MonoBehaviour
     private float KickMagX = 1.3f;
     [SerializeField, RenameField("キック時の回転速度")]
     private float KickAngularPower = 100.0f;
+    [SerializeField, RenameField("相手プレイヤーキック時の基準点(最小)")]
+    private float KickedAddPowerMin = 0.85f;
+    [SerializeField, RenameField("相手プレイヤーキック時の基準点(最大)")]
+    private float KickedAddPowerMax = 1.7f;
 
     [ReadOnly]
     public KickStateId KickState = KickStateId.None;
-    private System.Action[] KickAction;
+    private Action[] KickAction;
     private bool IsJump = false;
-    private Vector2 KickDirection;
+    private Vector2 kickDirection;
+    public Vector2 KickDirection { get { return kickDirection; } }
     private float KickTimeCount = 0.0f;
     //private float KickExecCoolTimeCount = 0.0f;
+    private bool fallStick = false;
 
-
-    // JoyCon関係
-    private static readonly Joycon.Button[] m_buttons =
-        Enum.GetValues(typeof(Joycon.Button)) as Joycon.Button[];
-    private List<Joycon> m_joycons;
-    private Joycon m_joyconL;
-    private Joycon m_joyconR;
-    private Vector2 jumpAngleL;
-    private Vector2 jumpAngleR;
-
-    private float rotL = 0.0f;
-    private float rotR = 0.0f;
-    private Vector3 v;
+    // ImputSystem関係
+    private InputAction moveAction;
+    private InputAction prekickAction;
+    private InputAction kickmouseAction;
+    private InputAction kickpadAction;
 
     void Start()
     {
         Body = transform.GetChild(0);
+        Leg = transform.GetChild(1);
+
         Leg.gameObject.SetActive(false);
 
-        Rb = GetComponent<Rigidbody2D>();
-        KickAction = new System.Action[(int)KickStateId.Length]
+        Rb = Body.GetComponent<Rigidbody2D>();
+        KickAction = new Action[(int)KickStateId.Length]
             { Kick_NoneAction, Kick_KickAction, Kick_LegReturnAction };
 
-        // JoyCon関係
-        m_joycons = JoyconManager.Instance.j;
-
-        if (m_joycons == null || m_joycons.Count <= 0) return;
-
-        m_joyconL = m_joycons.Find(c => c.isLeft);
-        m_joyconR = m_joycons.Find(c => !c.isLeft);
+        PlayerInput input = GetComponent<PlayerInput>();
+        InputActionMap map = input.currentActionMap;
+        moveAction = map["Move"];
+        prekickAction = map["PreKick"];
+        kickmouseAction = map["Kick_Mouse"];
+        kickpadAction = map["Kick_Pad"];
     }
 
     void Update()
     {
-        float decaySpeed;
-        float defaultSpeed;
+        float horizontal = moveAction.ReadValue<Vector2>().x;
+        float decaySpeed = Rb.velocity.x * MoveDecaySpeed * horizontal * Time.deltaTime;
+        float defaultSpeed = MoveSpeed * horizontal * Time.deltaTime;
 
-        if ((Input.GetKey(KeyCode.A)
-            //||
-            //m_joyconL.GetButton(Joycon.Button.DPAD_LEFT) ||
-            //m_joyconL.GetStick()[0] < -0.5f ||
-            //m_joyconR.GetButton(Joycon.Button.DPAD_LEFT) ||
-            //m_joyconR.GetStick()[0] < -0.5f
-            ) &&
-            Rb.velocity.x >= -MoveThreshold)
+        if (horizontal < 0.0f && Rb.velocity.x >= -MoveThreshold)
         {
-            decaySpeed = Rb.velocity.x * -MoveDecaySpeed * Time.deltaTime;
-            defaultSpeed = -MoveSpeed * Time.deltaTime;
             if (decaySpeed < defaultSpeed)
             {
                 Rb.velocity += new Vector2(decaySpeed, 0.0f);
@@ -107,17 +100,8 @@ public class PlayerController : MonoBehaviour
                 Rb.velocity += new Vector2(defaultSpeed, 0.0f);
             }
         }
-        if ((Input.GetKey(KeyCode.D)
-            //||
-            //m_joyconL.GetButton(Joycon.Button.DPAD_RIGHT) ||
-            //m_joyconL.GetStick()[0] > 0.5f ||
-            //m_joyconR.GetButton(Joycon.Button.DPAD_RIGHT) ||
-            //m_joyconR.GetStick()[0] > 0.5f
-            ) &&
-            Rb.velocity.x <= MoveThreshold)
+        else if (horizontal > 0.0f && Rb.velocity.x <= MoveThreshold)
         {
-            decaySpeed = Rb.velocity.x * MoveDecaySpeed * Time.deltaTime;
-            defaultSpeed = MoveSpeed * Time.deltaTime;
             if (decaySpeed > defaultSpeed)
             {
                 Rb.velocity += new Vector2(decaySpeed, 0.0f);
@@ -128,102 +112,53 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //Vector3 accel = m_joyconL.GetAccel();
-        //float sqrMag = accel.sqrMagnitude;
-        //if (sqrMag <= 1.04f && sqrMag >= 0.92f/* && gyroZDistance <= 1.5f*/)
-        //{
-        //    //jumpAngleL = new Vector2(accel.z, -accel.y).normalized;
-        //    rotL = Mathf.Atan2(accel.y, accel.z) * Mathf.Rad2Deg;
-        //    jumpAngleL = Quaternion.Euler(0, 0, -rotL) * Vector2.right;
-        //}
-
-        //accel = m_joyconR.GetAccel();
-        //v = accel;
-        //sqrMag = accel.sqrMagnitude;
-        //if (sqrMag <= 1.04f && sqrMag >= 0.92f/* && gyroZDistance <= 1.5f*/)
-        //{
-        //    //jumpAngleR = new Vector2(accel.z, -accel.y).normalized;
-        //    rotR = Mathf.Atan2(accel.y, accel.z) * Mathf.Rad2Deg;
-        //    Debug.Log(rotR);
-        //    jumpAngleR = Quaternion.Euler(0, 0, -rotR) * Vector2.right;
-        //}
-
         KickAction[(int)KickState]();
     }
 
     void Kick_NoneAction()
     {
-        if (InputManager.GetKeyPress(InputManager.KeyIdList.Mouse_LB))
+        Vector2 move;
+        Vector2 normal;
+
+        if (prekickAction.triggered)
         {
-            float horizontal = InputManager.GetValue(InputManager.KeyIdList.Mouse_X);
-            float vertical = InputManager.GetValue(InputManager.KeyIdList.Mouse_Y);
-            Vector2 move = new Vector2(horizontal, vertical);
-            Vector2 normal = move.normalized;
+            move = kickmouseAction.ReadValue<Vector2>();
+            normal = move.normalized;
 
             if (move.sqrMagnitude >= KickExecSpeed * KickExecSpeed)
             {
                 KickState = KickStateId.Kick;
 
                 KickTimeCount = 0.0f;
-                KickDirection = normal;
+                kickDirection = normal;
 
-                Leg.position = transform.position;
-                Leg.rotation = Quaternion.FromToRotation(Vector3.down, KickDirection);
+                Leg.position = Body.position;
+                Leg.rotation = Quaternion.FromToRotation(Vector3.down, kickDirection);
                 Leg.gameObject.SetActive(true);
             }
         }
 
+        move = kickpadAction.ReadValue<Vector2>();
+        normal = move.normalized;
 
-        
-        //Vector3 gyro = m_joyconL.GetGyro();
-        //if (gyro.z <= -5.0f)
-        //{
-        //    KickState = KickStateId.Kick;
+        if (move.sqrMagnitude < KickExecStickFall * KickExecStickFall)
+        {
+            fallStick = false;
+        }
 
-        //    Vector3 accel = m_joyconR.GetAccel();
-        //    if (accel.z > 0.5f)
-        //    {
-        //        float num = accel.z - 0.5f * 10;
-        //        jumpAngleL = Quaternion.Euler(0.0f, 0.0f, num) * jumpAngleL;
-        //    }
-        //    else if (accel.z < -0.5f)
-        //    {
-        //        float num = accel.z + 0.5f * 10;
-        //        jumpAngleL = Quaternion.Euler(0.0f, 0.0f, num) * jumpAngleL;
-        //    }
+        if (move.sqrMagnitude >= KickExecStickFall * KickExecStickFall && !fallStick)
+        {
+            fallStick = true;
 
-        //    KickTimeCount = 0.0f;
-        //    KickDirection = jumpAngleL;
+            KickState = KickStateId.Kick;
 
-        //    Leg.position = transform.position;
-        //    Leg.rotation = Quaternion.FromToRotation(Vector3.up, jumpAngleL);
-        //    Leg.gameObject.SetActive(true);
-        //}
+            KickTimeCount = 0.0f;
+            kickDirection = normal;
 
-        //gyro = m_joyconR.GetGyro();
-        //if (gyro.z <= -5.0f)
-        //{
-        //    KickState = KickStateId.Kick;
-
-        //    Vector3 accel = m_joyconR.GetAccel();
-        //    if (accel.z > 0.5f)
-        //    {
-        //        float num = accel.z - 0.5f * 10;
-        //        jumpAngleL = Quaternion.Euler(0.0f, 0.0f, num) * jumpAngleL;
-        //    }
-        //    else if (accel.z < -0.5f)
-        //    {
-        //        float num = accel.z + 0.5f * 10;
-        //        jumpAngleL = Quaternion.Euler(0.0f, 0.0f, num) * jumpAngleL;
-        //    }
-
-        //    KickTimeCount = 0.0f;
-        //    KickDirection = jumpAngleR;
-
-        //    Leg.position = transform.position;
-        //    Leg.rotation = Quaternion.FromToRotation(Vector3.up, jumpAngleR);
-        //    Leg.gameObject.SetActive(true);
-        //}
+            Leg.position = Body.position;
+            Leg.rotation = Quaternion.FromToRotation(Vector3.down, kickDirection);
+            Leg.gameObject.SetActive(true);
+        }
     }
 
     void Kick_KickAction()
@@ -232,8 +167,8 @@ public class PlayerController : MonoBehaviour
         {
             KickTimeCount += Time.deltaTime;
             
-            Vector2 vec = KickDirection * KickRange * KickTimeCount / KickTime;
-            Leg.position = transform.position + (Vector3)vec;
+            Vector2 vec = kickDirection * KickRange * KickTimeCount / KickTime;
+            Leg.position = Body.position + (Vector3)vec;
         }
         else
         {
@@ -249,8 +184,8 @@ public class PlayerController : MonoBehaviour
         {
             KickTimeCount -= Time.deltaTime;
 
-            Vector2 vec = KickDirection * KickRange * KickTimeCount / KickReturnTime;
-            Leg.position = transform.position + (Vector3)vec;
+            Vector2 vec = kickDirection * KickRange * KickTimeCount / KickReturnTime;
+            Leg.position = Body.position + (Vector3)vec;
         }
         else
         {
@@ -258,7 +193,7 @@ public class PlayerController : MonoBehaviour
 
             IsJump = false;
             Leg.gameObject.SetActive(false);
-            Leg.position = transform.position;
+            Leg.position = Body.position;
         }
     }
 
@@ -268,7 +203,7 @@ public class PlayerController : MonoBehaviour
         {
             IsJump = true;
             Vector2 resultVel;
-            Vector2 jumpVel = -KickDirection * KickPower;
+            Vector2 jumpVel = -kickDirection * KickPower;
             jumpVel.x *= KickMagX;
 
             if ((Rb.velocity.x > 0 && jumpVel.x > 0) || (Rb.velocity.x < 0 && jumpVel.x < 0))
@@ -296,53 +231,48 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void KickAddForce(Vector2 angle)
+    public void KickedAddForce(Vector2 distance, Vector2 kickDirection)
     {
-        if (!IsJump)
+        Vector2 resultVel;
+        Vector2 jumpVel = kickDirection * KickPower * 2.0f;
+        float distanceLen = distance.sqrMagnitude;
+        float addPowerRate = 0.0f;
+        jumpVel.x *= KickMagX;
+
+        if ((Rb.velocity.x > 0 && jumpVel.x > 0) || (Rb.velocity.x < 0 && jumpVel.x < 0))
         {
-            IsJump = true;
-            Vector2 resultVel;
-            Vector2 jumpVel = angle.normalized * KickPower * 2.5f;
-            jumpVel.x *= KickMagX;
-
-            if ((Rb.velocity.x > 0 && jumpVel.x > 0) || (Rb.velocity.x < 0 && jumpVel.x < 0))
-            {
-                resultVel.x = Rb.velocity.x + jumpVel.x;
-            }
-            else
-            {
-                resultVel.x = jumpVel.x - Rb.velocity.x;
-            }
-
-            if ((Rb.velocity.y > 0 && jumpVel.y > 0) || (Rb.velocity.y < 0 && jumpVel.y < 0))
-            {
-                resultVel.y = jumpVel.y + Rb.velocity.y;
-            }
-            else
-            {
-                resultVel.y = jumpVel.y - Rb.velocity.y * 0.25f;
-            }
-
-            Rb.velocity = resultVel;
-            Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
-
-            AudioManager.Instance.PlaySe("ジャンプ");
+            resultVel.x = Rb.velocity.x + jumpVel.x;
         }
+        else
+        {
+            resultVel.x = jumpVel.x - Rb.velocity.x;
+        }
+
+        if ((Rb.velocity.y > 0 && jumpVel.y > 0) || (Rb.velocity.y < 0 && jumpVel.y < 0))
+        {
+            resultVel.y = jumpVel.y + Rb.velocity.y;
+        }
+        else
+        {
+            resultVel.y = jumpVel.y - Rb.velocity.y * 0.25f;
+        }
+
+        if (distanceLen < KickedAddPowerMin * KickedAddPowerMin)
+        {
+            addPowerRate = 1.0f;
+        }
+        else if (distanceLen > KickedAddPowerMax * KickedAddPowerMax)
+        {
+            addPowerRate = 0.0f;
+        }
+        else
+        {
+            addPowerRate = (distanceLen - KickedAddPowerMin) / (KickedAddPowerMin - KickedAddPowerMax);
+        }
+
+        Rb.velocity = resultVel + distance.normalized * addPowerRate;
+        Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
+
+        AudioManager.Instance.PlaySe("ジャンプ");
     }
-
-    //private void OnGUI()
-    //{
-    //    var style = GUI.skin.GetStyle("label");
-    //    style.fontSize = 32;
-
-    //    GUILayout.BeginHorizontal(GUILayout.Width(1920));
-    //    GUILayout.BeginVertical(GUILayout.Width(1080));
-
-    //    GUILayout.Label(rotR.ToString("f3"));
-    //    GUILayout.Label(jumpAngleR.x.ToString("f3") + "　" + jumpAngleR.y.ToString("f3"));
-    //    GUILayout.Label(v.x.ToString("f3") + "　" + v.y.ToString("f3") + "　" + v.z.ToString("f3"));
-
-    //    GUILayout.EndVertical();
-    //    GUILayout.EndHorizontal();
-    //}
 }

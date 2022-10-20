@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - InputLockManager
+  - Platform
   layers:
   - Default
   - TransparentFX
@@ -13,9 +14,9 @@ TagManager:
   - Water
   - UI
   - PlayerLeg
-  - Player2
-  - Player2Leg
-  - 
+  - DeadZone
+  - Platform
+  - RevivalZone
   - 
   - 
   - 
