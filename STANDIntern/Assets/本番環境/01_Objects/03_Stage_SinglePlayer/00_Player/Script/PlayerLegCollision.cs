@@ -7,6 +7,13 @@ public class PlayerLegCollision : MonoBehaviour
     [SerializeField]
     private PlayerController playerController;
     private List<Collider2D> playerList = new List<Collider2D>();
+    private BattleSumoManager battleSumoManager;
+
+    private void Start()
+    {
+        int index = (int)BattleSumoModeManagerList.BattleSumoModeManagerId.BattleSumoManager;
+        battleSumoManager = GameObject.FindGameObjectWithTag("Managers").transform.GetChild(index).GetComponent<BattleSumoManager>();
+    }
 
     private void OnEnable()
     {
@@ -24,12 +31,17 @@ public class PlayerLegCollision : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player") &&
             !playerList.Contains(collision))
         {
+            battleSumoManager.RequestDeleteMark(playerController.transform.GetComponent<PlayerId>().Id);
+
             playerList.Add(collision);
             if (!collision.transform.parent.parent.GetComponent<PlayerInvincible>().IsInvincible)
             {
                 collision.transform.parent.parent.GetComponent<PlayerController>().KickedAddForce(
                     collision.transform.position - transform.position,
                     playerController.KickDirection);
+                battleSumoManager.RequestKickMark(
+                    collision.transform.parent.parent.GetComponent<PlayerId>().Id,
+                    playerController.transform.GetComponent<PlayerId>().Id);
             }
         }
     }

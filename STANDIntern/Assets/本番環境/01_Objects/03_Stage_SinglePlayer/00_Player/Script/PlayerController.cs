@@ -64,6 +64,10 @@ public class PlayerController : MonoBehaviour
     private InputAction kickmouseAction;
     private InputAction kickpadAction;
 
+    private bool isDeath = false;
+
+    public bool IsDeath { get { return isDeath; } }
+
     void Start()
     {
         Body = transform.GetChild(0);
@@ -85,6 +89,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (isDeath) { return; }
+
         float horizontal = moveAction.ReadValue<Vector2>().x;
         float decaySpeed = Rb.velocity.x * MoveDecaySpeed * horizontal * Time.deltaTime;
         float defaultSpeed = MoveSpeed * horizontal * Time.deltaTime;
@@ -274,5 +280,20 @@ public class PlayerController : MonoBehaviour
         Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
 
         AudioManager.Instance.PlaySe("ジャンプ");
+    }
+
+    public void Death()
+    {
+        isDeath = true;
+        KickState = KickStateId.None;
+        // 非アクティブに(ボディのみ)
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    public void Revival()
+    {
+        isDeath = false;
+        // アクティブに(ボディのみ)
+        transform.GetChild(0).gameObject.SetActive(true);
     }
 }
