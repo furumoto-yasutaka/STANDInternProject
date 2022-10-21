@@ -85,6 +85,8 @@ public class PlayerController : MonoBehaviour
         prekickAction = map["PreKick"];
         kickmouseAction = map["Kick_Mouse"];
         kickpadAction = map["Kick_Pad"];
+
+        Death();
     }
 
     void Update()
@@ -286,14 +288,18 @@ public class PlayerController : MonoBehaviour
     {
         isDeath = true;
         KickState = KickStateId.None;
-        // 非アクティブに(ボディのみ)
-        transform.GetChild(0).gameObject.SetActive(false);
+        IsJump = false;
+        Leg.gameObject.SetActive(false);
+
+        Rb.bodyType = RigidbodyType2D.Kinematic;
+        Rb.velocity = Vector2.zero;
+        transform.GetChild(0).GetChild(0).GetComponent<CircleCollider2D>().enabled = false;
     }
 
     public void Revival()
     {
         isDeath = false;
-        // アクティブに(ボディのみ)
-        transform.GetChild(0).gameObject.SetActive(true);
+        Rb.bodyType = RigidbodyType2D.Dynamic;
+        transform.GetChild(0).GetChild(0).GetComponent<CircleCollider2D>().enabled = true;
     }
 }

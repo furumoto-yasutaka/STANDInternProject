@@ -6,6 +6,8 @@ using TMPro;
 public class BattleSumoManager : MonoBehaviour
 {
     [SerializeField]
+    private int stageId;
+    [SerializeField]
     private Transform players;
     [SerializeField]
     private float fromKickMarkTime = 6.0f;
@@ -21,6 +23,8 @@ public class BattleSumoManager : MonoBehaviour
     private GameObject[] markPlayer;
     private float[] markTimeCount;
     private TextMeshProUGUI[] debugText;
+
+    public int StageId { get { return stageId; } }
 
     void Start()
     {

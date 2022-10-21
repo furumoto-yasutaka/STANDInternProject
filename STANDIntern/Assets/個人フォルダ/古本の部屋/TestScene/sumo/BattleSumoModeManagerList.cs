@@ -8,6 +8,6 @@ public class BattleSumoModeManagerList : MonoBehaviour
     {
         BattleSumoManager = 0,
         RevivalManager,
-        AudioManager,
+        SpownManager,
     }
 }

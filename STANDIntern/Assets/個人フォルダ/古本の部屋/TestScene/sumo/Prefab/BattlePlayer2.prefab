@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8dfb51df033f78b478933e0e1ceb8fc0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a3c0036988f4a55459fa5d1b7ab29305, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -187,7 +187,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -5
-  m_Sprite: {fileID: 21300000, guid: e06a6a03e8ee8e54386cc9b1df814dca, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 83d33888a033f4f4196be1243cb7588c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -388,7 +388,6 @@ MonoBehaviour:
   KickedAddPowerMin: 0.85
   KickedAddPowerMax: 1.7
   KickState: 0
-  invincibleTime: 5
 --- !u!114 &8438224999950681094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,3 +450,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2994fd98730889478880c52915b1bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invincibleTime: 5
+  bodyMaterial: {fileID: 0}
+  legMaterial: {fileID: 0}

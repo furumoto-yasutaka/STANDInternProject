@@ -41,8 +41,8 @@ public class CoopPlayerController : MonoBehaviour
     private float KickPower = 1.0f;
     [SerializeField, RenameField("キック倍率(X)")]
     private float KickMagX = 1.3f;
-    [SerializeField, RenameField("キック時の回転速度")]
-    private float KickAngularPower = 100.0f;
+    //[SerializeField, RenameField("キック時の回転速度")]
+    //private float KickAngularPower = 100.0f;
 
     [ReadOnly]
     public KickStateId KickState = KickStateId.None;

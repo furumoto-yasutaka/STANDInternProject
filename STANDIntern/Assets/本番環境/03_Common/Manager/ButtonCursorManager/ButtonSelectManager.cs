@@ -40,6 +40,10 @@ public class ButtonSelectManager : InputLockElement
         {
             LockInput();
         }
+        else
+        {
+            buttons[0].Select();
+        }
     }
 
     void Update()
