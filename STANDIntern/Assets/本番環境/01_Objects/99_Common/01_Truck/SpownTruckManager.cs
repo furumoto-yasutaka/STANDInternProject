@@ -59,17 +59,21 @@ public class SpownTruckManager : MonoBehaviour
     [SerializeField]
     private float invincibleTime = 2.0f;
     
-    private Vector3 firstPos;
-    private Vector3 targetPos;
+    private Vector3 firstTruckInitialPos;
+    private Vector3 firstTruckTargetPos;
+    private Vector3 respownTruckInitialPos;
+    private Vector3 respownTruckTargetPos;
     private Vector3 moveAngle;
     private List<TruckInfo> truckList = new List<TruckInfo>();
     private List<TruckInfo> removeList = new List<TruckInfo>();
 
     void Start()
     {
-        firstPos = transform.GetChild(0).position;
-        targetPos = transform.GetChild(1).position;
-        moveAngle = (targetPos - firstPos).normalized;
+        firstTruckInitialPos = transform.GetChild(0).position;
+        firstTruckTargetPos = transform.GetChild(1).position;
+        respownTruckInitialPos = transform.GetChild(2).position;
+        respownTruckTargetPos = transform.GetChild(3).position;
+        moveAngle = (firstTruckTargetPos - firstTruckInitialPos).normalized;
 
         Spown(-1);
     }
@@ -97,8 +101,17 @@ public class SpownTruckManager : MonoBehaviour
     {
         if (info.IsPutOn)
         {
-            float toHalfDistance = ((firstPos + targetPos) * 0.5f - info.truck.position).sqrMagnitude;
-            
+            float toHalfDistance;
+
+            if (info.JumpParam.Count > 1)
+            {
+                toHalfDistance = ((firstTruckInitialPos + firstTruckTargetPos) * 0.5f - info.truck.position).sqrMagnitude;
+            }
+            else
+            {
+                toHalfDistance = ((respownTruckInitialPos + respownTruckTargetPos) * 0.5f - info.truck.position).sqrMagnitude;
+            }
+
             if (toHalfDistance <= (moveSpeed * Time.deltaTime) * (moveSpeed * Time.deltaTime))
             {
                 info.truck.position += moveAngle * Mathf.Sqrt(toHalfDistance);
@@ -114,11 +127,20 @@ public class SpownTruckManager : MonoBehaviour
         }
         else
         {
-            float toEndDistance = (targetPos - info.truck.position).sqrMagnitude;
+            float toEndDistance;
+
+            if (info.JumpParam.Count > 1)
+            {
+                toEndDistance = (firstTruckTargetPos - info.truck.position).sqrMagnitude;
+            }
+            else
+            {
+                toEndDistance = (respownTruckTargetPos - info.truck.position).sqrMagnitude;
+            }
 
             if (toEndDistance <= (moveSpeed * Time.deltaTime) * (moveSpeed * Time.deltaTime))
             {
-                info.truck.position = targetPos;
+                info.truck.position += moveAngle * toEndDistance;
                 Destroy(info.truck.gameObject);
                 info.truck = null;
                 removeList.Add(info);
@@ -238,21 +260,22 @@ public class SpownTruckManager : MonoBehaviour
         Transform truck;
         if (playerIndex == -1)
         {
-            truck = Instantiate(firstTruckPrefab, transform.GetChild(2)).transform;
+            truck = Instantiate(firstTruckPrefab, transform.GetChild(4)).transform;
             truckList.Add(new TruckInfo(truck, -1));
             for (int i = 0; i < players.childCount; i++)
             {
                 truckList[truckList.Count - 1].JumpParam.Add(new JumpInfo());
                 players.GetChild(i).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = firstSpownSortLayer;
             }
+            truck.position = firstTruckInitialPos;
         }
         else
         {
-            truck = Instantiate(revivalTruckPrefab, transform.GetChild(2)).transform;
+            truck = Instantiate(revivalTruckPrefab, transform.GetChild(4)).transform;
             truckList.Add(new TruckInfo(truck, playerIndex));
             truckList[truckList.Count - 1].JumpParam.Add(new JumpInfo());
             players.GetChild(playerIndex).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = revivalSpownSortLayer;
+            truck.position = respownTruckInitialPos;
         }
-        truck.position = firstPos;
     }
 }
