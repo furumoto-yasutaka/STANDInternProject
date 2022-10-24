@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Maintex:
-        m_Texture: {fileID: 2800000, guid: a2d34f0f7c2126346bb10319d7b185f1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 201dce247749f8844acb3183417d5ae6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
@@ -44,13 +44,13 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _WindInfluence: 2.14
-    - _WindScale: 0.074
-    - _WindSpeed: 5.27
-    - _WindStrength: 1
+    - _WindScale: 0.0884
+    - _WindSpeed: 4.08
+    - _WindStrength: 0.786
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _FogColor: {r: 0.33490568, g: 1, b: 0.86526376, a: 0.6117647}
+    - _FogColor: {r: 0.33725488, g: 1, b: 0.88723123, a: 0.64705884}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
     - _WindDirection: {r: 0.09, g: 0.41, b: 0, a: 0}

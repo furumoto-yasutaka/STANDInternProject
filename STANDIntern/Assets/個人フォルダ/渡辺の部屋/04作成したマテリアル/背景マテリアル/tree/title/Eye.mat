@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: tree0 4
-  m_Shader: {fileID: 4800000, guid: 8e924c0f53bf9d34991c60edc547e9d1, type: 3}
+  m_Name: Eye
+  m_Shader: {fileID: 4800000, guid: 53cc1f96bc1a85c43b3e635ac6493023, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -25,15 +25,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Maintex:
-        m_Texture: {fileID: 2800000, guid: 486b90c395a09874b8a33f0c5793b640, type: 3}
+        m_Texture: {fileID: 2800000, guid: a5725811dc1e2994fb916dd688ba8c34, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:
-        m_Texture: {fileID: 2800000, guid: 64b7b3c87409f914bbbdc5fb038b5004, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -43,15 +39,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _WindInfluence: 2.14
-    - _WindScale: 0.074
-    - _WindSpeed: 5.27
-    - _WindStrength: 1
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _FogColor: {r: 0.3372549, g: 1, b: 0.8862745, a: 0.64705884}
+    - _FogColor: {r: 0.18841223, g: 0.5471698, b: 0.5471698, a: 0.59607846}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
-    - _WindDirection: {r: 0.09, g: 0.41, b: 0, a: 0}
   m_BuildTextureStacks: []
