@@ -27,4 +27,12 @@ public class BackGroundAutoScroll : MonoBehaviour
             materialList[i].SetTextureOffset("_MainTex", newTiling);
         }
     }
+
+    private void OnApplicationQuit()
+    {
+        for (int i = 0; i < moveSpeed.Length; i++)
+        {
+            materialList[i].SetTextureOffset("_MainTex", Vector2.zero);
+        }
+    }
 }
