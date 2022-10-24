@@ -4910,7 +4910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7552158134983921820, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7552158134983921820, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: ClampVelocityModule.drag.scalar
@@ -4922,7 +4922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7552158134983921820, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: InitialModule.startSize.minScalar
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7552158134983921820, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar

@@ -74,6 +74,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float endBlowThreshold = 8.0f;
 
+    private static float hitEffectStrongThreshold = 12.0f;
+
     public bool IsDeath { get { return isDeath; } }
 
     void Start()
@@ -220,7 +222,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void KickPlatformAddForce()
+    public void KickPlatformAddForce(Collider2D collision)
     {
         if (!IsJump)
         {
@@ -251,6 +253,28 @@ public class PlayerController : MonoBehaviour
             Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
 
             AudioManager.Instance.PlaySe("ジャンプ");
+
+            //if (Rb.velocity.sqrMagnitude >= strongKickWaveThreshold * strongKickWaveThreshold)
+            //{
+            //    EffectContainer.Instance.PlayEffect("キック(強)", collision.ClosestPoint(transform.position));
+            //}
+            //else
+            //{
+            //    EffectContainer.Instance.PlayEffect("キック(弱)", collision.ClosestPoint(transform.position));
+            //}
+
+            float sqrMag = Rb.velocity.sqrMagnitude;
+            Vector2 hitPoint = collision.ClosestPoint(Leg.position);
+            float angle = Vector2.SignedAngle(Vector2.up, Leg.position - (Vector3)hitPoint);
+
+            if (sqrMag >= hitEffectStrongThreshold * hitEffectStrongThreshold)
+            {
+                EffectContainer.Instance.PlayEffect("衝突(強)", hitPoint, Quaternion.AngleAxis(angle, Vector3.back));
+            }
+            else
+            {
+                EffectContainer.Instance.PlayEffect("衝突(中)", hitPoint, Quaternion.AngleAxis(angle, Vector3.back));
+            }
         }
     }
 

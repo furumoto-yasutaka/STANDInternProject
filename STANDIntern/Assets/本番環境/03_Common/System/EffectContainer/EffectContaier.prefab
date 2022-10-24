@@ -53,5 +53,11 @@ MonoBehaviour:
     Prefab: {fileID: 8041969353541414173, guid: ec63c304292b6b145b437a332e4496cc, type: 3}
   - Name: "\u885D\u7A81(\u5F37)"
     Prefab: {fileID: 7110833656190313772, guid: 286eb745d3878b149a477b2c0b0f3a95, type: 3}
-  - Name: "\u30EA\u30B9\u30DD\u30FC\u30F3"
+  - Name: "\u30B9\u30DD\u30FC\u30F3"
     Prefab: {fileID: 7919672834593082144, guid: 876fddcb0dc2aa640b68ea5facb2d245, type: 3}
+  - Name: "\u30EA\u30B9\u30DD\u30FC\u30F3"
+    Prefab: {fileID: 7919672834593082144, guid: d3a37233ca517e44195ef8c669ac95b0, type: 3}
+  - Name: "\u30AD\u30C3\u30AF(\u5F31)"
+    Prefab: {fileID: 2989150372712091890, guid: 2b2c4bf1267b64345b1b7c3a207ee8fe, type: 3}
+  - Name: "\u30AD\u30C3\u30AF(\u5F37)"
+    Prefab: {fileID: 2989150372712091890, guid: e1239d0632da66d43909a75cb110e719, type: 3}
