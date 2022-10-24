@@ -52,15 +52,6 @@ public class StageSelectCourceGenerator : MonoBehaviour
 
     public void ClearCource()
     {
-        foreach (Transform child in pointsParent)
-        {
-            DestroyImmediate(child.gameObject);
-        }
-        foreach (Transform child in linesParent)
-        {
-            DestroyImmediate(child.gameObject);
-        }
-
         for (int i = pointsParent.childCount - 1; i >= 0; i--)
         {
             DestroyImmediate(pointsParent.GetChild(i).gameObject);

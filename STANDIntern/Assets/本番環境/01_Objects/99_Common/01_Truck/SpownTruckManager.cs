@@ -56,6 +56,8 @@ public class SpownTruckManager : MonoBehaviour
     private float jumpTime;
     [SerializeField]
     private BattleFirstPositionDataBase firstPositionDataBase;
+    [SerializeField]
+    private float invincibleTime = 2.0f;
     
     private Vector3 firstPos;
     private Vector3 targetPos;
@@ -175,7 +177,7 @@ public class SpownTruckManager : MonoBehaviour
     {
         Transform trans = players.GetChild(info.revivalPlayerIndex);
         trans.GetComponent<PlayerController>().Revival();
-        trans.GetComponent<PlayerInvincible>().SetInvincible();
+        trans.GetComponent<PlayerInvincible>().SetInvincible(invincibleTime);
         players.GetChild(info.revivalPlayerIndex).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = defaultSortLayer;
     }
 
@@ -185,7 +187,7 @@ public class SpownTruckManager : MonoBehaviour
         {
             Transform trans = players.GetChild(i);
             trans.GetComponent<PlayerController>().Revival();
-            trans.GetComponent<PlayerInvincible>().SetInvincible();
+            trans.GetComponent<PlayerInvincible>().SetInvincible(invincibleTime);
             players.GetChild(i).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = defaultSortLayer;
         }
     }

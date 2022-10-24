@@ -179,7 +179,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 641b76421e0de5e49bf4f8002b218059, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -199,9 +199,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -5
+  m_SortingOrder: -20
   m_Sprite: {fileID: 21300000, guid: e06a6a03e8ee8e54386cc9b1df814dca, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.56295794, g: 1, b: 0.5235849, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -265,7 +265,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 4360611ab70d13445a33273e5b4c940b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -285,9 +285,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8dfb51df033f78b478933e0e1ceb8fc0, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_SortingOrder: -10
+  m_Sprite: {fileID: 21300000, guid: a3c0036988f4a55459fa5d1b7ab29305, type: 3}
+  m_Color: {r: 0.56295794, g: 1, b: 0.5235849, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 8168955520458139108}
   - component: {fileID: 8264265339859834505}
   - component: {fileID: 8264265339859834506}
+  - component: {fileID: 8264265339859834509}
   m_Layer: 0
   m_Name: BattlePlayer3
   m_TagString: Player
@@ -383,12 +384,12 @@ MonoBehaviour:
   KickTime: 0.1
   KickReturnTime: 0.15
   KickPower: 3.7
+  KickPlayerPower: 2
   KickMagX: 1.3
   KickAngularPower: 100
   KickedAddPowerMin: 0.85
   KickedAddPowerMax: 1.7
   KickState: 0
-  invincibleTime: 5
 --- !u!114 &8168955520458139108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,5 +450,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2994fd98730889478880c52915b1bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invincibleTime: 5
+  bodyMaterial: {fileID: 2100000, guid: 4360611ab70d13445a33273e5b4c940b, type: 2}
+  legMaterial: {fileID: 2100000, guid: 641b76421e0de5e49bf4f8002b218059, type: 2}
+--- !u!114 &8264265339859834509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7068616788684051049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad76fbc604e77cd4fba0aaa3c7c3b6c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

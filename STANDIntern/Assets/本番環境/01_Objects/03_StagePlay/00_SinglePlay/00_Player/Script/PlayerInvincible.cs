@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerInvincible : MonoBehaviour
 {
-    [SerializeField]
-    private float invincibleTime = 5.0f;
     private float invincibleTimeCount = 0.0f;
     private bool isInvincible = false;
 
@@ -62,7 +60,7 @@ public class PlayerInvincible : MonoBehaviour
         }
     }
 
-    public void SetInvincible()
+    public void SetInvincible(float invincibleTime)
     {
         isInvincible = true;
         invincibleTimeCount = invincibleTime;

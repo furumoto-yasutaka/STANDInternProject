@@ -27,10 +27,10 @@ public class PlayerLegCollision : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        playerController.KickAddForce();
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player") &&
             !playerList.Contains(collision))
         {
+            playerController.KickPlayerAddForce();
             battleSumoManager.RequestDeleteMark(playerController.transform.GetComponent<PlayerId>().Id);
 
             playerList.Add(collision);
@@ -43,6 +43,10 @@ public class PlayerLegCollision : MonoBehaviour
                     collision.transform.parent.parent.GetComponent<PlayerId>().Id,
                     playerController.transform.GetComponent<PlayerId>().Id);
             }
+        }
+        else
+        {
+            playerController.KickPlatformAddForce();
         }
     }
 }

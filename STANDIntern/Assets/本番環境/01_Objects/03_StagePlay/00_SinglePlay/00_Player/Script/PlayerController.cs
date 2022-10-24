@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour
     private float KickReturnTime = 0.6f;
     [SerializeField, RenameField("キック力")]
     private float KickPower = 1.0f;
+    [SerializeField, RenameField("敵プレイヤーキック時の自分への反動")]
+    private float KickPlayerPower = 2.0f;
     [SerializeField, RenameField("キック倍率(X)")]
     private float KickMagX = 1.3f;
     [SerializeField, RenameField("キック時の回転速度")]
@@ -128,7 +130,7 @@ public class PlayerController : MonoBehaviour
         Vector2 move;
         Vector2 normal;
 
-        if (prekickAction.triggered)
+        if (prekickAction.IsPressed())
         {
             move = kickmouseAction.ReadValue<Vector2>();
             normal = move.normalized;
@@ -141,7 +143,9 @@ public class PlayerController : MonoBehaviour
                 kickDirection = normal;
 
                 Leg.position = Body.position;
-                Leg.rotation = Quaternion.FromToRotation(Vector3.down, kickDirection);
+                //Leg.rotation = Quaternion.LookRotation(kickDirection, Vector3.back);
+                //Leg.rotation = Quaternion.FromToRotation(Vector3.down, kickDirection);
+                Leg.rotation = Quaternion.identity * Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.down, kickDirection), Vector3.forward);
                 Leg.gameObject.SetActive(true);
             }
         }
@@ -164,7 +168,9 @@ public class PlayerController : MonoBehaviour
             kickDirection = normal;
 
             Leg.position = Body.position;
-            Leg.rotation = Quaternion.FromToRotation(Vector3.down, kickDirection);
+            //Leg.rotation = Quaternion.LookRotation(kickDirection, Vector3.back);
+            //Leg.rotation = Quaternion.FromToRotation(Vector3.down, kickDirection);
+            Leg.rotation = Quaternion.identity * Quaternion.AngleAxis(Vector2.Angle(Vector2.down, kickDirection) ,Vector3.forward);
             Leg.gameObject.SetActive(true);
         }
     }
@@ -205,13 +211,47 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void KickAddForce()
+    public void KickPlatformAddForce()
     {
         if (!IsJump)
         {
             IsJump = true;
             Vector2 resultVel;
             Vector2 jumpVel = -kickDirection * KickPower;
+            jumpVel.x *= KickMagX;
+
+            if ((Rb.velocity.x > 0 && jumpVel.x > 0) || (Rb.velocity.x < 0 && jumpVel.x < 0))
+            {
+                resultVel.x = Rb.velocity.x + jumpVel.x;
+            }
+            else
+            {
+                resultVel.x = jumpVel.x - Rb.velocity.x;
+            }
+
+            if ((Rb.velocity.y > 0 && jumpVel.y > 0) || (Rb.velocity.y < 0 && jumpVel.y < 0))
+            {
+                resultVel.y = jumpVel.y + Rb.velocity.y;
+            }
+            else
+            {
+                resultVel.y = jumpVel.y - Rb.velocity.y * 0.25f;
+            }
+
+            Rb.velocity = resultVel;
+            Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
+
+            AudioManager.Instance.PlaySe("ジャンプ");
+        }
+    }
+
+    public void KickPlayerAddForce()
+    {
+        if (!IsJump)
+        {
+            IsJump = true;
+            Vector2 resultVel;
+            Vector2 jumpVel = -kickDirection * KickPlayerPower;
             jumpVel.x *= KickMagX;
 
             if ((Rb.velocity.x > 0 && jumpVel.x > 0) || (Rb.velocity.x < 0 && jumpVel.x < 0))
