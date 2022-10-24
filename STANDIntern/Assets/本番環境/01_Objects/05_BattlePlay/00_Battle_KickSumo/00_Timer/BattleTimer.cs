@@ -12,7 +12,7 @@ public class BattleTimer : MonoBehaviour
     [SerializeField]
     private float timeupTimeScale = 0.1f;
 
-    private bool isTimeup = false;
+    private bool isActive = false;
     private TextMeshProUGUI minAndSecText;
     private TextMeshProUGUI msecText;
     private BattleCountDown countDownStaging;
@@ -33,7 +33,7 @@ public class BattleTimer : MonoBehaviour
 
     void Update()
     {
-        if (isTimeup) { return; }
+        if (!isActive) { return; }
 
         int min = (int)timeCountSec / 60;
         int sec = (int)timeCountSec - min * 60;
@@ -55,9 +55,14 @@ public class BattleTimer : MonoBehaviour
 
         if (timeCountSec <= 0.0f)
         {
-            isTimeup = true;
+            isActive = false;
             timeCountSec = 0.0f;
             Time.timeScale = timeupTimeScale;
         }
+    }
+
+    public void StartTimer()
+    {
+        isActive = true;
     }
 }
