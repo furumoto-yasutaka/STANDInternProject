@@ -45,13 +45,13 @@ Material:
     - _EnableExternalAlpha: 0
     - _WindInfluence: 2.14
     - _WindScale: 0.074
-    - _WindSpeed: 5.27
-    - _WindStrength: 1
+    - _WindSpeed: 5.54
+    - _WindStrength: 0.776
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _FogColor: {r: 0.33490568, g: 1, b: 0.86526376, a: 0.6117647}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
-    - _WindDirection: {r: 0.09, g: 0.41, b: 0, a: 0}
+    - _WindDirection: {r: 0.6, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []

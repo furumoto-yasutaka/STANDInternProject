@@ -35,9 +35,4 @@ public class BigButtonBackScroll : MonoBehaviour
     {
         isScroll = false;
     }
-
-    private void OnApplicationQuit()
-    {
-        material.SetTextureOffset("_MainTex", firstOffset);
-    }
 }
