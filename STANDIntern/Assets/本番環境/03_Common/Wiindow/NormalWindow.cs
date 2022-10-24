@@ -17,20 +17,17 @@ public class NormalWindow : InputGroupParent
     public virtual void Open()
     {
         gameObject.SetActive(true);
-        animator.SetBool("Open", true);
-        animator.SetBool("Close", false);
+        animator.SetBool("IsClose", false);
     }
 
     public virtual void Close()
     {
-        animator.SetBool("Open", false);
-        animator.SetBool("Close", true);
+        animator.SetBool("IsClose", true);
     }
 
     public virtual void CloseComplete()
     {
         gameObject.SetActive(false);
-        animator.SetBool("Close", false);
 
         if (closeCompleteCallBack != null)
         {

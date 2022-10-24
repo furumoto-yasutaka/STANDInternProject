@@ -98,12 +98,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstTruckPrefab: {fileID: 8295681184220794461, guid: bef0966e68149d34382adfbb465e1e1c, type: 3}
-  firstSpownSortLayer: 2
+  firstSpownSortLayer: 13
   revivalTruckPrefab: {fileID: 8295681184220794461, guid: 081f026026dfa2544a61f0c5ae162946, type: 3}
-  revivalSpownSortLayer: -7
+  revivalSpownSortLayer: -27
   moveSpeed: 8
   players: {fileID: 0}
-  defaultSortLayer: 0
+  defaultSortLayer: -10
   jumpTime: 1
   firstPositionDataBase: {fileID: 11400000, guid: 8ec4e2025cd41a54380d56d55f955ec2, type: 2}
 --- !u!1 &8854226386851978713

@@ -54,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 5085687b0a6a972478b2f11b82e859b0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -74,9 +74,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a3c0036988f4a55459fa5d1b7ab29305, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_SortingOrder: -10
+  m_Sprite: {fileID: 21300000, guid: 192a544c0900e534ca8b3a2866f912ee, type: 3}
+  m_Color: {r: 1, g: 0.7028302, b: 0.7028302, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -166,7 +166,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: ebe1ae41092239f46a6b28dc26692ec8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -186,9 +186,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -5
+  m_SortingOrder: -20
   m_Sprite: {fileID: 21300000, guid: 83d33888a033f4f4196be1243cb7588c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.7028302, b: 0.7028302, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 8438224999950681094}
   - component: {fileID: 8264265338519575841}
   - component: {fileID: 8264265338519575842}
+  - component: {fileID: 8264265338519575845}
   m_Layer: 0
   m_Name: BattlePlayer2
   m_TagString: Player
@@ -383,6 +384,7 @@ MonoBehaviour:
   KickTime: 0.1
   KickReturnTime: 0.15
   KickPower: 3.7
+  KickPlayerPower: 2
   KickMagX: 1.3
   KickAngularPower: 100
   KickedAddPowerMin: 0.85
@@ -401,7 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 6699c2860faab994aa59450ec8bfcaea, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -412,7 +414,65 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cf387137-db63-4337-a01d-5df0af34e20b
+    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7a2ac412-f5da-4cc4-a357-a296b5470532
+    m_ActionName: Player/PreKick[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ec66ffce-93ea-49ee-93b3-be84966127f6
+    m_ActionName: Player/Kick_Pad
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bbb25c06-d24d-4b84-aae7-21fb84bead04
+    m_ActionName: Player/Kick_Mouse[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 62e8f9af-4935-4581-b275-3b3470961e7e
+    m_ActionName: UI/Navigate[/HORI CO.,LTD. HORIPAD 4 /stick/up,/HORI CO.,LTD. HORIPAD
+      4 /stick/down,/HORI CO.,LTD. HORIPAD 4 /stick/left,/HORI CO.,LTD. HORIPAD 4
+      /stick/right,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a6551055-70aa-4250-86cb-f4898d4d3f87
+    m_ActionName: UI/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 84eb5b7d-7d6b-4213-8c77-7b511567eb2a
+    m_ActionName: UI/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 02c4f13d-65a8-407a-a11e-e1b21cd023af
+    m_ActionName: UI/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f6cd180b-1cd2-4441-96ff-e53abd8f7eed
+    m_ActionName: UI/Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7df591d7-53df-461e-b83f-0e0475f0038b
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 520cb1b2-75cd-4ee9-a0ed-fe078c3fd267
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 304ea590-3f97-4e00-8961-38c7ab47cac2
+    m_ActionName: UI/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 58a6dc27-7180-42ca-b001-a3649e766764
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a5fac0c0-b2e4-4bda-90bd-657c0dd11f2a
+    m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -426,7 +486,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7376800160084276107}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
@@ -451,5 +511,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invincibleTime: 5
-  bodyMaterial: {fileID: 0}
-  legMaterial: {fileID: 0}
+  bodyMaterial: {fileID: 2100000, guid: 5085687b0a6a972478b2f11b82e859b0, type: 2}
+  legMaterial: {fileID: 2100000, guid: ebe1ae41092239f46a6b28dc26692ec8, type: 2}
+--- !u!114 &8264265338519575845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7376800160084276107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad76fbc604e77cd4fba0aaa3c7c3b6c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
