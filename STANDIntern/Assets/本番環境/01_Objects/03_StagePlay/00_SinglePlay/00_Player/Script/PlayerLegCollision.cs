@@ -8,6 +8,7 @@ public class PlayerLegCollision : MonoBehaviour
     private PlayerController playerController;
     private List<Collider2D> playerList = new List<Collider2D>();
     private BattleSumoManager battleSumoManager;
+    private float strongKickWaveThreshold = 15.0f;
 
     private void Start()
     {
@@ -43,10 +44,19 @@ public class PlayerLegCollision : MonoBehaviour
                     collision.transform.parent.parent.GetComponent<PlayerId>().Id,
                     playerController.transform.GetComponent<PlayerId>().Id);
             }
+
+            if (collision.transform.parent.GetComponent<Rigidbody2D>().velocity.sqrMagnitude >= strongKickWaveThreshold * strongKickWaveThreshold)
+            {
+                EffectContainer.Instance.PlayEffect("キック(強)", collision.ClosestPoint(transform.position));
+            }
+            else
+            {
+                EffectContainer.Instance.PlayEffect("キック(弱)", collision.ClosestPoint(transform.position));
+            }
         }
         else
         {
-            playerController.KickPlatformAddForce();
+            playerController.KickPlatformAddForce(collision);
             playerController.EndBlow();
         }
     }
