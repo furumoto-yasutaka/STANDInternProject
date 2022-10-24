@@ -97,7 +97,14 @@ public class PlayerController : MonoBehaviour
         kickmouseAction = map["Kick_Mouse"];
         kickpadAction = map["Kick_Pad"];
 
-        Death();
+        isDeath = true;
+        KickState = KickStateId.None;
+        IsJump = false;
+        Leg.gameObject.SetActive(false);
+
+        Rb.bodyType = RigidbodyType2D.Kinematic;
+        Rb.velocity = Vector2.zero;
+        transform.GetChild(0).GetChild(0).GetComponent<CircleCollider2D>().enabled = false;
     }
 
     void Update()
@@ -365,6 +372,10 @@ public class PlayerController : MonoBehaviour
         KickState = KickStateId.None;
         IsJump = false;
         Leg.gameObject.SetActive(false);
+
+        Vector2 normal = -new Vector2(Body.position.x, Body.position.y).normalized;
+        float angle = Vector2.SignedAngle(Vector2.up, normal);
+        EffectContainer.Instance.PlayEffect("Ž€–S", Body.position + (Vector3)normal * 2.0f, Quaternion.AngleAxis(angle, Vector3.forward));
 
         Rb.bodyType = RigidbodyType2D.Kinematic;
         Rb.velocity = Vector2.zero;
