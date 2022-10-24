@@ -47,6 +47,7 @@ public class PlayerLegCollision : MonoBehaviour
         else
         {
             playerController.KickPlatformAddForce();
+            playerController.EndBlow();
         }
     }
 }

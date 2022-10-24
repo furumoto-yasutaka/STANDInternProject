@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D Rb;
     private Transform Body;
     private Transform Leg;
+    private ParticleSystem BlowEffect;
 
     [SerializeField, RenameField("プレイヤーの移動速度")]
     private float MoveSpeed = 2.0f;
@@ -67,6 +68,11 @@ public class PlayerController : MonoBehaviour
     private InputAction kickpadAction;
 
     private bool isDeath = false;
+    private bool isBlow = false;
+    [SerializeField]
+    private float startBlowThreshold = 10.0f;
+    [SerializeField]
+    private float endBlowThreshold = 8.0f;
 
     public bool IsDeath { get { return isDeath; } }
 
@@ -74,6 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         Body = transform.GetChild(0);
         Leg = transform.GetChild(1);
+        BlowEffect = transform.GetChild(0).GetChild(1).GetComponent<ParticleSystem>();
 
         Leg.gameObject.SetActive(false);
 
@@ -123,6 +130,8 @@ public class PlayerController : MonoBehaviour
         }
 
         KickAction[(int)KickState]();
+
+        CheckBlowEnd();
     }
 
     void Kick_NoneAction()
@@ -322,6 +331,8 @@ public class PlayerController : MonoBehaviour
         Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
 
         AudioManager.Instance.PlaySe("ジャンプ");
+
+        CheckBlowStart();
     }
 
     public void Death()
@@ -334,6 +345,9 @@ public class PlayerController : MonoBehaviour
         Rb.bodyType = RigidbodyType2D.Kinematic;
         Rb.velocity = Vector2.zero;
         transform.GetChild(0).GetChild(0).GetComponent<CircleCollider2D>().enabled = false;
+
+        isBlow = false;
+        BlowEffect.Stop();
     }
 
     public void Revival()
@@ -341,5 +355,36 @@ public class PlayerController : MonoBehaviour
         isDeath = false;
         Rb.bodyType = RigidbodyType2D.Dynamic;
         transform.GetChild(0).GetChild(0).GetComponent<CircleCollider2D>().enabled = true;
+    }
+
+    public void CheckBlowStart()
+    {
+        if (Rb.velocity.sqrMagnitude >= startBlowThreshold * startBlowThreshold)
+        {
+            StartBlow();
+        }
+    }
+
+    public void CheckBlowEnd()
+    {
+        if (isBlow)
+        {
+            if (Rb.velocity.sqrMagnitude <= endBlowThreshold * endBlowThreshold)
+            {
+                EndBlow();
+            }
+        }
+    }
+
+    public void EndBlow()
+    {
+        isBlow = false;
+        BlowEffect.Stop();
+    }
+
+    public void StartBlow()
+    {
+        isBlow = true;
+        BlowEffect.Play();
     }
 }

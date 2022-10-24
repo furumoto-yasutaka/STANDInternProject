@@ -221,8 +221,16 @@ public class SpownTruckManager : MonoBehaviour
         int playerNumId = players.childCount - 2;
         FirstPosition jumpTransInfo = firstPositionDataBase.BattleStageInfos[stageId].FirstPositions[playerNumId];
 
-        if (info.JumpParam.Count > 1)   { SetAllJumpParam(info, stageId, jumpTransInfo); }
-        else                            { SetJumpParam(info, stageId, jumpTransInfo); }
+        if (info.JumpParam.Count > 1)
+        {
+            SetAllJumpParam(info, stageId, jumpTransInfo);
+            EffectContainer.Instance.PlayEffect("スポーン", info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
+        }
+        else
+        {
+            SetJumpParam(info, stageId, jumpTransInfo);
+            EffectContainer.Instance.PlayEffect("リスポーン", info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
+        }
     }
 
     private void SetJumpParam(TruckInfo info, int stageId, FirstPosition jumpTransInfo)

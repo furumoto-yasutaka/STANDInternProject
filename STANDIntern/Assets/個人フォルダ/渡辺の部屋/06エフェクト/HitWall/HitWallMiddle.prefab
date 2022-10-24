@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8041969352841050309}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.00288208, z: 0.09379768}
+  m_LocalPosition: {x: 0, y: 0.00288208, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43,12 +43,12 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 2
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 2
   cullingMode: 1
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -4803,7 +4803,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8041969353541414173}
   m_LocalRotation: {x: -0.7594983, y: -0, z: -0, w: 0.6505094}
-  m_LocalPosition: {x: 0, y: -0.002882819, z: -0.09380829}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4820,14 +4820,14 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8041969353541414173}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 2
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 2
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -9624,7 +9624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7552158134983921819, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.09380768
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7552158134983921819, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9653,6 +9653,14 @@ PrefabInstance:
     - target: {fileID: 7552158134983921819, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552158134983921820, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552158134983921820, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
+      propertyPath: stopAction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7552158134983921820, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: ShapeModule.type
@@ -9760,7 +9768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7552158134983921821, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 7552158134983921821, guid: 3cac2c7ade9abdc42a665301ae53c62f, type: 3}
       propertyPath: m_Materials.Array.data[0]
