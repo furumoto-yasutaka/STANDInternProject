@@ -2023,11 +2023,14 @@ MonoBehaviour:
   KickTime: 0.1
   KickReturnTime: 0.15
   KickPower: 3.7
+  KickPlayerPower: 2
   KickMagX: 1.3
   KickAngularPower: 100
   KickedAddPowerMin: 0.85
   KickedAddPowerMax: 1.7
   KickState: 0
+  startBlowThreshold: 10
+  endBlowThreshold: 8
 --- !u!50 &1418322205
 Rigidbody2D:
   serializedVersion: 4
@@ -2516,7 +2519,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4608399540614261972, guid: 6530f81823112af489fd08bd488b2a7d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -19.254004
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: 4608399540614261972, guid: 6530f81823112af489fd08bd488b2a7d, type: 3}
       propertyPath: m_LocalRotation.w
