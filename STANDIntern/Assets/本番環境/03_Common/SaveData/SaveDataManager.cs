@@ -204,4 +204,10 @@ public class SaveDataManager : SingletonMonoBehaviour<SaveDataManager>
             return path.Length;
         }
     }
+
+    public void Delete()
+    {
+        InitInfos();
+        Save();
+    }
 }

@@ -16,6 +16,8 @@ public class BattleTimer : MonoBehaviour
     private TextMeshProUGUI minAndSecText;
     private TextMeshProUGUI msecText;
     private BattleCountDown countDownStaging;
+    [SerializeField]
+    private GameObject timeUpObj;
 
     void Start()
     {
@@ -29,18 +31,15 @@ public class BattleTimer : MonoBehaviour
         }
 
         timeCountSec = timeMin * 60;
+
+        SetTimeText();
     }
 
     void Update()
     {
         if (!isActive) { return; }
 
-        int min = (int)timeCountSec / 60;
-        int sec = (int)timeCountSec - min * 60;
-        int msec = (int)((timeCountSec - (int)timeCountSec) * 100);
-
-        minAndSecText.text = min + ":" + sec.ToString("00");
-        msecText.text = "." + msec.ToString("00");
+        SetTimeText();
 
         timeCountSec -= Time.deltaTime;
 
@@ -58,7 +57,18 @@ public class BattleTimer : MonoBehaviour
             isActive = false;
             timeCountSec = 0.0f;
             Time.timeScale = timeupTimeScale;
+            timeUpObj.SetActive(true);
         }
+    }
+
+    private void SetTimeText()
+    {
+        int min = (int)timeCountSec / 60;
+        int sec = (int)timeCountSec - min * 60;
+        int msec = (int)((timeCountSec - (int)timeCountSec) * 100);
+
+        minAndSecText.text = min + ":" + sec.ToString("00");
+        msecText.text = "." + msec.ToString("00");
     }
 
     public void StartTimer()

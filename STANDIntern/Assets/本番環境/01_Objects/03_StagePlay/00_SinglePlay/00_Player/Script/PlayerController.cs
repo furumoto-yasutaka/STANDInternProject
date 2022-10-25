@@ -261,15 +261,6 @@ public class PlayerController : MonoBehaviour
 
             AudioManager.Instance.PlaySe("ジャンプ");
 
-            //if (Rb.velocity.sqrMagnitude >= strongKickWaveThreshold * strongKickWaveThreshold)
-            //{
-            //    EffectContainer.Instance.PlayEffect("キック(強)", collision.ClosestPoint(transform.position));
-            //}
-            //else
-            //{
-            //    EffectContainer.Instance.PlayEffect("キック(弱)", collision.ClosestPoint(transform.position));
-            //}
-
             float sqrMag = Rb.velocity.sqrMagnitude;
             Vector2 hitPoint = collision.ClosestPoint(Leg.position);
             float angle = Vector2.SignedAngle(Vector2.up, Leg.position - (Vector3)hitPoint);
@@ -373,7 +364,8 @@ public class PlayerController : MonoBehaviour
         IsJump = false;
         Leg.gameObject.SetActive(false);
 
-        Vector2 normal = -new Vector2(Body.position.x, Body.position.y).normalized;
+        //Vector2 normal = -new Vector2(Body.position.x, Body.position.y).normalized;
+        Vector2 normal = -new Vector2(Rb.velocity.x, Rb.velocity.y).normalized;
         float angle = Vector2.SignedAngle(Vector2.up, normal);
         EffectContainer.Instance.PlayEffect("死亡", Body.position + (Vector3)normal * 2.0f, Quaternion.AngleAxis(angle, Vector3.forward));
 

@@ -21,25 +21,25 @@ EditorBuildSettings:
     path: "Assets/\u500B\u4EBA\u30D5\u30A9\u30EB\u30C0/\u53E4\u672C\u306E\u90E8\u5C4B/TestScene/TestGameScene.unity"
     guid: 0f112ff96067d4848b5c764cd35f8179
   - enabled: 1
-    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/ControllerConnect_CoopPlay.unity"
+    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Trash/ControllerConnect_CoopPlay.unity"
     guid: e57c473282105da42b286f3ec4b3d8b6
   - enabled: 1
     path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/ControllerConnect_BattlePlay.unity"
     guid: 8d52bb25c0ef51c4b9fd4f550f2ee875
   - enabled: 1
-    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/BattleModeSelect.unity"
+    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Trash/BattleModeSelect.unity"
     guid: dca180996fcead9419a0fa689ee3b43f
   - enabled: 1
-    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Battle_KickEscape.unity"
+    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Trash/Battle_KickEscape.unity"
     guid: 82917c2b8e65bf844811feeda3d00a6c
   - enabled: 1
-    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Battle_KickRace.unity"
+    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Trash/Battle_KickRace.unity"
     guid: 3a690bb2fc2514d41b2f1911d1a72576
   - enabled: 1
     path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Battle_KickSumo.unity"
     guid: cd090e07e143b4e4690b81c0d9a556ee
   - enabled: 1
-    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/StageSelect_CoopPlay.unity"
+    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Trash/StageSelect_CoopPlay.unity"
     guid: ca895da8791590d498cb08f7a08f5fee
   - enabled: 1
     path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Stage_CoopPlay/Stage1_CoopPlay.unity"

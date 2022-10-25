@@ -495,6 +495,9 @@ MonoBehaviour:
   OnSelectCallBack:
     m_PersistentCalls:
       m_Calls: []
+  OnUnselectCallBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6751234627374996399
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,6 +857,7 @@ GameObject:
   - component: {fileID: 6751234627901271812}
   - component: {fileID: 1899988915921272031}
   - component: {fileID: 6751234627901271290}
+  - component: {fileID: 8123352326212202223}
   m_Layer: 5
   m_Name: Yes
   m_TagString: Untagged
@@ -967,6 +971,26 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnSelectCallBack:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnselectCallBack:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8123352326212202223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6751234627901271288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7522f42aa5eac304bb7e7d1b3495a75f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition: {fileID: 4336021333824334025, guid: ed520ba50a91c4d4c8c07253943825bf, type: 3}
+  scene: 1
 --- !u!1 &6751234627988257331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,6 +1141,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnSelectCallBack:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnselectCallBack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6751234628293888455
 GameObject:
   m_ObjectHideFlags: 0
