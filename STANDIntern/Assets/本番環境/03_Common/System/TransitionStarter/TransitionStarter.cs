@@ -13,13 +13,21 @@ public class TransitionStarter : MonoBehaviour
 {
     [SerializeField, RenameField("使用するトランジションプレハブ")]
     private GameObject transition;
+    [SerializeField]
+    private bool isCanvasParent = true;
 
     void Start()
     {
-        // 生成して親子関係を設定する
-        GameObject parent = GameObject.Find("Canvas");
-        Instantiate(transition, parent.transform);
-
+        if (isCanvasParent)
+        {
+            // 生成して親子関係を設定する
+            GameObject parent = GameObject.Find("Canvas");
+            Instantiate(transition, parent.transform);
+        }
+        else
+        {
+            Instantiate(transition);
+        }
         // この後は不要なので削除する
         Destroy(gameObject);
     }
