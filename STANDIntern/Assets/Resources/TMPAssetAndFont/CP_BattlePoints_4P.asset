@@ -57,11 +57,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: CP_BattlePoints
+  m_Name: CP_BattlePoints_4P
   m_EditorClassIdentifier: 
-  hashCode: 832294265
+  hashCode: 6802338
   material: {fileID: 1474918019091703350}
-  materialHashCode: 473465657
+  materialHashCode: 887608386
   m_Version: 1.1.0
   m_SourceFontFileGUID: bb40228db9a3f8544a8ff2718ee6c8d6
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: bb40228db9a3f8544a8ff2718ee6c8d6, type: 3}
@@ -283,6 +283,20 @@ MonoBehaviour:
       m_Y: 10
       m_Width: 20
       m_Height: 58
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 34
+    m_Metrics:
+      m_Width: 66.453125
+      m_Height: 75.9375
+      m_HorizontalBearingX: 7.03125
+      m_HorizontalBearingY: 70.3125
+      m_HorizontalAdvance: 80.515625
+    m_GlyphRect:
+      m_X: 465
+      m_Y: 695
+      m_Width: 67
+      m_Height: 77
     m_Scale: 1
     m_AtlasIndex: 0
   - m_Index: 38
@@ -1307,20 +1321,6 @@ MonoBehaviour:
       m_Height: 58
     m_Scale: 1
     m_AtlasIndex: 0
-  - m_Index: 34
-    m_Metrics:
-      m_Width: 66.453125
-      m_Height: 75.9375
-      m_HorizontalBearingX: 7.03125
-      m_HorizontalBearingY: 70.3125
-      m_HorizontalAdvance: 80.515625
-    m_GlyphRect:
-      m_X: 465
-      m_Y: 695
-      m_Width: 67
-      m_Height: 77
-    m_Scale: 1
-    m_AtlasIndex: 0
   m_CharacterTable:
   - m_ElementType: 1
     m_Unicode: 32
@@ -1377,6 +1377,10 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 58
     m_GlyphIndex: 28
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 64
+    m_GlyphIndex: 34
     m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 68
@@ -1669,10 +1673,6 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 65306
     m_GlyphIndex: 14821
-    m_Scale: 1
-  - m_ElementType: 1
-    m_Unicode: 64
-    m_GlyphIndex: 34
     m_Scale: 1
   m_AtlasTextures:
   - {fileID: -3284320551711769388}
@@ -2460,7 +2460,7 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 0, g: 0.3220129, b: 1, a: 0.41960785}
+    - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0.1764706}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}

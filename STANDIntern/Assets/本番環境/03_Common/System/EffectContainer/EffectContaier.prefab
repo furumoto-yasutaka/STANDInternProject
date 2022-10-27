@@ -63,3 +63,5 @@ MonoBehaviour:
     Prefab: {fileID: 2989150372712091890, guid: e1239d0632da66d43909a75cb110e719, type: 3}
   - Name: "\u6B7B\u4EA1"
     Prefab: {fileID: 2617079916834946761, guid: 3f5cd8ccd6778f54480a8747a12c4b02, type: 3}
+  - Name: "\u30AD\u30EB"
+    Prefab: {fileID: 8754973879062318622, guid: 761baa700fd1438418078cc3d0b6a704, type: 3}

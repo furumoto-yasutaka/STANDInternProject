@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class BattleSumoManager : MonoBehaviour
@@ -20,6 +21,8 @@ public class BattleSumoManager : MonoBehaviour
     private float contactMarkThreshold = 1.0f;
     [SerializeField]
     private Transform debugTextParent;
+    [SerializeField]
+    private Transform pointTextParent;
 
     public static int JoinPlayerCount = 0;
     private PlayerController[] player;
@@ -31,6 +34,7 @@ public class BattleSumoManager : MonoBehaviour
     private GameObject[] markPlayer;
     private float[] markTimeCount;
     private TextMeshProUGUI[] debugText;
+    private TextMeshProUGUI[] pointText;
 
     public int StageId { get { return stageId; } }
 
@@ -67,6 +71,7 @@ public class BattleSumoManager : MonoBehaviour
         markPlayer = new GameObject[players.childCount];
         markTimeCount = new float[players.childCount];
         debugText = new TextMeshProUGUI[players.childCount];
+        pointText = new TextMeshProUGUI[players.childCount];
 
         for (int i = 0; i < players.childCount; i++)
         {
@@ -76,6 +81,10 @@ public class BattleSumoManager : MonoBehaviour
             markPlayer[i] = null;
             markTimeCount[i] = 0;
             debugText[i] = debugTextParent.GetChild(i).GetComponent<TextMeshProUGUI>();
+            pointText[i] = pointTextParent.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>();
+
+            pointTextParent.GetChild(i).GetChild(2).GetComponent<Image>().sprite =
+                player[i].GetComponent<PlayerFaceManager>().PlayerSkinDataBase.PlayerSkinInfos[IsPlayerSkinId[i]].Normal;
         }
     }
 
@@ -118,10 +127,31 @@ public class BattleSumoManager : MonoBehaviour
         {
             int markIndex = markPlayer[index].GetComponent<PlayerId>().Id;
             AddPoint(markIndex, 1);
+            EffectContainer.Instance.PlayEffect("ƒLƒ‹", player[markIndex].transform.GetChild(0));
             player[markIndex].GetComponent<PlayerFaceManager>().ChangeState((int)PlayerFaceManager.FaceState.Kill, 2.0f);
             debugText[markIndex].text = (markIndex + 1).ToString() + "P:" + points[markIndex];
+            pointText[markIndex].text = points[markIndex].ToString() + "p";
+            CheckPointTextColor(pointText[markIndex], points[markIndex]);
         }
         debugText[index].text = (index + 1).ToString() + "P:" + points[index];
+        pointText[index].text = points[index].ToString() + "p";
+        CheckPointTextColor(pointText[index], points[index]);
+    }
+
+    private void CheckPointTextColor(TextMeshProUGUI tmp, int point)
+    {
+        if (point > 0)
+        {
+            tmp.material.SetColor("_GlowColor", new Color(1.0f, 0.16f, 0.0f, 1.0f));
+        }
+        else if (point == 0)
+        {
+            tmp.material.SetColor("_GlowColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+        }
+        else
+        {
+            tmp.material.SetColor("_GlowColor", new Color(0.0f, 0.16f, 1.0f, 1.0f));
+        }
     }
 
     public void RequestKickMark(int toIndex, int fromIndex)

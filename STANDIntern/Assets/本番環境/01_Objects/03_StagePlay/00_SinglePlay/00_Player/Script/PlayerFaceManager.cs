@@ -30,6 +30,9 @@ public class PlayerFaceManager : MonoBehaviour
     private static float kickedFaceThreshold = 8.0f;
     private static float kickedStrongFaceThreshold = 15.0f;
 
+    public PlayerSkinInfo SkinInfo { get { return skinInfo; } }
+    public PlayerSkinDataBase PlayerSkinDataBase { get { return playerSkinDataBase; } }
+
     void Start()
     {
         for (int i = 0; i < timeLimit.Length; i++)

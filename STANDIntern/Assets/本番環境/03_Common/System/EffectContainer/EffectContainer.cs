@@ -22,6 +22,17 @@ public class EffectContainer : SingletonMonoBehaviour<EffectContainer>
     /// <param name="Name"> エフェクト名 </param>
     /// <param name="Pos"> エフェクトの生成座標 </param>
     /// <param name="Rot"> エフェクトの回転 </param>
+    public void PlayEffect(string Name, Transform Parent)
+    {
+        GameObject effectObj = Instantiate(EffectPrefab[Name], Parent);
+        effectObj.GetComponent<ParticleSystem>().Play(true);
+        effectObj.transform.parent = Parent;
+    }
+
+    /// <summary> エフェクトを再生 </summary>
+    /// <param name="Name"> エフェクト名 </param>
+    /// <param name="Pos"> エフェクトの生成座標 </param>
+    /// <param name="Rot"> エフェクトの回転 </param>
     public void PlayEffect(string Name, Vector3 Pos)
     {
         GameObject effectObj = Instantiate(EffectPrefab[Name], Pos, EffectPrefab[Name].transform.rotation);
