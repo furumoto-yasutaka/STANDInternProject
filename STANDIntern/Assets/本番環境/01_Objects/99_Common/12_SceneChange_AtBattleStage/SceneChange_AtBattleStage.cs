@@ -11,6 +11,9 @@ public class SceneChange_AtBattleStage : MonoBehaviour
     private string sceneName = "";
     private ButtonSelectManager buttonSelectManager;
 
+    [SerializeField]
+    private bool isCanvasParent = true;
+
     void Start()
     {
         buttonSelectManager = GetComponent<ButtonSelectManager>();
@@ -20,8 +23,15 @@ public class SceneChange_AtBattleStage : MonoBehaviour
     {
         TransitionCallBack.SetTransitionCallBack(ChangeSceneCallBack);
 
-        GameObject parent = GameObject.Find("Canvas");
-        GameObject t = Instantiate(transition, parent.transform);
+        if (!isCanvasParent)
+        {
+            GameObject parent = GameObject.Find("Canvas");
+            Instantiate(transition, parent.transform);
+        }
+        else
+        {
+            Instantiate(transition);
+        }
 
         GameObject obj = GameObject.FindGameObjectWithTag("InputLockManager");
         if (obj != null)
@@ -32,6 +42,6 @@ public class SceneChange_AtBattleStage : MonoBehaviour
 
     public void ChangeSceneCallBack()
     {
-        SceneManager.LoadScene(sceneName + buttonSelectManager.SelectIndex);
+        SceneManager.LoadScene(sceneName + (buttonSelectManager.SelectIndex + 1));
     }
 }

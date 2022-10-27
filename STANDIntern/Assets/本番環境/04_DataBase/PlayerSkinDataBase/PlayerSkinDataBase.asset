@@ -12,4 +12,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e4aa9faa2305f4680689edbbdd825f, type: 3}
   m_Name: PlayerSkinDataBase
   m_EditorClassIdentifier: 
-  PlayerSkinInfos: []
+  PlayerSkinInfos:
+  - Normal: {fileID: 21300000, guid: 91d2d2b3c8a6ca045abcb55c4adfeb44, type: 3}
+    Leg: {fileID: 21300000, guid: c11c741809000ef4596b7df282f1dda0, type: 3}
+    Kick: {fileID: 21300000, guid: 2d809873cd0f06641bf43d2b0909698c, type: 3}
+    Kicked: {fileID: 21300000, guid: df8168560c020424097e5f5954b1d35f, type: 3}
+    KickedStrong: {fileID: 21300000, guid: 9dba631085ea8df4eb9ffabcbc4872cd, type: 3}
+    Kill: {fileID: 21300000, guid: 67805fb9dab4010458342051bebbfcc1, type: 3}
+  - Normal: {fileID: 21300000, guid: b227b633a5b3fa446804f5343aaa08c6, type: 3}
+    Leg: {fileID: 21300000, guid: 712c2cf4fd3f594488e90d65f46f4ece, type: 3}
+    Kick: {fileID: 21300000, guid: da6039aa19cad594ab2b40e48f5ac1d4, type: 3}
+    Kicked: {fileID: 21300000, guid: d4ddfbf84800f25489c78e09e970b826, type: 3}
+    KickedStrong: {fileID: 21300000, guid: e2b69c684f2fd5d4a8e6ce82b3e0254a, type: 3}
+    Kill: {fileID: 21300000, guid: f1bf3e3b0a35fe742a8d5f51f873f365, type: 3}
+  - Normal: {fileID: 21300000, guid: cb2b4ed05f9ebfa4faa7289a938412f2, type: 3}
+    Leg: {fileID: 21300000, guid: 1da7d77c5bda82f4c822e5cb3599e1dd, type: 3}
+    Kick: {fileID: 21300000, guid: 78db938f9f5b8264f8c7414d0f26ec07, type: 3}
+    Kicked: {fileID: 21300000, guid: 52d43540d08329f43b907e8cb4a9b827, type: 3}
+    KickedStrong: {fileID: 21300000, guid: 97dbb1121e8f79542bf599289f0eada0, type: 3}
+    Kill: {fileID: 21300000, guid: 09c33c98ffbd47e46800121b231dcb96, type: 3}
+  - Normal: {fileID: 21300000, guid: fd59f28f788e0594b833e0f14c5cd12e, type: 3}
+    Leg: {fileID: 21300000, guid: b2942c46e0e8a6641b7abc933d6daf6d, type: 3}
+    Kick: {fileID: 21300000, guid: 544f7ad4503da7d45b7dc99b48062e9b, type: 3}
+    Kicked: {fileID: 21300000, guid: 4e4d658ef20a2274aa2c97af7f9e4eee, type: 3}
+    KickedStrong: {fileID: 21300000, guid: 4e4d658ef20a2274aa2c97af7f9e4eee, type: 3}
+    Kill: {fileID: 21300000, guid: c7f7d7bb7f24e1345a37e62bb5d4316d, type: 3}
+  - Normal: {fileID: 21300000, guid: 0cfb3b87248b4244faac3441da15acc0, type: 3}
+    Leg: {fileID: 21300000, guid: 1de3ff4d04b778f4598c97a5127b17b2, type: 3}
+    Kick: {fileID: 21300000, guid: c47341b588690024e9960eb360ecdc33, type: 3}
+    Kicked: {fileID: 21300000, guid: 3505d4e54bbc1584cbff36a6d399ad49, type: 3}
+    KickedStrong: {fileID: 21300000, guid: 50e6d2629a89fe044a29a659169e62bb, type: 3}
+    Kill: {fileID: 21300000, guid: e694c5565183e9f418b6843445e7292a, type: 3}
+  - Normal: {fileID: 21300000, guid: 55d9141fb5eb6844690b5a77d0583ac7, type: 3}
+    Leg: {fileID: 21300000, guid: 5da93730d709fc649a65bf2cc57785ea, type: 3}
+    Kick: {fileID: 21300000, guid: 310c6eb92efd6754db9bbd8a9ab9e2a3, type: 3}
+    Kicked: {fileID: 21300000, guid: f445d0d6b43e2cf4084c42b199ed1c87, type: 3}
+    KickedStrong: {fileID: 21300000, guid: 228734e2040d3dd44bbeba04c6c4a292, type: 3}
+    Kill: {fileID: 21300000, guid: b1a85de23aa50ae4ea66ce6f540fecd7, type: 3}
+  - Normal: {fileID: 21300000, guid: ee8ad198f00e74b47a3908cbd85140f5, type: 3}
+    Leg: {fileID: 21300000, guid: 19e69077ff51d9c45a56d61607c821b3, type: 3}
+    Kick: {fileID: 21300000, guid: e379cf233fe2f3a4888d89d7e9ea04d7, type: 3}
+    Kicked: {fileID: 21300000, guid: 98fd908c64ff7fa459cec511a41dffac, type: 3}
+    KickedStrong: {fileID: 21300000, guid: b2cbf0eb11858e241bafcdf1db53eb71, type: 3}
+    Kill: {fileID: 21300000, guid: 37400cb677607b540b503e5cfb30c7d1, type: 3}
+  - Normal: {fileID: 21300000, guid: cdd6deb450a43654489fd5011a336a1d, type: 3}
+    Leg: {fileID: 21300000, guid: b0a475c31fdd4c949a5dc899a4551527, type: 3}
+    Kick: {fileID: 21300000, guid: a75976d468a0bed4aa615b57a89667fa, type: 3}
+    Kicked: {fileID: 21300000, guid: 22160cd38e3531c4f862c1ea5dbb4dba, type: 3}
+    KickedStrong: {fileID: 21300000, guid: 22160cd38e3531c4f862c1ea5dbb4dba, type: 3}
+    Kill: {fileID: 21300000, guid: 958e285cbdf55f44fb766e5146bf9cc4, type: 3}
+  - Normal: {fileID: 21300000, guid: 55cb1b7c58cfda44397f3ea473953f12, type: 3}
+    Leg: {fileID: 21300000, guid: fcb19d2140e6b8b4bb43f68f50f6563b, type: 3}
+    Kick: {fileID: 21300000, guid: 553d0750e95cccf4cb7955c2d828e563, type: 3}
+    Kicked: {fileID: 21300000, guid: e2a5d121293579c4ba3d000455e4e4a1, type: 3}
+    KickedStrong: {fileID: 21300000, guid: 2231d754417d34c4690450c423dfad9d, type: 3}
+    Kill: {fileID: 21300000, guid: d11898288f102cf428f3f47188f8e873, type: 3}

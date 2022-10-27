@@ -161,6 +161,8 @@ public class SpownTruckManager : MonoBehaviour
     {
         for (int i = 0; i < players.childCount; i++)
         {
+            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
+
             players.GetChild(i).GetChild(0).position = info.truck.position - new Vector3(i * 0.666f, 0.0f, 0.0f);
         }
     }
@@ -184,14 +186,17 @@ public class SpownTruckManager : MonoBehaviour
     private void JumpMove(TruckInfo info, float rate)
     {
         players.GetChild(info.revivalPlayerIndex).GetChild(0).position = CalcLarpPoint(info.JumpParam[0].Start, info.JumpParam[0].Half, info.JumpParam[0].End, rate);
-
     }
 
     private void AllJumpMove(TruckInfo info, float rate)
     {
+        int playerCnt = 0;
         for (int i = 0; i < players.childCount; i++)
         {
-            players.GetChild(i).GetChild(0).position = CalcLarpPoint(info.JumpParam[i].Start, info.JumpParam[i].Half, info.JumpParam[i].End, rate);
+            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
+
+            players.GetChild(i).GetChild(0).position = CalcLarpPoint(info.JumpParam[playerCnt].Start, info.JumpParam[playerCnt].Half, info.JumpParam[playerCnt].End, rate);
+            playerCnt++;
         }
     }
 
@@ -207,6 +212,8 @@ public class SpownTruckManager : MonoBehaviour
     {
         for (int i = 0; i < players.childCount; i++)
         {
+            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
+
             Transform trans = players.GetChild(i);
             trans.GetComponent<PlayerController>().Revival();
             trans.GetComponent<PlayerInvincible>().SetInvincible(invincibleTime);
@@ -218,6 +225,7 @@ public class SpownTruckManager : MonoBehaviour
     {
         int managerId = (int)BattleSumoModeManagerList.BattleSumoModeManagerId.BattleSumoManager;
         int stageId = GameObject.FindGameObjectWithTag("Managers").transform.GetChild(managerId).GetComponent<BattleSumoManager>().StageId;
+
         int playerNumId = players.childCount - 2;
         FirstPosition jumpTransInfo = firstPositionDataBase.BattleStageInfos[stageId].FirstPositions[playerNumId];
 
@@ -246,12 +254,17 @@ public class SpownTruckManager : MonoBehaviour
     private void SetAllJumpParam(TruckInfo info, int stageId, FirstPosition jumpTransInfo)
     {
         info.IsJump = true;
+        int playerCnt = 0;
         for (int i = 0; i < players.childCount; i++)
         {
-            info.JumpParam[i].Start = players.GetChild(i).GetChild(0).position;
-            info.JumpParam[i].End = jumpTransInfo.Position[i];
-            info.JumpParam[i].Half = info.JumpParam[i].End - info.JumpParam[i].Start * 0.5f + info.JumpParam[i].Start;
-            info.JumpParam[i].Half.y = info.JumpParam[i].End.y + firstPositionDataBase.BattleStageInfos[stageId].JumpRerativeHeight;
+            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
+
+            info.JumpParam[playerCnt].Start = players.GetChild(i).GetChild(0).position;
+            info.JumpParam[playerCnt].End = jumpTransInfo.Position[playerCnt];
+            info.JumpParam[playerCnt].Half = info.JumpParam[playerCnt].End - info.JumpParam[playerCnt].Start * 0.5f + info.JumpParam[playerCnt].Start;
+            info.JumpParam[playerCnt].Half.y = info.JumpParam[playerCnt].End.y + firstPositionDataBase.BattleStageInfos[stageId].JumpRerativeHeight;
+
+            playerCnt++;
         }
         info.JumpTimeCount = jumpTime;
     }
@@ -272,6 +285,8 @@ public class SpownTruckManager : MonoBehaviour
             truckList.Add(new TruckInfo(truck, -1));
             for (int i = 0; i < players.childCount; i++)
             {
+                if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
+
                 truckList[truckList.Count - 1].JumpParam.Add(new JumpInfo());
                 players.GetChild(i).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = firstSpownSortLayer;
             }

@@ -5,6 +5,9 @@ using TMPro;
 
 public class BattleSumoManager : MonoBehaviour
 {
+    public static bool[] IsPlayerJoin;
+    public static int[] IsPlayerSkinId;
+
     [SerializeField]
     private int stageId;
     [SerializeField]
@@ -18,16 +21,47 @@ public class BattleSumoManager : MonoBehaviour
     [SerializeField]
     private Transform debugTextParent;
 
+    public static int JoinPlayerCount = 0;
+    private PlayerController[] player;
+    [SerializeField]
     private int[] points;
+    [SerializeField]
     private bool[] isMark;
+    [SerializeField]
     private GameObject[] markPlayer;
     private float[] markTimeCount;
     private TextMeshProUGUI[] debugText;
 
     public int StageId { get { return stageId; } }
 
-    void Start()
+    static BattleSumoManager()
     {
+        IsPlayerJoin = new bool[DeviceManager.deviceNum] { false, false, false, false };
+        IsPlayerSkinId = new int[DeviceManager.deviceNum] { 0, 0, 0, 0 };
+    }
+
+    public static void SetIsPlayerJoin(bool value, int index)
+    {
+        if (!IsPlayerJoin[index] && value)
+        {
+            JoinPlayerCount++;
+        }
+        else if (IsPlayerJoin[index] && !value)
+        {
+            JoinPlayerCount--;
+        }
+
+        IsPlayerJoin[index] = value;
+    }
+
+    public static void SetIsPlayerSkinId(int value, int index)
+    {
+        IsPlayerSkinId[index] = value;
+    }
+
+    void Awake()
+    {
+        player = new PlayerController[players.childCount];
         points = new int[players.childCount];
         isMark = new bool[players.childCount];
         markPlayer = new GameObject[players.childCount];
@@ -36,6 +70,7 @@ public class BattleSumoManager : MonoBehaviour
 
         for (int i = 0; i < players.childCount; i++)
         {
+            player[i] = players.GetChild(i).GetComponent<PlayerController>();
             points[i] = 0;
             isMark[i] = false;
             markPlayer[i] = null;
@@ -48,6 +83,8 @@ public class BattleSumoManager : MonoBehaviour
     {
         for (int i = 0; i < players.childCount; i++)
         {
+            if (!IsPlayerJoin[i]) { continue; }
+
             if (isMark[i])
             {
                 if (markTimeCount[i] <= 0.0f)
@@ -81,9 +118,10 @@ public class BattleSumoManager : MonoBehaviour
         {
             int markIndex = markPlayer[index].GetComponent<PlayerId>().Id;
             AddPoint(markIndex, 1);
-            debugText[markIndex].text = (markIndex + 1) + "P:" + points[markIndex];
+            player[markIndex].GetComponent<PlayerFaceManager>().ChangeState((int)PlayerFaceManager.FaceState.Kill, 2.0f);
+            debugText[markIndex].text = (markIndex + 1).ToString() + "P:" + points[markIndex];
         }
-        debugText[index].text = (index + 1) + "P:" + points[index];
+        debugText[index].text = (index + 1).ToString() + "P:" + points[index];
     }
 
     public void RequestKickMark(int toIndex, int fromIndex)

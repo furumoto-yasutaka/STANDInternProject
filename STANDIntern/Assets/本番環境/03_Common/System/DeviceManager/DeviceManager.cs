@@ -207,18 +207,18 @@ public class DeviceManager : SingletonMonoBehaviour<DeviceManager>
         return -1;
     }
 
-    private void OnGUI()
-    {
-        var style = GUI.skin.GetStyle("label");
-        style.fontSize = 40;
+    //private void OnGUI()
+    //{
+    //    var style = GUI.skin.GetStyle("label");
+    //    style.fontSize = 40;
 
-        GUILayout.BeginHorizontal(GUILayout.Width(1920));
-        GUILayout.BeginVertical(GUILayout.Width(1080));
-        foreach (int id in gameDeviceId)
-        {
-            GUILayout.Label(id.ToString());
-        }
-        GUILayout.EndVertical();
-        GUILayout.EndHorizontal();
-    }
+    //    GUILayout.BeginHorizontal(GUILayout.Width(1920));
+    //    GUILayout.BeginVertical(GUILayout.Width(1080));
+    //    foreach (int id in gameDeviceId)
+    //    {
+    //        GUILayout.Label(id.ToString());
+    //    }
+    //    GUILayout.EndVertical();
+    //    GUILayout.EndHorizontal();
+    //}
 }

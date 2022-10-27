@@ -37,22 +37,24 @@ public class RevivalManager : MonoBehaviour
 
     void Update()
     {
-        foreach (RevivalInfo info in playerList)
+        for (int i = 0; i < playerList.Count; i++)
         {
-            if (info.playerController.IsDeath && !info.isSpown)
+            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
+
+            if (playerList[i].playerController.IsDeath && !playerList[i].isSpown)
             {
-                if (info.revivalTimeCount <= 0.0f)
+                if (playerList[i].revivalTimeCount <= 0.0f)
                 {
                     // •œŠˆˆ—
-                    info.revivalTimeCount = 0.0f;
+                    playerList[i].revivalTimeCount = 0.0f;
                     int managerId = (int)BattleSumoModeManagerList.BattleSumoModeManagerId.SpownManager;
                     SpownTruckManager manager = GameObject.FindGameObjectWithTag("Managers").transform.GetChild(managerId).GetComponent<SpownTruckManager>();
-                    manager.Spown(info.playerController.transform.GetComponent<PlayerId>().Id);
-                    info.isSpown = true;
+                    manager.Spown(playerList[i].playerController.transform.GetComponent<PlayerId>().Id);
+                    playerList[i].isSpown = true;
                 }
                 else
                 {
-                    info.revivalTimeCount -= Time.deltaTime;
+                    playerList[i].revivalTimeCount -= Time.deltaTime;
                 }
             }
         }
@@ -62,15 +64,15 @@ public class RevivalManager : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            GameObject obj = collision.transform.parent.parent.gameObject;
+            GameObject playerParent = collision.transform.parent.parent.gameObject;
             for (int i = 0; i < playerList.Count; i++)
             {
-                if (playerList[i].playerController.gameObject == obj)
+                if (playerList[i].playerController.gameObject == playerParent)
                 {
                     playerList[i].playerController.Death();
                     playerList[i].isSpown = false;
                     playerList[i].revivalTimeCount = revivalTime;
-                    battleSumoManager.CalcPoint_DeathPlayer(i);
+                    battleSumoManager.CalcPoint_DeathPlayer(playerList[i].playerController.PlayerId);
                     break;
                 }
             }

@@ -12,15 +12,16 @@ public class PlayerInvincible : MonoBehaviour
     private float effectWeight = 0.0f;
     private float effectSubSpeed = 0.6f;
 
-    [SerializeField]
     private Material bodyMaterial;
-    [SerializeField]
     private Material legMaterial;
 
     public bool IsInvincible { get { return isInvincible; } }
 
     void Awake()
     {
+        bodyMaterial = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().material;
+        legMaterial = transform.GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().material;
+
         bodyMaterial.SetColor("_AddColor", new Color(0.0f, 0.0f, 0.0f, 0.0f));
         legMaterial.SetColor("_AddColor", new Color(0.0f, 0.0f, 0.0f, 0.0f));
     }

@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     private Transform Body;
     private Transform Leg;
     private ParticleSystem BlowEffect;
+    private PlayerId playerId;
+    private PlayerFaceManager playerFaceManager;
 
     [SerializeField, RenameField("プレイヤーの移動速度")]
     private float MoveSpeed = 2.0f;
@@ -61,12 +63,6 @@ public class PlayerController : MonoBehaviour
     //private float KickExecCoolTimeCount = 0.0f;
     private bool fallStick = false;
 
-    // ImputSystem関係
-    private InputAction moveAction;
-    private InputAction prekickAction;
-    private InputAction kickmouseAction;
-    private InputAction kickpadAction;
-
     private bool isDeath = false;
     private bool isBlow = false;
     [SerializeField]
@@ -76,6 +72,10 @@ public class PlayerController : MonoBehaviour
 
     private static float hitEffectStrongThreshold = 12.0f;
 
+    private Gamepad pad;
+
+
+    public int PlayerId { get { return playerId.Id; } }
     public bool IsDeath { get { return isDeath; } }
 
     void Start()
@@ -83,19 +83,14 @@ public class PlayerController : MonoBehaviour
         Body = transform.GetChild(0);
         Leg = transform.GetChild(1);
         BlowEffect = transform.GetChild(0).GetChild(1).GetComponent<ParticleSystem>();
+        playerId = GetComponent<PlayerId>();
+        playerFaceManager = GetComponent<PlayerFaceManager>();
 
         Leg.gameObject.SetActive(false);
 
         Rb = Body.GetComponent<Rigidbody2D>();
         KickAction = new Action[(int)KickStateId.Length]
             { Kick_NoneAction, Kick_KickAction, Kick_LegReturnAction };
-
-        PlayerInput input = GetComponent<PlayerInput>();
-        InputActionMap map = input.currentActionMap;
-        moveAction = map["Move"];
-        prekickAction = map["PreKick"];
-        kickmouseAction = map["Kick_Mouse"];
-        kickpadAction = map["Kick_Pad"];
 
         isDeath = true;
         KickState = KickStateId.None;
@@ -105,13 +100,21 @@ public class PlayerController : MonoBehaviour
         Rb.bodyType = RigidbodyType2D.Kinematic;
         Rb.velocity = Vector2.zero;
         transform.GetChild(0).GetChild(0).GetComponent<CircleCollider2D>().enabled = false;
+
+        DeviceManager.Instance.Add_RemoveDevicePartsCallBack(PlayerNotActive, playerId.Id);
+
+        pad = DeviceManager.Instance.GetDeviceFromPlayerIndex(PlayerId);
     }
 
     void Update()
     {
+        if (!BattleSumoManager.IsPlayerJoin[playerId.Id] || pad == null) { PlayerNotActive(); }
         if (isDeath) { return; }
 
-        float horizontal = moveAction.ReadValue<Vector2>().x;
+        float stickHorizontal = pad.leftStick.ReadValue().x;
+        float dpadHorizontal = pad.dpad.ReadValue().x;
+
+        float horizontal = Mathf.Abs(stickHorizontal) > Mathf.Abs(dpadHorizontal) ? stickHorizontal : dpadHorizontal;
         float decaySpeed = Rb.velocity.x * MoveDecaySpeed * horizontal * Time.deltaTime;
         float defaultSpeed = MoveSpeed * horizontal * Time.deltaTime;
 
@@ -145,29 +148,8 @@ public class PlayerController : MonoBehaviour
 
     void Kick_NoneAction()
     {
-        Vector2 move;
-        Vector2 normal;
-
-        if (prekickAction.IsPressed())
-        {
-            move = kickmouseAction.ReadValue<Vector2>();
-            normal = move.normalized;
-
-            if (move.sqrMagnitude >= KickExecSpeed * KickExecSpeed)
-            {
-                KickState = KickStateId.Kick;
-
-                KickTimeCount = 0.0f;
-                kickDirection = normal;
-
-                Leg.position = Body.position;
-                Leg.rotation = Quaternion.identity * Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.down, kickDirection), Vector3.forward);
-                Leg.gameObject.SetActive(true);
-            }
-        }
-
-        move = kickpadAction.ReadValue<Vector2>();
-        normal = move.normalized;
+        Vector2 move = pad.rightStick.ReadValue();
+        Vector2 normal = move.normalized;
 
         if (move.sqrMagnitude < KickExecStickFall * KickExecStickFall)
         {
@@ -184,8 +166,10 @@ public class PlayerController : MonoBehaviour
             kickDirection = normal;
 
             Leg.position = Body.position;
-            Leg.rotation = Quaternion.identity * Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.down, kickDirection) ,Vector3.forward);
+            Leg.rotation = Quaternion.identity * Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.down, kickDirection), Vector3.forward);
             Leg.gameObject.SetActive(true);
+
+            playerFaceManager.ChangeState((int)PlayerFaceManager.FaceState.Kick, 999.0f);
         }
     }
 
@@ -222,6 +206,8 @@ public class PlayerController : MonoBehaviour
             IsJump = false;
             Leg.gameObject.SetActive(false);
             Leg.position = Body.position;
+
+            playerFaceManager.LiftState((int)PlayerFaceManager.FaceState.Kick);
         }
     }
 
@@ -351,6 +337,7 @@ public class PlayerController : MonoBehaviour
         AudioManager.Instance.PlaySe("ジャンプ");
 
         CheckBlowStart();
+        playerFaceManager.ChangeState((int)PlayerFaceManager.FaceState.Kicked, 2.0f);
     }
 
     public void Death()
@@ -360,7 +347,6 @@ public class PlayerController : MonoBehaviour
         IsJump = false;
         Leg.gameObject.SetActive(false);
 
-        //Vector2 normal = -new Vector2(Body.position.x, Body.position.y).normalized;
         Vector2 normal = -new Vector2(Rb.velocity.x, Rb.velocity.y).normalized;
         float angle = Vector2.SignedAngle(Vector2.up, normal);
         EffectContainer.Instance.PlayEffect("死亡", Body.position + (Vector3)normal * 2.0f, Quaternion.AngleAxis(angle, Vector3.forward));
@@ -371,6 +357,8 @@ public class PlayerController : MonoBehaviour
 
         isBlow = false;
         BlowEffect.Stop();
+
+        playerFaceManager.ResetParam();
     }
 
     public void Revival()
@@ -409,5 +397,10 @@ public class PlayerController : MonoBehaviour
     {
         isBlow = true;
         BlowEffect.Play();
+    }
+
+    public void PlayerNotActive()
+    {
+        gameObject.SetActive(false);
     }
 }

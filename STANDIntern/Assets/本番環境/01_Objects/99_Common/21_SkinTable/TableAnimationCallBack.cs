@@ -10,12 +10,12 @@ public class TableAnimationCallBack : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
-        skinSelectManager = transform.parent.parent.GetComponent<SkinSelectManager>();
+        skinSelectManager = transform.parent.GetComponent<SkinSelectManager>();
     }
 
     public void ChangeCompleteCallBack()
     {
         animator.SetBool("IsChange", false);
-        skinSelectManager.EndSelectAnimation(transform.parent.GetComponent<PlayerId>().Id);
+        skinSelectManager.EndSelectAnimation(transform.GetComponent<PlayerId>().Id);
     }
 }

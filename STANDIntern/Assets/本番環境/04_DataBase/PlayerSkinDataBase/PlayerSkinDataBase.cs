@@ -27,4 +27,7 @@ public struct PlayerSkinInfo
     public Sprite Normal;
     public Sprite Leg;
     public Sprite Kick;
+    public Sprite Kicked;
+    public Sprite KickedStrong;
+    public Sprite Kill;
 }

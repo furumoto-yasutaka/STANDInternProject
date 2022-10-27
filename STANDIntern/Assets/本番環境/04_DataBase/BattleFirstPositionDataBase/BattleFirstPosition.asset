@@ -60,14 +60,14 @@ MonoBehaviour:
       - {x: -3, y: -2}
       - {x: 3, y: -2}
     - Position:
-      - {x: -6.5, y: -1}
+      - {x: -5, y: -1}
       - {x: -3, y: -2}
       - {x: 3, y: -2}
     - Position:
-      - {x: -6.5, y: -1}
+      - {x: -5, y: -1}
       - {x: -3, y: -2}
       - {x: 3, y: -2}
-      - {x: 6.5, y: -1}
+      - {x: 5, y: -1}
     JumpRerativeHeight: 2
   - FirstPositions:
     - Position:

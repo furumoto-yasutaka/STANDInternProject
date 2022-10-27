@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class SkinSelectManager : InputLockElement
 {
@@ -42,7 +43,6 @@ public class SkinSelectManager : InputLockElement
         Plus = 1 << 0,
         Minus = 1 << 1,
         Submit = 1 << 2,
-        Cancel = 1 << 3,
     }
 
     [SerializeField]
@@ -51,29 +51,29 @@ public class SkinSelectManager : InputLockElement
 
     private List<PlayerInfo> playerInfo = new List<PlayerInfo>();
     private List<PlayerInfo> playerDeleteInfo = new List<PlayerInfo>();
+    private List<PlayerInfo> playerTempInfo = new List<PlayerInfo>();
     private int inputPattern = (int)InputPattern.None;
     private float inputMoveThreshold = 0.7f;
     private float continueWaitTime = 0.5f;
     private float continueInterval = 0.2f;
+    private bool isFirstEnable = true;
+
+    [SerializeField]
+    private Animator promptAnimator;
+    private bool isCanSubmit = false;
+    private InputAction specialSubmitAction;
+    [SerializeField]
+    private UnityEvent specialSubmitCallBack;
 
     void Start()
     {
         isCanSelect = new bool[playerSkinDataBase.PlayerSkinInfos.Length];
-        for (int i = 0; i < playerSkinDataBase.PlayerSkinInfos.Length; i++)
-        {
-            isCanSelect[i] = true;
-        }
 
-        for (int i = 0; i < DeviceManager.Instance.deviceCount; i++)
-        {
-            int deviceId = DeviceManager.Instance.GetDeviceFromSystemInput(i).deviceId;
-            int playerId = DeviceManager.Instance.IndexOfPlayerNum(deviceId);
-            Transform tableParent = transform.GetChild(playerId).GetChild(0);
-            playerInfo.Add(new PlayerInfo(playerId, 0,
-                tableParent.GetComponent<Animator>(),
-                tableParent.GetChild(0).GetComponent<Image>(),
-                tableParent.GetChild(1).GetComponent<Image>()));
-        }
+        PlayerInput input = myGroupParent.InputLockManager.transform.GetComponent<PlayerInput>();
+        InputActionMap map = input.currentActionMap;
+        specialSubmitAction = map["SpecialSubmit"];
+
+        OnEnable();
     }
 
     void Update()
@@ -101,6 +101,17 @@ public class SkinSelectManager : InputLockElement
             playerInfo.Remove(info);
         }
         playerDeleteInfo.Clear();
+
+        if (isCanSubmit)
+        {
+            if (specialSubmitAction.triggered)
+            {
+                SendInfo();
+                specialSubmitCallBack.Invoke();
+            }
+        }
+
+        CheckSkinAllSubmit();
     }
 
     private void CheckInput(int index)
@@ -123,16 +134,12 @@ public class SkinSelectManager : InputLockElement
         {
             inputPattern |= (int)InputPattern.Submit;
         }
-        if (pad.aButton.wasPressedThisFrame)
-        {
-            inputPattern |= (int)InputPattern.Cancel;
-        }
     }
 
     private void Execute(PlayerInfo info)
     {
-        if ((inputPattern & (int)InputPattern.Plus) > 0 ||
-                (inputPattern & (int)InputPattern.Minus) > 0)
+        if (((inputPattern & (int)InputPattern.Plus) > 0 || (inputPattern & (int)InputPattern.Minus) > 0) &&
+            !info.isSkinSubmit)
         {
             switch (info.inputState)
             {
@@ -176,12 +183,14 @@ public class SkinSelectManager : InputLockElement
         }
         if ((inputPattern & (int)InputPattern.Submit) > 0)
         {
-            Decition(info);
-        }
-        if ((inputPattern & (int)InputPattern.Cancel) > 0 &&
-            info.isSkinSubmit)
-        {
-            Cancel(info);
+            if (info.isSkinSubmit)
+            {
+                Cancel(info);
+            }
+            else if (isCanSelect[info.selectSkin])
+            {
+                Decition(info);
+            }
         }
     }
 
@@ -204,6 +213,7 @@ public class SkinSelectManager : InputLockElement
     {
         info.isSkinSubmit = true;
         isCanSelect[info.selectSkin] = false;
+        info.Animator.SetBool("IsSubmit", true);
         CheckCanSubmitAll();
     }
 
@@ -211,6 +221,7 @@ public class SkinSelectManager : InputLockElement
     {
         info.isSkinSubmit = false;
         isCanSelect[info.selectSkin] = true;
+        info.Animator.SetBool("IsSubmit", false);
         CheckCanSubmitAll();
     }
 
@@ -219,9 +230,7 @@ public class SkinSelectManager : InputLockElement
         //スプライト張替え
         // アニメーション
         // 決定することができないアイコンを付けるのか判断する関数を呼ぶ
-        Debug.Log(selectIndex);
-
-        info.SkinPreviewBack.sprite = info.SkinPreviewBack.sprite;
+        info.SkinPreviewBack.sprite = info.SkinPreview.sprite;
         info.SkinPreview.sprite = playerSkinDataBase.PlayerSkinInfos[selectIndex].Normal;
         info.SkinPreviewBack.color = new Color(info.SkinPreviewBack.color.r, info.SkinPreviewBack.color.g, info.SkinPreviewBack.color.b, 1.0f);
         info.SkinPreview.color = new Color(info.SkinPreview.color.r, info.SkinPreview.color.g, info.SkinPreview.color.b, 0.0f);
@@ -245,10 +254,12 @@ public class SkinSelectManager : InputLockElement
         if (!isCanSelect[info.selectSkin] && !info.isSkinSubmit)
         {
             // アイコンを表示する
+            transform.GetChild(info.playerId).GetChild(1).GetChild(3).gameObject.SetActive(true);
         }
         else
         {
             // アイコンを非表示
+            transform.GetChild(info.playerId).GetChild(1).GetChild(3).gameObject.SetActive(false);
         }
     }
 
@@ -284,14 +295,99 @@ public class SkinSelectManager : InputLockElement
         info.isSelectAnimation = false;
     }
 
+    private void SetSkinSelectWindow(int index)
+    {
+        if (!DeviceManager.Instance.GetIsConnect(index))
+        {
+            transform.GetChild(index).gameObject.SetActive(false);
+        }
+        else
+        {
+            transform.GetChild(index).gameObject.SetActive(true);
+        }
+    }
+
+    private void CheckSkinAllSubmit()
+    {
+        foreach (PlayerInfo info in playerInfo)
+        {
+            if (!info.isSkinSubmit)
+            {
+                promptAnimator.SetBool("IsCan", false);
+                isCanSubmit = false;
+                return;
+            }
+        }
+
+        promptAnimator.SetBool("IsCan", true);
+        isCanSubmit = true;
+    }
+
+    public void ClearPlayerTempInfo()
+    {
+        playerTempInfo.Clear();
+    }
+
+    public void SavePlayerTempInfo()
+    {
+        playerTempInfo = new List<PlayerInfo>(playerInfo);
+    }
+
     private void OnEnable()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        if (!isFirstEnable)
         {
-            if (!DeviceManager.Instance.GetIsConnect(i))
+            for (int i = 0; i < transform.childCount; i++)
             {
-                transform.GetChild(i).gameObject.SetActive(false);
+                SetSkinSelectWindow(i);
+                Image preview = transform.GetChild(i).GetChild(1).GetChild(0).GetComponent<Image>();
+                preview.sprite = playerSkinDataBase.PlayerSkinInfos[0].Normal;
             }
+
+            for (int i = 0; i < playerSkinDataBase.PlayerSkinInfos.Length; i++)
+            {
+                isCanSelect[i] = true;
+            }
+
+            playerInfo.Clear();
+            
+            for (int i = 0; i < DeviceManager.Instance.deviceCount; i++)
+            {
+                int deviceId = DeviceManager.Instance.GetDeviceFromSystemInput(i).deviceId;
+                int playerId = DeviceManager.Instance.IndexOfPlayerNum(deviceId);
+
+                for (int j = 0; j < playerTempInfo.Count; j++)
+                {
+                    // 見つかった場合
+                    if (playerId == playerTempInfo[j].playerId)
+                    {
+                        playerInfo.Add(playerTempInfo[j]);
+                        continue;
+                    }
+                }
+
+                // 見つからなかった場合
+                Transform tableParent = transform.GetChild(playerId).GetChild(1);
+                playerInfo.Add(new PlayerInfo(playerId, 0,
+                    transform.GetChild(playerId).GetComponent<Animator>(),
+                    tableParent.GetChild(0).GetComponent<Image>(),
+                    tableParent.GetChild(1).GetComponent<Image>()));
+            }
+
+            CheckCanSubmitAll();
+        }
+        else
+        {
+            isFirstEnable = false;
+        }
+    }
+
+    private void SendInfo()
+    {
+        foreach (PlayerInfo info in playerInfo)
+        {
+            BattleSumoManager.SetIsPlayerJoin(true, info.playerId);
+            BattleSumoManager.SetIsPlayerSkinId(info.selectSkin, info.playerId);
         }
     }
 }
