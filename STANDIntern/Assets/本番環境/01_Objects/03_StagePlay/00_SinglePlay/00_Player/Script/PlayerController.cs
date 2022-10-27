@@ -161,8 +161,6 @@ public class PlayerController : MonoBehaviour
                 kickDirection = normal;
 
                 Leg.position = Body.position;
-                //Leg.rotation = Quaternion.LookRotation(kickDirection, Vector3.back);
-                //Leg.rotation = Quaternion.FromToRotation(Vector3.down, kickDirection);
                 Leg.rotation = Quaternion.identity * Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.down, kickDirection), Vector3.forward);
                 Leg.gameObject.SetActive(true);
             }
@@ -186,9 +184,7 @@ public class PlayerController : MonoBehaviour
             kickDirection = normal;
 
             Leg.position = Body.position;
-            //Leg.rotation = Quaternion.LookRotation(kickDirection, Vector3.back);
-            //Leg.rotation = Quaternion.FromToRotation(Vector3.down, kickDirection);
-            Leg.rotation = Quaternion.identity * Quaternion.AngleAxis(Vector2.Angle(Vector2.down, kickDirection) ,Vector3.forward);
+            Leg.rotation = Quaternion.identity * Quaternion.AngleAxis(Vector2.SignedAngle(Vector2.down, kickDirection) ,Vector3.forward);
             Leg.gameObject.SetActive(true);
         }
     }

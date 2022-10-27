@@ -136,11 +136,11 @@ public class ButtonSelectManager : InputLockElement
         {
             inputPattern |= (int)InputPattern.Minus;
         }
-        else if (horizontal >= inputMoveThreshold)
+        if (horizontal >= inputMoveThreshold)
         {
             inputPattern |= (int)InputPattern.Plus;
         }
-        else if (submitAction.triggered)
+        if (submitAction.triggered)
         {
             inputPattern |= (int)InputPattern.Submit;
         }
@@ -148,52 +148,49 @@ public class ButtonSelectManager : InputLockElement
 
     protected void Execute()
     {
-        if (inputPattern == (int)InputPattern.None)
+        if ((inputPattern & (int)InputPattern.Plus) > 0 ||
+                (inputPattern & (int)InputPattern.Minus) > 0)
+        {
+            switch (inputState)
+            {
+                case InputState.None:
+                    inputState = InputState.Wait;
+                    continueCount = continueWaitTime;
+                    MoveCursor();
+                    break;
+                case InputState.Wait:
+                    if (continueCount <= 0.0f)
+                    {
+                        inputState = InputState.Interval;
+                        continueCount = continueInterval;
+                        MoveCursor();
+                    }
+                    else
+                    {
+                        continueCount -= Time.deltaTime;
+                    }
+                    break;
+                case InputState.Interval:
+                    if (continueCount <= 0.0f)
+                    {
+                        continueCount = continueInterval;
+                        MoveCursor();
+                    }
+                    else
+                    {
+                        continueCount -= Time.deltaTime;
+                    }
+                    break;
+            }
+        }
+        else
         {
             continueCount = 0.0f;
             inputState = InputState.None;
         }
-        else
+        if ((inputPattern & (int)InputPattern.Submit) > 0)
         {
-            if ((inputPattern & (int)InputPattern.Plus) > 0 ||
-                (inputPattern & (int)InputPattern.Minus) > 0)
-            {
-                switch (inputState)
-                {
-                    case InputState.None:
-                        inputState = InputState.Wait;
-                        continueCount = continueWaitTime;
-                        MoveCursor();
-                        break;
-                    case InputState.Wait:
-                        if (continueCount <= 0.0f)
-                        {
-                            inputState = InputState.Interval;
-                            continueCount = continueInterval;
-                            MoveCursor();
-                        }
-                        else
-                        {
-                            continueCount -= Time.deltaTime;
-                        }
-                        break;
-                    case InputState.Interval:
-                        if (continueCount <= 0.0f)
-                        {
-                            continueCount = continueInterval;
-                            MoveCursor();
-                        }
-                        else
-                        {
-                            continueCount -= Time.deltaTime;
-                        }
-                        break;
-                }
-            }
-            if ((inputPattern & (int)InputPattern.Submit) > 0)
-            {
-                Decition();
-            }
+            Decition();
         }
     }
 
