@@ -59,6 +59,7 @@ public class ControllerCheckWindow : MonoBehaviour
         if (DeviceManager.Instance.GetIsConnect(playerId))
         {
             animator.SetBool("IsConnect", true);
+            AudioManager.Instance.PlaySe("コントローラー接続");
         }
         else
         {

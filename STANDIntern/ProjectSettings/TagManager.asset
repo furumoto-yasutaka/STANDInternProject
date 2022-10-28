@@ -7,6 +7,7 @@ TagManager:
   - InputLockManager
   - Platform
   - Managers
+  - Timer
   layers:
   - Default
   - TransparentFX

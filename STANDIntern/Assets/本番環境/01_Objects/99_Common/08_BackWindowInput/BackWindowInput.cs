@@ -24,6 +24,7 @@ public class BackWindowInput : InputLockElement
         if (cancelAction.triggered)
         {
             BackCallBack.Invoke();
+            AudioManager.Instance.PlaySe("–ß‚é");
         }
     }
 }

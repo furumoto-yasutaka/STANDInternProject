@@ -65,7 +65,7 @@ public class SkinSelectManager : InputLockElement
     [SerializeField]
     private UnityEvent specialSubmitCallBack;
 
-    void Start()
+    void Awake()
     {
         isCanSelect = new bool[playerSkinDataBase.PlayerSkinInfos.Length];
 
@@ -108,6 +108,7 @@ public class SkinSelectManager : InputLockElement
             {
                 SendInfo();
                 specialSubmitCallBack.Invoke();
+                AudioManager.Instance.PlaySe("決定(タイトル画面のみ)");
             }
         }
 
@@ -201,11 +202,13 @@ public class SkinSelectManager : InputLockElement
         {
             info.selectSkin = (info.selectSkin + 1) % skinLength;
             Select(info, info.selectSkin);
+            AudioManager.Instance.PlaySe("カーソル移動");
         }
         if ((inputPattern & (int)InputPattern.Minus) > 0)
         {
             info.selectSkin = (info.selectSkin - 1 + skinLength) % skinLength;
             Select(info, info.selectSkin);
+            AudioManager.Instance.PlaySe("カーソル移動");
         }
     }
 
@@ -215,6 +218,7 @@ public class SkinSelectManager : InputLockElement
         isCanSelect[info.selectSkin] = false;
         info.Animator.SetBool("IsSubmit", true);
         CheckCanSubmitAll();
+        AudioManager.Instance.PlaySe("決定");
     }
 
     private void Cancel(PlayerInfo info)
@@ -321,6 +325,7 @@ public class SkinSelectManager : InputLockElement
 
         promptAnimator.SetBool("IsCan", true);
         isCanSubmit = true;
+        AudioManager.Instance.PlaySe("次の画面に進めることが可能になる音");
     }
 
     public void ClearPlayerTempInfo()
@@ -330,56 +335,25 @@ public class SkinSelectManager : InputLockElement
 
     public void SavePlayerTempInfo()
     {
-        playerTempInfo = new List<PlayerInfo>(playerInfo);
+        playerTempInfo.Clear();
+        for (int i = 0; i < playerInfo.Count; i++)
+        {
+            playerTempInfo.Add(playerInfo[i]);
+        }
     }
 
     private void OnEnable()
     {
         if (!isFirstEnable)
         {
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                SetSkinSelectWindow(i);
-                Image preview = transform.GetChild(i).GetChild(1).GetChild(0).GetComponent<Image>();
-                preview.sprite = playerSkinDataBase.PlayerSkinInfos[0].Normal;
-            }
-
-            for (int i = 0; i < playerSkinDataBase.PlayerSkinInfos.Length; i++)
-            {
-                isCanSelect[i] = true;
-            }
-
-            playerInfo.Clear();
             
-            for (int i = 0; i < DeviceManager.Instance.deviceCount; i++)
-            {
-                int deviceId = DeviceManager.Instance.GetDeviceFromSystemInput(i).deviceId;
-                int playerId = DeviceManager.Instance.IndexOfPlayerNum(deviceId);
-
-                for (int j = 0; j < playerTempInfo.Count; j++)
-                {
-                    // 見つかった場合
-                    if (playerId == playerTempInfo[j].playerId)
-                    {
-                        playerInfo.Add(playerTempInfo[j]);
-                        continue;
-                    }
-                }
-
-                // 見つからなかった場合
-                Transform tableParent = transform.GetChild(playerId).GetChild(1);
-                playerInfo.Add(new PlayerInfo(playerId, 0,
-                    transform.GetChild(playerId).GetComponent<Animator>(),
-                    tableParent.GetChild(0).GetComponent<Image>(),
-                    tableParent.GetChild(1).GetComponent<Image>()));
-            }
-
-            CheckCanSubmitAll();
         }
         else
         {
             isFirstEnable = false;
         }
+
+        SkinReset();
     }
 
     private void SendInfo()
@@ -389,5 +363,47 @@ public class SkinSelectManager : InputLockElement
             BattleSumoManager.SetIsPlayerJoin(true, info.playerId);
             BattleSumoManager.SetIsPlayerSkinId(info.selectSkin, info.playerId);
         }
+    }
+
+    public void SkinReset()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            SetSkinSelectWindow(i);
+            Image preview = transform.GetChild(i).GetChild(1).GetChild(0).GetComponent<Image>();
+            preview.sprite = playerSkinDataBase.PlayerSkinInfos[0].Normal;
+        }
+
+        for (int i = 0; i < playerSkinDataBase.PlayerSkinInfos.Length; i++)
+        {
+            isCanSelect[i] = true;
+        }
+
+        playerInfo.Clear();
+
+        for (int i = 0; i < DeviceManager.Instance.deviceCount; i++)
+        {
+            int deviceId = DeviceManager.Instance.GetDeviceFromSystemInput(i).deviceId;
+            int playerId = DeviceManager.Instance.IndexOfPlayerNum(deviceId);
+
+            for (int j = 0; j < playerTempInfo.Count; j++)
+            {
+                // 見つかった場合
+                if (playerId == playerTempInfo[j].playerId)
+                {
+                    playerInfo.Add(playerTempInfo[j]);
+                    continue;
+                }
+            }
+
+            // 見つからなかった場合
+            Transform tableParent = transform.GetChild(playerId).GetChild(1);
+            playerInfo.Add(new PlayerInfo(playerId, 0,
+                transform.GetChild(playerId).GetComponent<Animator>(),
+                tableParent.GetChild(0).GetComponent<Image>(),
+                tableParent.GetChild(1).GetComponent<Image>()));
+        }
+
+        CheckCanSubmitAll();
     }
 }

@@ -30,4 +30,9 @@ public struct PlayerSkinInfo
     public Sprite Kicked;
     public Sprite KickedStrong;
     public Sprite Kill;
+
+    public Sprite No1;
+    public Sprite No2;
+    public Sprite No3;
+    public Sprite No4;
 }

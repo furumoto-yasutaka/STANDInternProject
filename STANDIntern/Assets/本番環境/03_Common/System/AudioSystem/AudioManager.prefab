@@ -49,13 +49,88 @@ MonoBehaviour:
   BgmVolume: 1
   SeVolume: 1
   isMute: 0
-  bgmInfoInspector: []
+  bgmInfoInspector:
+  - Name: "\u30BF\u30A4\u30C8\u30EB"
+    Clip: {fileID: 8300000, guid: a1634b2056a38e841aa5f6b2b28333f7, type: 3}
+    Volume: 1
+  - Name: "\u30E2\u30FC\u30C9\u9078\u629E"
+    Clip: {fileID: 8300000, guid: 4a22f63d1df34dc4b9311ea6efda9179, type: 3}
+    Volume: 1
+  - Name: "\u30D0\u30C8\u30EB"
+    Clip: {fileID: 8300000, guid: 15ed49dcd63ee8b48809a5174adc63c7, type: 3}
+    Volume: 1
+  - Name: "\u30EA\u30B6\u30EB\u30C8"
+    Clip: {fileID: 8300000, guid: 9909969be03abb246ac8917ca056695c, type: 3}
+    Volume: 1
   seInfoInspector:
   - Name: "\u30B8\u30E3\u30F3\u30D7"
     Clip: {fileID: 8300000, guid: 3b4657edae5ea1444b9be4de79199b75, type: 3}
     Volume: 1
   - Name: "\u30D0\u30A6\u30F3\u30C9"
     Clip: {fileID: 8300000, guid: 10f3edaf03873a94887e34668ff1241e, type: 3}
+    Volume: 1
+  - Name: "\u30AB\u30FC\u30BD\u30EB\u79FB\u52D5"
+    Clip: {fileID: 8300000, guid: 97d02c3f10b5bba4bafb569f54a1b1ac, type: 3}
+    Volume: 1
+  - Name: "\u6483\u7834\u6642\u306E\u6B53\u58F0"
+    Clip: {fileID: 8300000, guid: f734712f4b5f6d74dad0b35390044cf6, type: 3}
+    Volume: 1
+  - Name: "\u8E74\u308A\u3092\u53D7\u3051\u305F(\u91CD)"
+    Clip: {fileID: 8300000, guid: a0a2df01a79be2a4ca58772c468408b2, type: 3}
+    Volume: 1
+  - Name: "\u8E74\u308A\u3092\u53D7\u3051\u305F(\u8EFD)"
+    Clip: {fileID: 8300000, guid: 9327ada7f6856234fa748461406989b7, type: 3}
+    Volume: 1
+  - Name: "\u30EA\u30B9\u30DD\u30FC\u30F3\u6642\u306E\u97F3"
+    Clip: {fileID: 8300000, guid: 17f389e9555071a4c90017c9f434ace3, type: 3}
+    Volume: 1
+  - Name: "\u30AD\u30C3\u30AF(\u7A7A\u632F\u308A)"
+    Clip: {fileID: 8300000, guid: 4d84da0e1d3fa034bb500023d72a5be5, type: 3}
+    Volume: 1
+  - Name: "\u30C8\u30E9\u30C3\u30AF\u304C\u8D70\u308B\u97F3"
+    Clip: {fileID: 8300000, guid: ad9ac84d950960b408a11c51b9fd36f3, type: 3}
+    Volume: 1
+  - Name: "\u6C7A\u5B9A"
+    Clip: {fileID: 8300000, guid: 126f343305709734a852fd253a245b0d, type: 3}
+    Volume: 1
+  - Name: "\u6B7B\u4EA1"
+    Clip: {fileID: 8300000, guid: 600bc6e39d175b64fab2b01e8798c14f, type: 3}
+    Volume: 1
+  - Name: "\u623B\u308B"
+    Clip: {fileID: 8300000, guid: da18bbcfaa2e3074e8ae512e1a107d7c, type: 3}
+    Volume: 1
+  - Name: "\u6C7A\u5B9A(\u30BF\u30A4\u30C8\u30EB\u753B\u9762\u306E\u307F)"
+    Clip: {fileID: 8300000, guid: 177e6c45ec737aa47ba8df55972954ea, type: 3}
+    Volume: 1
+  - Name: "\u30B2\u30FC\u30E0\u958B\u59CB"
+    Clip: {fileID: 8300000, guid: 6d29ecaa63d620d4fabce14831264d10, type: 3}
+    Volume: 1
+  - Name: "\u30B2\u30FC\u30E0\u7D42\u4E86"
+    Clip: {fileID: 8300000, guid: bc089325945dab749867c75e89f70b11, type: 3}
+    Volume: 1
+  - Name: "\u30B3\u30F3\u30C8\u30ED\u30FC\u30E9\u30FC\u63A5\u7D9A"
+    Clip: {fileID: 8300000, guid: 74d6e64eb36f7b0409cbb3239822fc16, type: 3}
+    Volume: 1
+  - Name: "\u6B21\u306E\u753B\u9762\u306B\u9032\u3081\u308B\u3053\u3068\u304C\u53EF\u80FD\u306B\u306A\u308B\u97F3"
+    Clip: {fileID: 8300000, guid: 4a0c9574c17f6e44180428c49435f5d0, type: 3}
+    Volume: 1
+  - Name: "\u30AF\u30E9\u30AF\u30B7\u30E7\u30F3"
+    Clip: {fileID: 8300000, guid: 9a755edaf422aa448a4cda94cbe75791, type: 3}
+    Volume: 1
+  - Name: "\u30EA\u30B6\u30EB\u30C81\u4F4D"
+    Clip: {fileID: 8300000, guid: eda81afa8f7628c41999df5bf837d093, type: 3}
+    Volume: 1
+  - Name: "\u30EA\u30B6\u30EB\u30C82\u4F4D"
+    Clip: {fileID: 8300000, guid: c38e808f8029e5940a3b3378a96ca8b6, type: 3}
+    Volume: 1
+  - Name: "\u30EA\u30B6\u30EB\u30C83\u4F4D"
+    Clip: {fileID: 8300000, guid: 88ccb085ecc35214ead91a86c6617ffb, type: 3}
+    Volume: 1
+  - Name: "\u30EA\u30B6\u30EB\u30C84\u4F4D"
+    Clip: {fileID: 8300000, guid: 13429addb85c8464090b14aca7209e74, type: 3}
+    Volume: 1
+  - Name: "\u30EA\u30B6\u30EB\u30C8\u53F0\u843D\u4E0B"
+    Clip: {fileID: 8300000, guid: 64968a4f1b8c8b74891b4ea3b1a31e76, type: 3}
     Volume: 1
 --- !u!1 &6267682537731414850
 GameObject:

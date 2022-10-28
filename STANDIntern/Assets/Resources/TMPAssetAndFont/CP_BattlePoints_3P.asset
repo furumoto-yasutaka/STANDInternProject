@@ -2371,7 +2371,6 @@ Material:
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
   m_ValidKeywords:
   - BEVEL_ON
-  - GLOW_ON
   - UNDERLAY_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -2405,7 +2404,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Ambient: 0.312
+    - _Ambient: 0.625
     - _Bevel: 0.516
     - _BevelClamp: 0.008
     - _BevelOffset: -0.027
@@ -2414,8 +2413,8 @@ Material:
     - _BumpFace: 0
     - _BumpOutline: 0
     - _ColorMask: 15
-    - _CullMode: 0
-    - _Diffuse: 0.5
+    - _CullMode: 2
+    - _Diffuse: 0
     - _FaceDilate: -0.31
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
@@ -2452,14 +2451,16 @@ Material:
     - _UnderlayOffsetX: 0.58
     - _UnderlayOffsetY: -0.43
     - _UnderlaySoftness: 0
+    - _UseUIAlphaClip: 0
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
     - _WeightBold: 0.75
     - _WeightNormal: 0
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
-    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FaceColor: {r: 1, g: 1, b: 1, a: 0}
     - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0.1764706}

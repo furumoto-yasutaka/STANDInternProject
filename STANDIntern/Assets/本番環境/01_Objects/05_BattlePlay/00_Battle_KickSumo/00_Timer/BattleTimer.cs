@@ -57,7 +57,9 @@ public class BattleTimer : MonoBehaviour
             isActive = false;
             timeCountSec = 0.0f;
             Time.timeScale = timeupTimeScale;
+            
             timeUpObj.SetActive(true);
+            AudioManager.Instance.PlaySe("ÉQÅ[ÉÄèIóπ");
         }
     }
 
@@ -74,5 +76,10 @@ public class BattleTimer : MonoBehaviour
     public void StartTimer()
     {
         isActive = true;
+    }
+
+    public void ResetTimeScale()
+    {
+        Time.timeScale = 1.0f;
     }
 }

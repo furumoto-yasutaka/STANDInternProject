@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7443900075865300606}
   - component: {fileID: 8313468686241356402}
   - component: {fileID: 2430726001444749708}
-  - component: {fileID: 4462871969992259048}
+  - component: {fileID: 424666720502064926}
   m_Layer: 0
   m_Name: killplayer
   m_TagString: Untagged
@@ -26,14 +26,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8754973879062318622}
-  m_LocalRotation: {x: 0.7138618, y: 0, z: 0, w: 0.70028657}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 91.1, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!198 &8313468686241356402
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -107,7 +107,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -749,7 +749,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1.32
+      value: 1.41
       mode: 0
       spread: 0
       speed:
@@ -4822,7 +4822,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &4462871969992259048
+--- !u!114 &424666720502064926
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

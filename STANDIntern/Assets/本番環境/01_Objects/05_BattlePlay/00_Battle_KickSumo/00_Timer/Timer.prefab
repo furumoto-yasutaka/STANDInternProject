@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4091814080450716629}
   m_Layer: 5
   m_Name: Timer
-  m_TagString: Untagged
+  m_TagString: Timer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,6 +55,7 @@ MonoBehaviour:
   timeMin: 1
   timeCountSec: 0
   timeupTimeScale: 0.1
+  timeUpObj: {fileID: 0}
 --- !u!1 &4091814080535340016
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,4 +8,10 @@ public class AnimatorUnscaledSetting : MonoBehaviour
     {
         GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
     }
+
+    public void SetBgm()
+    {
+        AudioManager.Instance.StopBgm();
+        AudioManager.Instance.PlayBgm("ƒŠƒUƒ‹ƒg", true);
+    }
 }

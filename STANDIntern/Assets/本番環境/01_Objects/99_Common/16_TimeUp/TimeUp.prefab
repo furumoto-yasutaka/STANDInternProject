@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2607090305726855219}
   - component: {fileID: 2607090305726855218}
   - component: {fileID: 2607090305726855213}
+  - component: {fileID: 863600905837836195}
   m_Layer: 5
   m_Name: TimeUp
   m_TagString: Untagged
@@ -110,3 +111,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224b4b991d5f9de4c888d0d0e0bba01f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &863600905837836195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2607090305726855216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac28b367b3595bf4586d73834ba526bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  callback:
+    m_PersistentCalls:
+      m_Calls: []

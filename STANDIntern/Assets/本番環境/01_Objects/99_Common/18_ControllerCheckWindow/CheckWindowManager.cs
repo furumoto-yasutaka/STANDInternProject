@@ -43,6 +43,7 @@ public class CheckWindowManager : InputLockElement
             if (specialSubmitAction.triggered)
             {
                 specialSubmitCallBack.Invoke();
+                AudioManager.Instance.PlaySe("決定(タイトル画面のみ)");
             }
         }
     }
@@ -82,6 +83,7 @@ public class CheckWindowManager : InputLockElement
         {
             promptAnimator.SetBool("IsCan", true);
             isCanSubmit = true;
+            AudioManager.Instance.PlaySe("次の画面に進めることが可能になる音");
         }
         else
         {

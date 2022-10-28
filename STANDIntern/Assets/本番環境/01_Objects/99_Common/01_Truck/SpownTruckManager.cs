@@ -233,6 +233,7 @@ public class SpownTruckManager : MonoBehaviour
         {
             SetAllJumpParam(info, stageId, jumpTransInfo);
             EffectContainer.Instance.PlayEffect("スポーン", info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
+            AudioManager.Instance.PlaySe("リスポーン時の音");
         }
         else
         {
@@ -299,6 +300,7 @@ public class SpownTruckManager : MonoBehaviour
             truckList[truckList.Count - 1].JumpParam.Add(new JumpInfo());
             players.GetChild(playerIndex).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = revivalSpownSortLayer;
             truck.position = respownTruckInitialPos;
+            AudioManager.Instance.PlaySe("クラクション");
         }
     }
 }

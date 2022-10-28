@@ -35,8 +35,11 @@ public class BattleSumoManager : MonoBehaviour
     private float[] markTimeCount;
     private TextMeshProUGUI[] debugText;
     private TextMeshProUGUI[] pointText;
+    private TextMeshProUGUI[] pointFrontText;
 
     public int StageId { get { return stageId; } }
+    public PlayerController[] Player { get { return player; } }
+    public int[] Points { get { return points; } }
 
     static BattleSumoManager()
     {
@@ -72,6 +75,7 @@ public class BattleSumoManager : MonoBehaviour
         markTimeCount = new float[players.childCount];
         debugText = new TextMeshProUGUI[players.childCount];
         pointText = new TextMeshProUGUI[players.childCount];
+        pointFrontText = new TextMeshProUGUI[players.childCount];
 
         for (int i = 0; i < players.childCount; i++)
         {
@@ -82,8 +86,9 @@ public class BattleSumoManager : MonoBehaviour
             markTimeCount[i] = 0;
             debugText[i] = debugTextParent.GetChild(i).GetComponent<TextMeshProUGUI>();
             pointText[i] = pointTextParent.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>();
+            pointFrontText[i] = pointTextParent.GetChild(i).GetChild(2).GetComponent<TextMeshProUGUI>();
 
-            pointTextParent.GetChild(i).GetChild(2).GetComponent<Image>().sprite =
+            pointTextParent.GetChild(i).GetChild(3).GetComponent<Image>().sprite =
                 player[i].GetComponent<PlayerFaceManager>().PlayerSkinDataBase.PlayerSkinInfos[IsPlayerSkinId[i]].Normal;
         }
     }
@@ -130,27 +135,31 @@ public class BattleSumoManager : MonoBehaviour
             EffectContainer.Instance.PlayEffect("ƒLƒ‹", player[markIndex].transform.GetChild(0));
             player[markIndex].GetComponent<PlayerFaceManager>().ChangeState((int)PlayerFaceManager.FaceState.Kill, 2.0f);
             debugText[markIndex].text = (markIndex + 1).ToString() + "P:" + points[markIndex];
+
             pointText[markIndex].text = points[markIndex].ToString() + "p";
-            CheckPointTextColor(pointText[markIndex], points[markIndex]);
+            pointFrontText[markIndex].text = points[markIndex].ToString() + "p";
+            CheckPointTextColor(pointFrontText[markIndex], points[markIndex]);
         }
         debugText[index].text = (index + 1).ToString() + "P:" + points[index];
+
         pointText[index].text = points[index].ToString() + "p";
-        CheckPointTextColor(pointText[index], points[index]);
+        pointFrontText[index].text = points[index].ToString() + "p";
+        CheckPointTextColor(pointFrontText[index], points[index]);
     }
 
     private void CheckPointTextColor(TextMeshProUGUI tmp, int point)
     {
         if (point > 0)
         {
-            tmp.material.SetColor("_GlowColor", new Color(1.0f, 0.16f, 0.0f, 1.0f));
+            tmp.fontMaterial.SetColor("_FaceColor", new Color(1.0f, 0.5f, 0.5f, 1.0f));
         }
         else if (point == 0)
         {
-            tmp.material.SetColor("_GlowColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+            tmp.fontMaterial.SetColor("_FaceColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
         }
         else
         {
-            tmp.material.SetColor("_GlowColor", new Color(0.0f, 0.16f, 1.0f, 1.0f));
+            tmp.fontMaterial.SetColor("_FaceColor", new Color(0.5f, 0.5f, 1.0f, 1.0f));
         }
     }
 
@@ -179,6 +188,14 @@ public class BattleSumoManager : MonoBehaviour
             isMark[index] = false;
             markPlayer[index] = null;
             markTimeCount[index] = 0.0f;
+        }
+    }
+
+    public void PlayerStop()
+    {
+        for (int i = 0; i < player.Length; i++)
+        {
+            player[i].Stop();
         }
     }
 }

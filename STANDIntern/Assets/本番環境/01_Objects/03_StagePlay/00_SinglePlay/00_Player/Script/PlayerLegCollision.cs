@@ -48,16 +48,20 @@ public class PlayerLegCollision : MonoBehaviour
             if (collision.transform.parent.GetComponent<Rigidbody2D>().velocity.sqrMagnitude >= strongKickWaveThreshold * strongKickWaveThreshold)
             {
                 EffectContainer.Instance.PlayEffect("キック(強)", collision.ClosestPoint(transform.position));
+                AudioManager.Instance.PlaySe("蹴りを受けた(重)");
             }
             else
             {
                 EffectContainer.Instance.PlayEffect("キック(弱)", collision.ClosestPoint(transform.position));
+                AudioManager.Instance.PlaySe("蹴りを受けた(軽)");
             }
         }
         else
         {
             playerController.KickPlatformAddForce(collision);
             playerController.EndBlow();
+
+            AudioManager.Instance.PlaySe("ジャンプ");
         }
     }
 }

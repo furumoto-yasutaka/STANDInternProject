@@ -8,4 +8,9 @@ public class DestroyCallBack : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    public void PlayReadyGoSe()
+    {
+        AudioManager.Instance.PlaySe("ƒQ[ƒ€ŠJn");
+    }
 }

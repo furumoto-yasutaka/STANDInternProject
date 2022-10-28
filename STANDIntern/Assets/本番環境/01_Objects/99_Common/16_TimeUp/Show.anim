@@ -123,21 +123,23 @@ AnimationClip:
       value: {fileID: 21300000, guid: c0efc24606c3c7146b376a289a68c014, type: 3}
     - time: 1.275
       value: {fileID: 21300000, guid: 4fc6b65b2f4f534418009932cc598335, type: 3}
-    - time: 1.3
+    - time: 2.575
       value: {fileID: 21300000, guid: c497a1c7bd1b3534fba4a4d2588ca9f2, type: 3}
-    - time: 1.325
+    - time: 2.6
       value: {fileID: 21300000, guid: bc044ba69bfdda642b20d246a45b3ce7, type: 3}
-    - time: 1.35
+    - time: 2.625
       value: {fileID: 21300000, guid: c7fcd39e2754cd545b19646ad10c7147, type: 3}
-    - time: 1.375
+    - time: 2.65
       value: {fileID: 21300000, guid: b1bdc293b4d951a47972bf40e01f8cf9, type: 3}
-    - time: 1.4
+    - time: 2.675
       value: {fileID: 21300000, guid: 8035ca6ef1c22944bb766e842c12b8b2, type: 3}
-    - time: 1.425
+    - time: 2.7
       value: {fileID: 21300000, guid: f205a9a04148c664f935e477174073f9, type: 3}
-    - time: 1.45
+    - time: 2.725
       value: {fileID: 21300000, guid: c20cbe1e6de6e0e40952f4047f4a47f2, type: 3}
-    - time: 1.475
+    - time: 2.75
+      value: {fileID: 21300000, guid: 7941436d81ea3cb46918557fc5a8d9a3, type: 3}
+    - time: 4
       value: {fileID: 21300000, guid: 7941436d81ea3cb46918557fc5a8d9a3, type: 3}
     attribute: m_Sprite
     path: 
@@ -218,12 +220,13 @@ AnimationClip:
     - {fileID: 21300000, guid: f205a9a04148c664f935e477174073f9, type: 3}
     - {fileID: 21300000, guid: c20cbe1e6de6e0e40952f4047f4a47f2, type: 3}
     - {fileID: 21300000, guid: 7941436d81ea3cb46918557fc5a8d9a3, type: 3}
+    - {fileID: 21300000, guid: 7941436d81ea3cb46918557fc5a8d9a3, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.5
+    m_StopTime: 4.025
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -242,4 +245,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 4
+    functionName: ExternalCall
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

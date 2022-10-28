@@ -69,6 +69,8 @@ public class RevivalManager : MonoBehaviour
             {
                 if (playerList[i].playerController.gameObject == playerParent)
                 {
+                    AudioManager.Instance.PlaySe("Œ‚”j‚ÌŠ½º");
+                    AudioManager.Instance.PlaySe("€–S");
                     playerList[i].playerController.Death();
                     playerList[i].isSpown = false;
                     playerList[i].revivalTimeCount = revivalTime;

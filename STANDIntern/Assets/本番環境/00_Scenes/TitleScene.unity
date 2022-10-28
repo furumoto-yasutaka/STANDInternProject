@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8693776907367160490, guid: 9874ada7c801a1149b5b1ec8e7a48d4b, type: 3}
+      propertyPath: BgmName
+      value: "\u30BF\u30A4\u30C8\u30EB"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9874ada7c801a1149b5b1ec8e7a48d4b, type: 3}
 --- !u!4 &5761077 stripped
@@ -1446,6 +1450,7 @@ GameObject:
   - component: {fileID: 174813247}
   - component: {fileID: 174813249}
   - component: {fileID: 174813250}
+  - component: {fileID: 174813251}
   m_Layer: 5
   m_Name: DeleteSaveDataButton
   m_TagString: Untagged
@@ -1526,43 +1531,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnClickCallBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 617703698}
-        m_TargetAssemblyTypeName: WarningWindow, Assembly-CSharp
-        m_MethodName: Open
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1204592697}
-        m_TargetAssemblyTypeName: InputGroupParent, Assembly-CSharp
-        m_MethodName: LockInputMyGroup
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 617703698}
-        m_TargetAssemblyTypeName: InputGroupParent, Assembly-CSharp
-        m_MethodName: UnlockInputMyGroup
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnSelectCallBack:
     m_PersistentCalls:
       m_Calls: []
@@ -1589,6 +1558,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!225 &174813251
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174813244}
+  m_Enabled: 1
+  m_Alpha: 0.5
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &192102211
 GameObject:
   m_ObjectHideFlags: 0
@@ -21517,6 +21498,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1478016767}
+        m_TargetAssemblyTypeName: SkinSelectManager, Assembly-CSharp
+        m_MethodName: SkinReset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &1219428201761875529
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23636,6 +23629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transition: {fileID: 4336021333824334025, guid: ed520ba50a91c4d4c8c07253943825bf, type: 3}
   scene: 3
+  isCanvasParent: 1
 --- !u!114 &3508838947009401061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23704,19 +23698,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnClickCallBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3508838947009401059}
-        m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
-        m_MethodName: StartSceneChange
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnSelectCallBack:
     m_PersistentCalls:
       m_Calls:
@@ -23762,6 +23744,7 @@ GameObject:
   - component: {fileID: 3508838947009401063}
   - component: {fileID: 3508838947009401059}
   - component: {fileID: 3508838947009401068}
+  - component: {fileID: 3508838947009401069}
   m_Layer: 5
   m_Name: SinglePlay
   m_TagString: Untagged
@@ -23802,6 +23785,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CommnetText: "1\u4EBA\u3067\u904A\u3076\u30B9\u30C6\u30FC\u30B8\u653B\u7565\u30E2\u30FC\u30C9\uFF01(\u30A2\u30C3\u30D7\u30C7\u30FC\u30C8\u306B\u3066\u30B9\u30C6\u30FC\u30B8\u8FFD\u52A0\u4E88\u5B9A)"
+--- !u!225 &3508838947009401069
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3508838947009401065}
+  m_Enabled: 1
+  m_Alpha: 0.5
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!222 &3508838947012010122
 CanvasRenderer:
   m_ObjectHideFlags: 0

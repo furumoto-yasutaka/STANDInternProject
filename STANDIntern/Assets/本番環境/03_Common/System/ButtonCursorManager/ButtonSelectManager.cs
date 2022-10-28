@@ -199,16 +199,19 @@ public class ButtonSelectManager : InputLockElement
         if ((inputPattern & (int)InputPattern.Plus) > 0)
         {
             Select((selectIndex + 1) % transform.childCount);
+            AudioManager.Instance.PlaySe("カーソル移動");
         }
         if ((inputPattern & (int)InputPattern.Minus) > 0)
         {
             Select((selectIndex - 1 + transform.childCount) % transform.childCount);
+            AudioManager.Instance.PlaySe("カーソル移動");
         }
     }
 
     public void Decition()
     {
         selecters[selectIndex].OnClickCallBack.Invoke();
+        AudioManager.Instance.PlaySe("決定");
     }
 
     public virtual void Select(int index)

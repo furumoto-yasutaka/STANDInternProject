@@ -41,4 +41,7 @@ EditorBuildSettings:
   - enabled: 1
     path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/Stage_CoopPlay/Stage1_CoopPlay.unity"
     guid: 0f710683b656fc845940913e16069793
+  - enabled: 1
+    path: "Assets/\u672C\u756A\u74B0\u5883/00_Scenes/BattleStageSelect.unity"
+    guid: ed7c0d7c7944d2447b8c423b5c54ac9e
   m_configObjects: {}

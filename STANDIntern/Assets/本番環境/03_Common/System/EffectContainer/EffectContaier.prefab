@@ -65,3 +65,7 @@ MonoBehaviour:
     Prefab: {fileID: 2617079916834946761, guid: 3f5cd8ccd6778f54480a8747a12c4b02, type: 3}
   - Name: "\u30AD\u30EB"
     Prefab: {fileID: 8754973879062318622, guid: 761baa700fd1438418078cc3d0b6a704, type: 3}
+  - Name: "\u5E55\u30A8\u30D5\u30A7\u30AF\u30C8(\u30EA\u30B6\u30EB\u30C8)"
+    Prefab: {fileID: 8341808116093292761, guid: 7539b409566019a42b98fee29b0f2d60, type: 3}
+  - Name: "\u8868\u5F70\u53F0\u30A8\u30D5\u30A7\u30AF\u30C8(\u30EA\u30B6\u30EB\u30C8)"
+    Prefab: {fileID: 8341808116093292761, guid: ac915ff9655e7674d9e19412063f0f78, type: 3}

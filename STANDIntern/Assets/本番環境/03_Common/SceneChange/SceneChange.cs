@@ -14,21 +14,38 @@ public class SceneChange : MonoBehaviour
     [SerializeField, RenameField("ëJà⁄êÊÉVÅ[Éì(OnClickóp)")]
     private SceneNameEnum scene = SceneNameEnum.TitleScene;
 
+    [SerializeField]
+    private bool isCanvasParent = true;
+
     public void StartSceneChange(SceneNameEnum s)
     {
         scene = s;
         TransitionCallBack.SetTransitionCallBack(ChangeScene);
 
-        GameObject parent = GameObject.Find("Canvas");
-        GameObject t = Instantiate(transition, parent.transform);
+        if (isCanvasParent)
+        {
+            GameObject parent = GameObject.Find("Canvas");
+            GameObject t = Instantiate(transition, parent.transform);
+        }
+        else
+        {
+            Instantiate(transition);
+        }
     }
 
     public void StartSceneChange()
     {
         TransitionCallBack.SetTransitionCallBack(ChangeScene);
 
-        GameObject parent = GameObject.Find("Canvas");
-        GameObject t = Instantiate(transition, parent.transform);
+        if (isCanvasParent)
+        {
+            GameObject parent = GameObject.Find("Canvas");
+            GameObject t = Instantiate(transition, parent.transform);
+        }
+        else
+        {
+            Instantiate(transition);
+        }
 
         GameObject obj = GameObject.FindGameObjectWithTag("InputLockManager");
         if (obj != null)

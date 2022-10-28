@@ -241,8 +241,6 @@ public class PlayerController : MonoBehaviour
             Rb.velocity = resultVel;
             Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
 
-            AudioManager.Instance.PlaySe("ジャンプ");
-
             float sqrMag = Rb.velocity.sqrMagnitude;
             Vector2 hitPoint = collision.ClosestPoint(Leg.position);
             float angle = Vector2.SignedAngle(Vector2.up, Leg.position - (Vector3)hitPoint);
@@ -287,8 +285,6 @@ public class PlayerController : MonoBehaviour
 
             Rb.velocity = resultVel;
             Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
-
-            AudioManager.Instance.PlaySe("ジャンプ");
         }
     }
 
@@ -334,8 +330,6 @@ public class PlayerController : MonoBehaviour
         Rb.velocity = resultVel + distance.normalized * addPowerRate;
         Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
 
-        AudioManager.Instance.PlaySe("ジャンプ");
-
         CheckBlowStart();
         playerFaceManager.ChangeState((int)PlayerFaceManager.FaceState.Kicked, 2.0f);
     }
@@ -359,6 +353,13 @@ public class PlayerController : MonoBehaviour
         BlowEffect.Stop();
 
         playerFaceManager.ResetParam();
+    }
+
+    public void Stop()
+    {
+        Rb.bodyType = RigidbodyType2D.Kinematic;
+        Rb.velocity = Vector2.zero;
+        Rb.angularVelocity = 0.0f;
     }
 
     public void Revival()
