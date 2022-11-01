@@ -16,6 +16,7 @@ public class BgmStarter : MonoBehaviour
 
     void Start()
     {
+        AudioManager.Instance.StopBgm();
         AudioManager.Instance.PlayBgm(BgmName, true);
         
         // ‚±‚ÌŒã‚Í•s—v‚È‚Ì‚Åíœ‚·‚é

@@ -233,12 +233,12 @@ public class SpownTruckManager : MonoBehaviour
         {
             SetAllJumpParam(info, stageId, jumpTransInfo);
             EffectContainer.Instance.PlayEffect("スポーン", info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
-            AudioManager.Instance.PlaySe("リスポーン時の音");
         }
         else
         {
             SetJumpParam(info, stageId, jumpTransInfo);
             EffectContainer.Instance.PlayEffect("リスポーン", info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
+            AudioManager.Instance.PlaySe("リスポーン時の音");
         }
     }
 

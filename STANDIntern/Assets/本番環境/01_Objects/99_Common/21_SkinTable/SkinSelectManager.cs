@@ -323,9 +323,13 @@ public class SkinSelectManager : InputLockElement
             }
         }
 
+        if (!isCanSubmit)
+        {
+            AudioManager.Instance.PlaySe("次の画面に進めることが可能になる音");
+        }
+
         promptAnimator.SetBool("IsCan", true);
         isCanSubmit = true;
-        AudioManager.Instance.PlaySe("次の画面に進めることが可能になる音");
     }
 
     public void ClearPlayerTempInfo()

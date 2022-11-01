@@ -215,30 +215,39 @@ public class PlayerController : MonoBehaviour
     {
         if (!IsJump)
         {
+            // 1度の蹴りで複数回力がかからないようにするためのフラグ変更
             IsJump = true;
+
             Vector2 resultVel;
+            // 跳ぶ方向を足を出した方向と逆方向に設定
             Vector2 jumpVel = -kickDirection * KickPower;
+            // 左右の速度に補正を加える
             jumpVel.x *= KickMagX;
 
-            if ((Rb.velocity.x > 0 && jumpVel.x > 0) || (Rb.velocity.x < 0 && jumpVel.x < 0))
+            // 現在のプレイヤーの左右速度が必ずジャンプの左右への加速度へ
+            // 足される状態になるようにベクトルを計算する
+            if ((Rb.velocity.x > 0 && jumpVel.x > 0) ||
+                (Rb.velocity.x < 0 && jumpVel.x < 0))
             {
-                resultVel.x = Rb.velocity.x + jumpVel.x;
+                resultVel.x = jumpVel.x + Rb.velocity.x;
             }
             else
             {
                 resultVel.x = jumpVel.x - Rb.velocity.x;
             }
 
-            if ((Rb.velocity.y > 0 && jumpVel.y > 0) || (Rb.velocity.y < 0 && jumpVel.y < 0))
+            // 現在のプレイヤーの上下速度が必ずジャンプの上下への加速度へ
+            // 足される状態になるようにベクトルを計算する
+            resultVel.y = jumpVel.y;
+            if ((Rb.velocity.y > 0 && jumpVel.y > 0) ||
+                (Rb.velocity.y < 0 && jumpVel.y < 0))
             {
-                resultVel.y = jumpVel.y + Rb.velocity.y;
-            }
-            else
-            {
-                resultVel.y = jumpVel.y - Rb.velocity.y * 0.25f;
+                resultVel.y += Rb.velocity.y;
             }
 
+            // 速度を反映
             Rb.velocity = resultVel;
+            // 回転速度を速度を元に計算
             Rb.angularVelocity = Rb.velocity.x * -KickAngularPower;
 
             float sqrMag = Rb.velocity.sqrMagnitude;
@@ -253,6 +262,8 @@ public class PlayerController : MonoBehaviour
             {
                 EffectContainer.Instance.PlayEffect("衝突(中)", hitPoint, Quaternion.AngleAxis(angle, Vector3.back));
             }
+
+            AudioManager.Instance.PlaySe("ジャンプ");
         }
     }
 

@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: da14472a87231df4982d96b2e1eaad91, type: 2}
+  m_Material: {fileID: 2100000, guid: 9a7c26f28d7385e4dace4373c39ede9c, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -244,7 +244,7 @@ Animator:
   m_GameObject: {fileID: 2595304486220362399}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e6a59b91988075b4bb610adafdecd1cc, type: 2}
+  m_Controller: {fileID: 9100000, guid: 90f69dc769b05274ba832cb8c4b4c44e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -80,10 +80,10 @@ MonoBehaviour:
     Volume: 1
   - Name: "\u8E74\u308A\u3092\u53D7\u3051\u305F(\u8EFD)"
     Clip: {fileID: 8300000, guid: 9327ada7f6856234fa748461406989b7, type: 3}
-    Volume: 1
+    Volume: 0.5
   - Name: "\u30EA\u30B9\u30DD\u30FC\u30F3\u6642\u306E\u97F3"
     Clip: {fileID: 8300000, guid: 17f389e9555071a4c90017c9f434ace3, type: 3}
-    Volume: 1
+    Volume: 1.5
   - Name: "\u30AD\u30C3\u30AF(\u7A7A\u632F\u308A)"
     Clip: {fileID: 8300000, guid: 4d84da0e1d3fa034bb500023d72a5be5, type: 3}
     Volume: 1
@@ -104,7 +104,7 @@ MonoBehaviour:
     Volume: 1
   - Name: "\u30B2\u30FC\u30E0\u958B\u59CB"
     Clip: {fileID: 8300000, guid: 6d29ecaa63d620d4fabce14831264d10, type: 3}
-    Volume: 1
+    Volume: 0
   - Name: "\u30B2\u30FC\u30E0\u7D42\u4E86"
     Clip: {fileID: 8300000, guid: bc089325945dab749867c75e89f70b11, type: 3}
     Volume: 1

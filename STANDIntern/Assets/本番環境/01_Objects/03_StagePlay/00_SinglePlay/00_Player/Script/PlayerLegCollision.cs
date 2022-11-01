@@ -60,8 +60,6 @@ public class PlayerLegCollision : MonoBehaviour
         {
             playerController.KickPlatformAddForce(collision);
             playerController.EndBlow();
-
-            AudioManager.Instance.PlaySe("ƒWƒƒƒ“ƒv");
         }
     }
 }
