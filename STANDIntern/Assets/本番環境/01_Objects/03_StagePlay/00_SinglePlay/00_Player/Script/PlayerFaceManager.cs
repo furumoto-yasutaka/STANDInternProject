@@ -13,22 +13,21 @@ public class PlayerFaceManager : MonoBehaviour
         Length,
     }
 
-    private int nowFace = (int)FaceState.Normal;
-    private int prevFace = (int)FaceState.Normal;
-
+    [SerializeField]
     private SpriteRenderer bodyRenderer;
+    [SerializeField]
     private SpriteRenderer legRenderer;
-
     [SerializeField]
     private PlayerSkinDataBase playerSkinDataBase;
-    private int skinId;
-    private PlayerSkinInfo skinInfo;
-
-    private float[] timeLimit = new float[(int)FaceState.Length];
-
+    [SerializeField]
     private Rigidbody2D rb;
-    private static float kickedFaceThreshold = 8.0f;
-    private static float kickedStrongFaceThreshold = 15.0f;
+
+    private int faceState = (int)FaceState.Normal;
+    private PlayerSkinInfo skinInfo;
+    private float[] timeLimit = new float[(int)FaceState.Length];
+    
+    private static readonly float kickedFaceThreshold = 8.0f;
+    private static readonly float kickedStrongFaceThreshold = 15.0f;
 
     public PlayerSkinInfo SkinInfo { get { return skinInfo; } }
     public PlayerSkinDataBase PlayerSkinDataBase { get { return playerSkinDataBase; } }
@@ -40,17 +39,13 @@ public class PlayerFaceManager : MonoBehaviour
             timeLimit[i] = 0.0f;
         }
 
-        skinId = BattleSumoManager.IsPlayerSkinId[GetComponent<PlayerId>().Id];
+        int skinId = BattleSumoManager.IsPlayerSkinId[GetComponent<PlayerId>().Id];
         skinInfo = playerSkinDataBase.PlayerSkinInfos[skinId];
 
-        bodyRenderer = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
-        ChangeTexture();
+        ChangeFace();
 
-        legRenderer = transform.GetChild(1).GetChild(0).GetComponent<SpriteRenderer>();
         legRenderer.sprite = skinInfo.Leg;
         legRenderer.material.SetTexture("_Maintex", skinInfo.Leg.texture);
-
-        rb = transform.GetChild(0).GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -60,9 +55,9 @@ public class PlayerFaceManager : MonoBehaviour
             if (timeLimit[i] <= 0.0f)
             {
                 timeLimit[i] = 0.0f;
-                if (nowFace == i)
+                if (faceState == i)
                 {
-                    LiftState(nowFace);
+                    LiftState(faceState);
                 }
             }
             else
@@ -71,25 +66,22 @@ public class PlayerFaceManager : MonoBehaviour
             }
         }
 
-        if (nowFace == (int)FaceState.Kicked)
+        if (faceState == (int)FaceState.Kicked)
         {
             CheckKickedFace();
         }
     }
 
-    public void ChangeState(int state, float time)
+    /// <summary>
+    /// 指定した顔のカウントを設定
+    /// </summary>
+    public void SetState(int state, float time)
     {
-        if (nowFace <= state)
+        if (faceState <= state ||
+            (state == (int)FaceState.Kick && faceState != (int)FaceState.Kill))
         {
-            prevFace = nowFace;
-            nowFace = state;
-            ChangeTexture();
-        }
-        else if (state == (int)FaceState.Kick && nowFace != (int)FaceState.Kill)
-        {
-            prevFace = nowFace;
-            nowFace = state;
-            ChangeTexture();
+            faceState = state;
+            ChangeFace();
         }
 
         if (timeLimit[state] < time)
@@ -98,30 +90,36 @@ public class PlayerFaceManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 指定した顔のカウントをリセット
+    /// </summary>
     public void LiftState(int state)
     {
-        if (nowFace != state) { return; }
+        if (faceState != state) { return; }
 
         timeLimit[state] = 0.0f;
 
+        //=====現在カウントが残っている顔の中で一番優先度が高い顔に設定する
         for (int i = state - 1; i >= 0; i--)
         {
             if (timeLimit[i] > 0.0f)
             {
-                prevFace = nowFace;
-                nowFace = i;
-                ChangeTexture();
+                faceState = i;
+                ChangeFace();
                 return;
             }
         }
 
-        nowFace = (int)FaceState.Normal;
-        ChangeTexture();
+        faceState = (int)FaceState.Normal;
+        ChangeFace();
     }
 
-    public void ChangeTexture()
+    /// <summary>
+    /// 顔を変更
+    /// </summary>
+    public void ChangeFace()
     {
-        switch (nowFace)
+        switch (faceState)
         {
             case (int)FaceState.Normal:
                 bodyRenderer.sprite = skinInfo.Normal;
@@ -132,7 +130,7 @@ public class PlayerFaceManager : MonoBehaviour
                 bodyRenderer.material.SetTexture("_Maintex", skinInfo.Kick.texture);
                 break;
             case (int)FaceState.Kicked:
-                ChangeKickedFace();
+                CheckKickedFace();
                 break;
             case (int)FaceState.Kill:
                 bodyRenderer.sprite = skinInfo.Kill;
@@ -141,37 +139,14 @@ public class PlayerFaceManager : MonoBehaviour
         }
     }
 
-    public void ResetParam()
-    {
-        nowFace = (int)FaceState.Normal;
-        prevFace = (int)FaceState.Normal;
-
-        for (int i = 0; i < timeLimit.Length; i++)
-        {
-            timeLimit[i] = 0.0f;
-        }
-
-        ChangeTexture();
-    }
-
-    public void ChangeKickedFace()
-    {
-        float sqrMag = rb.velocity.sqrMagnitude;
-        if (sqrMag >= kickedStrongFaceThreshold * kickedStrongFaceThreshold)
-        {
-            bodyRenderer.sprite = skinInfo.KickedStrong;
-            bodyRenderer.material.SetTexture("_Maintex", skinInfo.KickedStrong.texture);
-        }
-        else if (sqrMag >= kickedFaceThreshold * kickedFaceThreshold)
-        {
-            bodyRenderer.sprite = skinInfo.Kicked;
-            bodyRenderer.material.SetTexture("_Maintex", skinInfo.Kicked.texture);
-        }
-    }
-
+    /// <summary>
+    /// 蹴られた顔に使うスプライトを指定
+    /// </summary>
     private void CheckKickedFace()
     {
         float sqrMag = rb.velocity.sqrMagnitude;
+
+        // 速度に応じて顔を指定
         if (sqrMag >= kickedStrongFaceThreshold * kickedStrongFaceThreshold)
         {
             bodyRenderer.sprite = skinInfo.KickedStrong;
@@ -184,7 +159,23 @@ public class PlayerFaceManager : MonoBehaviour
         }
         else
         {
+            // 速度が足りないので解除する
             LiftState((int)FaceState.Kicked);
         }
+    }
+
+    /// <summary>
+    /// パラメータを全て初期化
+    /// </summary>
+    public void ResetParam()
+    {
+        faceState = (int)FaceState.Normal;
+
+        for (int i = 0; i < timeLimit.Length; i++)
+        {
+            timeLimit[i] = 0.0f;
+        }
+
+        ChangeFace();
     }
 }

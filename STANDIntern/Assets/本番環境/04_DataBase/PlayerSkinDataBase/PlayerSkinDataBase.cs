@@ -17,6 +17,7 @@ public class PlayerSkinDataBase : ScriptableObject
         Purple,
         Gray,
     }
+
     [EnumIndex(typeof(PlayerColorId))]
     public PlayerSkinInfo[] PlayerSkinInfos;
 }

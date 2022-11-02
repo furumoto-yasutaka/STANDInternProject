@@ -5,51 +5,57 @@ using UnityEngine;
 public class PlayerBodyCollision : MonoBehaviour
 {
     private BattleSumoManager battleSumoManager;
-    private static float hitEffectWeakThreshold = 3.0f;
-    private static float hitEffectMidleThreshold = 8.0f;
-    private static float hitEffectStrongThreshold = 15.0f;
+    [SerializeField]
+    private PlayerEffectManager playerEffectManager;
+    [SerializeField]
+    private PlayerId playerId;
+    [SerializeField]
     private Rigidbody2D rb;
 
     private void Start()
     {
         int index = (int)BattleSumoModeManagerList.BattleSumoModeManagerId.BattleSumoManager;
         battleSumoManager = GameObject.FindGameObjectWithTag("Managers").transform.GetChild(index).GetComponent<BattleSumoManager>();
-        rb = transform.parent.GetComponent<Rigidbody2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        AudioManager.Instance.PlaySe("バウンド");
-
         if (collision.collider.CompareTag("Platform"))
         {
+            //=====衝突エフェクト生成
             float sqrMag = rb.velocity.sqrMagnitude;
             Vector2 normal = collision.contacts[0].normal;
             float angle = Vector2.SignedAngle(Vector2.up, normal);
 
-            if (sqrMag >= hitEffectStrongThreshold * hitEffectStrongThreshold)
+            if (sqrMag >= PlayerEffectManager.impactStrongEffThreshold * PlayerEffectManager.impactStrongEffThreshold)
             {
-                EffectContainer.Instance.PlayEffect("衝突(強)", collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
+                playerEffectManager.PlayImpactWeakEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
             }
-            else if (sqrMag >= hitEffectMidleThreshold * hitEffectMidleThreshold)
+            else if (sqrMag >= PlayerEffectManager.impactMiddleEffThreshold * PlayerEffectManager.impactMiddleEffThreshold)
             {
-                EffectContainer.Instance.PlayEffect("衝突(中)", collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
+                playerEffectManager.PlayImpactMiddleEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
             }
-            else if (sqrMag >= hitEffectWeakThreshold * hitEffectWeakThreshold)
+            else if (sqrMag >= PlayerEffectManager.impactWeakEffThreshold * PlayerEffectManager.impactWeakEffThreshold)
             {
-                EffectContainer.Instance.PlayEffect("衝突(弱)", collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
+                playerEffectManager.PlayImpactStrongEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
             }
         }
+
+        // 効果音再生
+        AudioManager.Instance.PlaySe("バウンド");
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            // 敵プレイヤーに自分をマークするようリクエストする
             battleSumoManager.RequestContactMark(
                 collision.transform.parent.GetComponent<PlayerId>().Id,
-                transform.parent.parent.GetComponent<PlayerId>().Id,
+                playerId.Id,
                 collision.transform.GetComponent<Rigidbody2D>().velocity);
+
+            // ぶっ飛びエフェクトの再生確認
             collision.transform.parent.GetComponent<PlayerController>().CheckBlowStart();
         }
     }

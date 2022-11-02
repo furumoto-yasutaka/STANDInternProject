@@ -6,9 +6,15 @@ public class PlayerLegCollision : MonoBehaviour
 {
     [SerializeField]
     private PlayerController playerController;
+    [SerializeField]
+    private PlayerEffectManager playerEffectManager;
+    [SerializeField]
+    private PlayerId playerId;
+
+    //private float strongKickWaveThreshold = 15.0f;
+
     private List<Collider2D> playerList = new List<Collider2D>();
     private BattleSumoManager battleSumoManager;
-    private float strongKickWaveThreshold = 15.0f;
 
     private void Start()
     {
@@ -31,29 +37,25 @@ public class PlayerLegCollision : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player") &&
             !playerList.Contains(collision))
         {
+            // R‚Á‚½”½“®‚ğ”½‰f
             playerController.KickPlayerAddForce();
-            battleSumoManager.RequestDeleteMark(playerController.transform.GetComponent<PlayerId>().Id);
+            
+            // ©g‚Ìƒ}[ƒN‚ğíœ
+            battleSumoManager.RequestDeleteMark(playerId.Id);
 
+            // R‚Á‚½‘Šè‚ğ‹L˜^‚µ‚Ä˜A‘±‚ÅR‚ç‚È‚¢‚æ‚¤‚É‚·‚é
             playerList.Add(collision);
+
+            // –³“Gó‘Ô‚Å‚È‚¢ê‡‚Ì‚İ‘Šè‚ğR‚è”ò‚Î‚·
             if (!collision.transform.parent.parent.GetComponent<PlayerInvincible>().IsInvincible)
             {
                 collision.transform.parent.parent.GetComponent<PlayerController>().KickedAddForce(
                     collision.transform.position - transform.position,
-                    playerController.KickDirection);
+                    playerController.KickDirection,
+                    collision.ClosestPoint(transform.position));
                 battleSumoManager.RequestKickMark(
                     collision.transform.parent.parent.GetComponent<PlayerId>().Id,
-                    playerController.transform.GetComponent<PlayerId>().Id);
-            }
-
-            if (collision.transform.parent.GetComponent<Rigidbody2D>().velocity.sqrMagnitude >= strongKickWaveThreshold * strongKickWaveThreshold)
-            {
-                EffectContainer.Instance.PlayEffect("ƒLƒbƒN(‹­)", collision.ClosestPoint(transform.position));
-                AudioManager.Instance.PlaySe("R‚è‚ğó‚¯‚½(d)");
-            }
-            else
-            {
-                EffectContainer.Instance.PlayEffect("ƒLƒbƒN(ã)", collision.ClosestPoint(transform.position));
-                AudioManager.Instance.PlaySe("R‚è‚ğó‚¯‚½(Œy)");
+                    playerId.Id);
             }
         }
         else
