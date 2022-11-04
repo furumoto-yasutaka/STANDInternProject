@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFaceManager : MonoBehaviour
+public class PlayerFace : MonoBehaviour
 {
     public enum FaceState
     {
@@ -13,6 +13,7 @@ public class PlayerFaceManager : MonoBehaviour
         Length,
     }
 
+    //=====内部から取得
     [SerializeField]
     private SpriteRenderer bodyRenderer;
     [SerializeField]
@@ -22,15 +23,21 @@ public class PlayerFaceManager : MonoBehaviour
     [SerializeField]
     private Rigidbody2D rb;
 
+    // ステート
     private int faceState = (int)FaceState.Normal;
+    // 各顔のスプライト情報
     private PlayerSkinInfo skinInfo;
+    // 各顔の有効時間
     private float[] timeLimit = new float[(int)FaceState.Length];
     
+    //=====しきい値
     private static readonly float kickedFaceThreshold = 8.0f;
     private static readonly float kickedStrongFaceThreshold = 15.0f;
 
+
     public PlayerSkinInfo SkinInfo { get { return skinInfo; } }
     public PlayerSkinDataBase PlayerSkinDataBase { get { return playerSkinDataBase; } }
+
 
     void Start()
     {
@@ -50,6 +57,7 @@ public class PlayerFaceManager : MonoBehaviour
 
     void Update()
     {
+        //=====各顔有効時間のカウントダウン
         for (int i = 0; i < timeLimit.Length; i++)
         {
             if (timeLimit[i] <= 0.0f)
@@ -66,6 +74,7 @@ public class PlayerFaceManager : MonoBehaviour
             }
         }
 
+        //=====蹴られた顔の場合のみ速度に応じて状態を切り替えるため確認を行う
         if (faceState == (int)FaceState.Kicked)
         {
             CheckKickedFace();
@@ -99,7 +108,7 @@ public class PlayerFaceManager : MonoBehaviour
 
         timeLimit[state] = 0.0f;
 
-        //=====現在カウントが残っている顔の中で一番優先度が高い顔に設定する
+        //=====現在カウントが残っている顔の中で一番優先度が高い顔(値が大きいもの)に設定する
         for (int i = state - 1; i >= 0; i--)
         {
             if (timeLimit[i] > 0.0f)

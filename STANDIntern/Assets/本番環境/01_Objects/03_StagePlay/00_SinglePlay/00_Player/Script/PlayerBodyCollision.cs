@@ -6,7 +6,7 @@ public class PlayerBodyCollision : MonoBehaviour
 {
     private BattleSumoManager battleSumoManager;
     [SerializeField]
-    private PlayerEffectManager playerEffectManager;
+    private PlayerEffect playerEffectManager;
     [SerializeField]
     private PlayerId playerId;
     [SerializeField]
@@ -27,15 +27,15 @@ public class PlayerBodyCollision : MonoBehaviour
             Vector2 normal = collision.contacts[0].normal;
             float angle = Vector2.SignedAngle(Vector2.up, normal);
 
-            if (sqrMag >= PlayerEffectManager.impactStrongEffThreshold * PlayerEffectManager.impactStrongEffThreshold)
+            if (sqrMag >= PlayerEffect.impactStrongEffThreshold * PlayerEffect.impactStrongEffThreshold)
             {
                 playerEffectManager.PlayImpactWeakEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
             }
-            else if (sqrMag >= PlayerEffectManager.impactMiddleEffThreshold * PlayerEffectManager.impactMiddleEffThreshold)
+            else if (sqrMag >= PlayerEffect.impactMiddleEffThreshold * PlayerEffect.impactMiddleEffThreshold)
             {
                 playerEffectManager.PlayImpactMiddleEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
             }
-            else if (sqrMag >= PlayerEffectManager.impactWeakEffThreshold * PlayerEffectManager.impactWeakEffThreshold)
+            else if (sqrMag >= PlayerEffect.impactWeakEffThreshold * PlayerEffect.impactWeakEffThreshold)
             {
                 playerEffectManager.PlayImpactStrongEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
             }
@@ -47,7 +47,7 @@ public class PlayerBodyCollision : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (collision.collider.CompareTag("Player"))
         {
             // 敵プレイヤーに自分をマークするようリクエストする
             battleSumoManager.RequestContactMark(

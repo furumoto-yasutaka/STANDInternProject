@@ -8,6 +8,7 @@ TagManager:
   - Platform
   - Managers
   - Timer
+  - PlayerLeg
   layers:
   - Default
   - TransparentFX

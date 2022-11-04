@@ -21,9 +21,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField, RenameField("PlayerIdスクリプト")]
     private PlayerId playerId;
     [SerializeField, RenameField("FaceManagerスクリプト")]
-    private PlayerFaceManager playerFaceManager;
+    private PlayerFace playerFace;
     [SerializeField, RenameField("EffectManagerスクリプト")]
-    private PlayerEffectManager playerEffectManager;
+    private PlayerEffect playerEffect;
+    [SerializeField, RenameField("Invincibleスクリプト")]
+    private PlayerInvincible playerInvincible;
     [SerializeField, RenameField("PlayerIdスクリプト")]
     private Transform body;
     [SerializeField, RenameField("PlayerIdスクリプト")]
@@ -62,9 +64,6 @@ public class PlayerController : MonoBehaviour
     private float kickedAddPowerMin = 0.85f;
     [SerializeField, RenameField("蹴られた時のキック力基準点(最大)")]
     private float kickedAddPowerMax = 1.7f;
-
-    private float startBlowThreshold = 10.0f;
-    private float endBlowThreshold = 8.0f;
 
     //=====ステート関係
     // 蹴りのステート
@@ -105,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
         playerId = GetComponent<PlayerId>();
         rb = body.GetComponent<Rigidbody2D>();
-        playerFaceManager = GetComponent<PlayerFaceManager>();
+        playerFace = GetComponent<PlayerFace>();
 
         kickState = KickStateId.None;
         isDeath = true;
@@ -203,7 +202,7 @@ public class PlayerController : MonoBehaviour
             leg.gameObject.SetActive(true);
 
             // 顔を蹴り状態に遷移
-            playerFaceManager.SetState((int)PlayerFaceManager.FaceState.Kick, 999.0f);
+            playerFace.SetState((int)PlayerFace.FaceState.Kick, 999.0f);
         }
     }
 
@@ -252,7 +251,7 @@ public class PlayerController : MonoBehaviour
             leg.position = body.position;
 
             // 顔の蹴り状態を解除
-            playerFaceManager.LiftState((int)PlayerFaceManager.FaceState.Kick);
+            playerFace.LiftState((int)PlayerFace.FaceState.Kick);
         }
     }
 
@@ -334,7 +333,7 @@ public class PlayerController : MonoBehaviour
         rb.angularVelocity = rb.velocity.x * -kickAngularPower;
 
         // 顔を蹴られた状態に遷移
-        playerFaceManager.SetState((int)PlayerFaceManager.FaceState.Kicked, 2.0f);
+        playerFace.SetState((int)PlayerFace.FaceState.Kicked, 2.0f);
 
         // ぶっ飛びエフェクトを発生させるか確認
         CheckBlowStart();
@@ -398,7 +397,7 @@ public class PlayerController : MonoBehaviour
         // 死亡エフェクト発生
         Vector2 normal = -new Vector2(rb.velocity.x, rb.velocity.y).normalized;
         float angle = Vector2.SignedAngle(Vector2.up, normal);
-        playerEffectManager.PlayDeathEff(body.position + (Vector3)normal * 2.0f, Quaternion.AngleAxis(angle, Vector3.forward));
+        playerEffect.PlayDeathEff(body.position + (Vector3)normal * 2.0f, Quaternion.AngleAxis(angle, Vector3.forward));
 
         // 吹っ飛びエフェクトを停止
         EndBlow();
@@ -433,10 +432,13 @@ public class PlayerController : MonoBehaviour
 
         // リジッドボディを有効
         rb.bodyType = RigidbodyType2D.Dynamic;
-        transform.GetChild(0).GetChild(0).GetComponent<CircleCollider2D>().enabled = true;
+        body.GetChild(0).GetComponent<CircleCollider2D>().enabled = true;
+
+        // 無敵状態を設定
+        playerInvincible.StartSpownInvincible();
 
         // 顔の状態を初期化
-        playerFaceManager.ResetParam();
+        playerFace.ResetParam();
     }
 
     /// <summary>
@@ -446,15 +448,15 @@ public class PlayerController : MonoBehaviour
     {
         float sqrMag = rb.velocity.sqrMagnitude;
         float angle = Vector2.SignedAngle(Vector2.up, leg.position - (Vector3)createPos);
-        float threshold = PlayerEffectManager.hitEffectStrongThreshold * PlayerEffectManager.hitEffectStrongThreshold;
+        float threshold = PlayerEffect.hitEffectStrongThreshold * PlayerEffect.hitEffectStrongThreshold;
 
         if (sqrMag >= threshold)
         {
-            playerEffectManager.PlayImpactStrongEff(createPos, Quaternion.AngleAxis(angle, Vector3.back));
+            playerEffect.PlayImpactStrongEff(createPos, Quaternion.AngleAxis(angle, Vector3.back));
         }
         else
         {
-            playerEffectManager.PlayImpactMiddleEff(createPos, Quaternion.AngleAxis(angle, Vector3.back));
+            playerEffect.PlayImpactMiddleEff(createPos, Quaternion.AngleAxis(angle, Vector3.back));
         }
     }
 
@@ -465,7 +467,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isBlow)
         {
-            if (rb.velocity.sqrMagnitude >= startBlowThreshold * startBlowThreshold)
+            if (rb.velocity.sqrMagnitude >= PlayerEffect.blowEffStartThreshold * PlayerEffect.blowEffStartThreshold)
             {
                 StartBlow();
             }
@@ -478,7 +480,7 @@ public class PlayerController : MonoBehaviour
     public void StartBlow()
     {
         isBlow = true;
-        playerEffectManager.PlayBlowEff();
+        playerEffect.PlayBlowEff();
     }
 
     /// <summary>
@@ -488,7 +490,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isBlow)
         {
-            if (rb.velocity.sqrMagnitude <= endBlowThreshold * endBlowThreshold)
+            if (rb.velocity.sqrMagnitude <= PlayerEffect.blowEffEndThreshold * PlayerEffect.blowEffEndThreshold)
             {
                 EndBlow();
             }
@@ -501,7 +503,7 @@ public class PlayerController : MonoBehaviour
     public void EndBlow()
     {
         isBlow = false;
-        playerEffectManager.StopBlowEff();
+        playerEffect.StopBlowEff();
     }
 
     /// <summary>
@@ -509,16 +511,16 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void CheckKickedImpact(Vector2 createEffectPos)
     {
-        float threshold = PlayerEffectManager.kickedImpactWaveStrongThreshold * PlayerEffectManager.kickedImpactWaveStrongThreshold;
+        float threshold = PlayerEffect.kickedImpactWaveStrongThreshold * PlayerEffect.kickedImpactWaveStrongThreshold;
 
         if (rb.velocity.sqrMagnitude >= threshold)
         {
-            playerEffectManager.PlayKickedImpactStrongEff(createEffectPos);
+            playerEffect.PlayKickedImpactStrongEff(createEffectPos);
             AudioManager.Instance.PlaySe("蹴りを受けた(重)");
         }
         else
         {
-            playerEffectManager.PlayKickedImpactNormalEff(createEffectPos);
+            playerEffect.PlayKickedImpactNormalEff(createEffectPos);
             AudioManager.Instance.PlaySe("蹴りを受けた(軽)");
         }
     }

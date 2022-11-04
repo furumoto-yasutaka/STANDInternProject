@@ -4,270 +4,252 @@ using UnityEngine;
 
 public class SpownTruckManager : MonoBehaviour
 {
+    public enum TruckState
+    {
+        Wait = 0,
+        PutOnMove,
+        Move,
+        Destroy,
+    }
+
     public class TruckInfo
     {
-        public bool IsPutOn;
-        public bool IsJump;
-        public int revivalPlayerIndex;
-        public Transform truck;
-        public float JumpTimeCount;
-        public List<JumpInfo> JumpParam;
+        public float SpownWaitTimeCount;
+        public TruckState State = TruckState.Wait;
+        public Transform Truck;
+        public JumpInfo JumpInfo;
+        public float InitialPosX;
+        public float TargetPosX;
 
-        public TruckInfo(Transform truck, int revivalPlayerIndex)
+        public TruckInfo(float waitTime, Transform truck, float initialPosX, float targetPosX)
         {
-            IsPutOn = true;
-            IsJump = false;
-            this.revivalPlayerIndex = revivalPlayerIndex;
-            this.truck = truck;
-            JumpTimeCount = 0.0f;
-            JumpParam = new List<JumpInfo>();
+            SpownWaitTimeCount = waitTime;
+            Truck = truck;
+            InitialPosX = initialPosX;
+            TargetPosX = targetPosX;
         }
     }
 
     public class JumpInfo
     {
-        public Vector2 Start;
-        public Vector2 End;
-        public Vector2 Half;
+        public bool IsJump = false;
+        public float JumpTimeCount = 0.0f;
+        public List<JumpPlayerInfo> JumpPlayerInfoList = new List<JumpPlayerInfo>();
+    }
 
-        public JumpInfo()
+    public class JumpPlayerInfo
+    {
+        public int PlayerId;
+        public Vector2 Start = Vector2.zero;
+        public Vector2 End = Vector2.zero;
+        public Vector2 Half = Vector2.zero;
+
+        public JumpPlayerInfo(int id)
         {
-            Start = Vector2.zero;
-            End = Vector2.zero;
-            Half = Vector2.zero;
+            PlayerId = id;
         }
     }
 
+    [Header("初期スポーン関係")]
     [SerializeField]
-    private GameObject firstTruckPrefab;
+    private GameObject firstSpownTruckPrefab;
     [SerializeField]
     private int firstSpownSortLayer;
+
     [SerializeField]
-    private GameObject revivalTruckPrefab;
+    [Header("リスポーン関係")]
+    private GameObject respownTruckPrefab;
     [SerializeField]
-    private int revivalSpownSortLayer;
+    private int respownSortLayer;
+
     [SerializeField]
-    private float moveSpeed = 1.0f;
-    [SerializeField]
+    [Header("ジャンプ関係")]
     private Transform players;
-    [SerializeField]
-    private int defaultSortLayer;
     [SerializeField]
     private float jumpTime;
     [SerializeField]
     private BattleFirstPositionDataBase firstPositionDataBase;
     [SerializeField]
     private float invincibleTime = 2.0f;
-    
-    private Vector3 firstTruckInitialPos;
-    private Vector3 firstTruckTargetPos;
+    [SerializeField]
+    private int defaultSortLayer;
+
+    [SerializeField]
+    [Header("その他")]
+    private float truckMoveSpeed = 1.0f;
+    [SerializeField]
+    private float spownWaitTime = 2.0f;
+
+    private Transform[] playerBodys;
+    private SpriteRenderer[] playerSpriteRenderer;
+    private Vector3 firstSpownTruckInitialPos;
+    private Vector3 firstSpownTruckTargetPos;
     private Vector3 respownTruckInitialPos;
     private Vector3 respownTruckTargetPos;
+    private Transform truckParent;
     private Vector3 moveAngle;
     private List<TruckInfo> truckList = new List<TruckInfo>();
-    private List<TruckInfo> removeList = new List<TruckInfo>();
 
     void Start()
     {
-        firstTruckInitialPos = transform.GetChild(0).position;
-        firstTruckTargetPos = transform.GetChild(1).position;
+        playerBodys = new Transform[players.childCount];
+        playerSpriteRenderer = new SpriteRenderer[players.childCount];
+        for (int i = 0; i < players.childCount; i++)
+        {
+            playerBodys[i] = players.GetChild(i).GetChild(0);
+            playerSpriteRenderer[i] = playerBodys[i].GetChild(0).GetComponent<SpriteRenderer>();
+        }
+        firstSpownTruckInitialPos = transform.GetChild(0).position;
+        firstSpownTruckTargetPos = transform.GetChild(1).position;
         respownTruckInitialPos = transform.GetChild(2).position;
         respownTruckTargetPos = transform.GetChild(3).position;
-        moveAngle = (firstTruckTargetPos - firstTruckInitialPos).normalized;
+        truckParent = transform.GetChild(4);
+        moveAngle = Vector2.right;
 
-        Spown(-1);
+        SetSpownAll();
     }
 
     void Update()
     {
         for (int i = 0; i < truckList.Count; i++)
         {
-            DriveAction(truckList[i]);
-
-            if (truckList[i].IsJump)
+            switch (truckList[i].State)
             {
-                JumpAction(truckList[i]);
+                case TruckState.Wait:
+                    WaitAction(truckList[i]);
+                    break;
+                case TruckState.PutOnMove:
+                    PutOnMoveAction(truckList[i]);
+                    break;
+                case TruckState.Move:
+                    MoveAction(truckList[i]);
+                    break;
+                case TruckState.Destroy:
+                    if (!truckList[i].JumpInfo.IsJump)
+                    {
+                        truckList.RemoveAt(i);
+                        i--;
+                        continue;
+                    }
+                    break;
+            }
+
+            if (truckList[i].JumpInfo.IsJump)
+            {
+                JumpMoveAction(truckList[i]);
             }
         }
-
-        for (int i = 0; i < removeList.Count; i++)
-        {
-            truckList.Remove(removeList[i]);
-        }
-        removeList.Clear();
     }
 
-    private void DriveAction(TruckInfo info)
+    private void WaitAction(TruckInfo info)
     {
-        if (info.IsPutOn)
+        if (info.SpownWaitTimeCount <= 0.0f)
         {
-            float toHalfDistance;
+            info.State = TruckState.PutOnMove;
 
-            if (info.JumpParam.Count > 1)
-            {
-                toHalfDistance = ((firstTruckInitialPos + firstTruckTargetPos) * 0.5f - info.truck.position).sqrMagnitude;
-            }
-            else
-            {
-                toHalfDistance = ((respownTruckInitialPos + respownTruckTargetPos) * 0.5f - info.truck.position).sqrMagnitude;
-            }
+            info.SpownWaitTimeCount = 0.0f;
 
-            if (toHalfDistance <= (moveSpeed * Time.deltaTime) * (moveSpeed * Time.deltaTime))
+            if (info.JumpInfo.JumpPlayerInfoList.Count == 1)
             {
-                info.truck.position += moveAngle * Mathf.Sqrt(toHalfDistance);
-                StartJump(info);
-                info.IsPutOn = false;
-            }
-            else
-            {
-                info.truck.position += moveAngle * moveSpeed * Time.deltaTime;
-                if (info.JumpParam.Count > 1)   { AllPutOnMove(info); }
-                else                            { PutOnMove(info); }
+                AudioManager.Instance.PlaySe("クラクション");
             }
         }
         else
         {
-            float toEndDistance;
+            info.SpownWaitTimeCount -= Time.deltaTime;
+        }
+    }
 
-            if (info.JumpParam.Count > 1)
+    private void PutOnMoveAction(TruckInfo info)
+    {
+        float toHalfDistance = (info.InitialPosX + info.TargetPosX) * 0.5f - info.Truck.position.x;
+        float moveLength = truckMoveSpeed * Time.deltaTime;
+
+        if (toHalfDistance <= moveLength)
+        {
+            info.Truck.position += moveAngle * toHalfDistance;
+            info.State = TruckState.Move;
+            SetJumpParam(info);
+
+            if (info.JumpInfo.JumpPlayerInfoList.Count == 1)
             {
-                toEndDistance = (firstTruckTargetPos - info.truck.position).sqrMagnitude;
+                //EffectContainer.Instance.PlayEffect("スポーン", info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
             }
             else
             {
-                toEndDistance = (respownTruckTargetPos - info.truck.position).sqrMagnitude;
+                //EffectContainer.Instance.PlayEffect("リスポーン", info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
+                //AudioManager.Instance.PlaySe("リスポーン時の音");
             }
-
-            if (toEndDistance <= (moveSpeed * Time.deltaTime) * (moveSpeed * Time.deltaTime))
-            {
-                info.truck.position += moveAngle * toEndDistance;
-                Destroy(info.truck.gameObject);
-                info.truck = null;
-                removeList.Add(info);
-            }
-            else
-            {
-                info.truck.position += moveAngle * moveSpeed * Time.deltaTime;
-            }
-        }
-    }
-
-    private void PutOnMove(TruckInfo info)
-    {
-        players.GetChild(info.revivalPlayerIndex).GetChild(0).position = info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f);
-    }
-
-    private void AllPutOnMove(TruckInfo info)
-    {
-        for (int i = 0; i < players.childCount; i++)
-        {
-            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
-
-            players.GetChild(i).GetChild(0).position = info.truck.position - new Vector3(i * 0.666f, 0.0f, 0.0f);
-        }
-    }
-
-    private void JumpAction(TruckInfo info)
-    {
-        float rate = (jumpTime - info.JumpTimeCount) / jumpTime;
-        if (info.JumpParam.Count > 1)   { AllJumpMove(info, rate); }
-        else                            { JumpMove(info, rate); }
-        info.JumpTimeCount -= Time.deltaTime;
-
-        if (info.JumpTimeCount <= 0.0f)
-        {
-            info.JumpTimeCount = 0.0f;
-            info.IsJump = false;
-            if (info.JumpParam.Count > 1)   { AllRevival(info); }
-            else                            { Revival(info); }
-        }
-    }
-
-    private void JumpMove(TruckInfo info, float rate)
-    {
-        players.GetChild(info.revivalPlayerIndex).GetChild(0).position = CalcLarpPoint(info.JumpParam[0].Start, info.JumpParam[0].Half, info.JumpParam[0].End, rate);
-    }
-
-    private void AllJumpMove(TruckInfo info, float rate)
-    {
-        int playerCnt = 0;
-        for (int i = 0; i < players.childCount; i++)
-        {
-            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
-
-            players.GetChild(i).GetChild(0).position = CalcLarpPoint(info.JumpParam[playerCnt].Start, info.JumpParam[playerCnt].Half, info.JumpParam[playerCnt].End, rate);
-            playerCnt++;
-        }
-    }
-
-    private void Revival(TruckInfo info)
-    {
-        Transform trans = players.GetChild(info.revivalPlayerIndex);
-        trans.GetComponent<PlayerController>().Revival();
-        trans.GetComponent<PlayerInvincible>().SetInvincible(invincibleTime);
-        players.GetChild(info.revivalPlayerIndex).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = defaultSortLayer;
-    }
-
-    private void AllRevival(TruckInfo info)
-    {
-        for (int i = 0; i < players.childCount; i++)
-        {
-            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
-
-            Transform trans = players.GetChild(i);
-            trans.GetComponent<PlayerController>().Revival();
-            trans.GetComponent<PlayerInvincible>().SetInvincible(invincibleTime);
-            players.GetChild(i).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = defaultSortLayer;
-        }
-    }
-
-    private void StartJump(TruckInfo info)
-    {
-        int managerId = (int)BattleSumoModeManagerList.BattleSumoModeManagerId.BattleSumoManager;
-        int stageId = GameObject.FindGameObjectWithTag("Managers").transform.GetChild(managerId).GetComponent<BattleSumoManager>().StageId;
-
-        int playerNumId = players.childCount - 2;
-        FirstPosition jumpTransInfo = firstPositionDataBase.BattleStageInfos[stageId].FirstPositions[playerNumId];
-
-        if (info.JumpParam.Count > 1)
-        {
-            SetAllJumpParam(info, stageId, jumpTransInfo);
-            EffectContainer.Instance.PlayEffect("スポーン", info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
         }
         else
         {
-            SetJumpParam(info, stageId, jumpTransInfo);
-            EffectContainer.Instance.PlayEffect("リスポーン", info.truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
-            AudioManager.Instance.PlaySe("リスポーン時の音");
+            info.Truck.position += moveAngle * moveLength;
         }
     }
 
-    private void SetJumpParam(TruckInfo info, int stageId, FirstPosition jumpTransInfo)
+    private void MoveAction(TruckInfo info)
     {
-        info.IsJump = true;
-        info.JumpParam[0].Start = players.GetChild(info.revivalPlayerIndex).GetChild(0).position;
-        info.JumpParam[0].End = jumpTransInfo.Position[info.revivalPlayerIndex];
-        info.JumpParam[0].Half = info.JumpParam[0].End - info.JumpParam[0].Start * 0.5f + info.JumpParam[0].Start;
-        info.JumpParam[0].Half.y = info.JumpParam[0].End.y + firstPositionDataBase.BattleStageInfos[stageId].JumpRerativeHeight;
-        info.JumpTimeCount = jumpTime;
-    }
+        float toTargetDistance = info.TargetPosX - info.Truck.position.x;
+        float moveLength = truckMoveSpeed * Time.deltaTime;
 
-    private void SetAllJumpParam(TruckInfo info, int stageId, FirstPosition jumpTransInfo)
-    {
-        info.IsJump = true;
-        int playerCnt = 0;
-        for (int i = 0; i < players.childCount; i++)
+        if (toTargetDistance <= moveLength)
         {
-            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
-
-            info.JumpParam[playerCnt].Start = players.GetChild(i).GetChild(0).position;
-            info.JumpParam[playerCnt].End = jumpTransInfo.Position[playerCnt];
-            info.JumpParam[playerCnt].Half = info.JumpParam[playerCnt].End - info.JumpParam[playerCnt].Start * 0.5f + info.JumpParam[playerCnt].Start;
-            info.JumpParam[playerCnt].Half.y = info.JumpParam[playerCnt].End.y + firstPositionDataBase.BattleStageInfos[stageId].JumpRerativeHeight;
-
-            playerCnt++;
+            info.Truck.position += moveAngle * toTargetDistance;
+            info.State = TruckState.Destroy;
         }
-        info.JumpTimeCount = jumpTime;
+        else
+        {
+            info.Truck.position += moveAngle * moveLength;
+        }
+    }
+
+    private void SetJumpParam(TruckInfo info)
+    {
+        //int stageId = BattleSumoManager.StageId;
+        int stageId = 0;
+        //int playerNumId = BattleSumoManager.
+        int playerNumId = 2;
+        FirstPosition jumpPositions = firstPositionDataBase.BattleStageInfos[stageId].FirstPositions[playerNumId];
+
+        info.JumpInfo.IsJump = true;
+        info.JumpInfo.JumpTimeCount = jumpTime;
+        for (int i = 0; i < info.JumpInfo.JumpPlayerInfoList.Count; i++)
+        {
+            int playerId = info.JumpInfo.JumpPlayerInfoList[i].PlayerId;
+            Vector3 start = playerBodys[playerId].position;
+            Vector3 end = jumpPositions.Position[playerId];
+            Vector3 half = end - start * 0.5f + start;
+
+            info.JumpInfo.JumpPlayerInfoList[i].Start = start;
+            info.JumpInfo.JumpPlayerInfoList[i].End = end;
+            info.JumpInfo.JumpPlayerInfoList[i].Half = half;
+            info.JumpInfo.JumpPlayerInfoList[i].Half.y += firstPositionDataBase.BattleStageInfos[stageId].JumpRerativeHeight;
+        }
+    }
+
+    private void JumpMoveAction(TruckInfo info)
+    {
+        float rate = (jumpTime - info.JumpInfo.JumpTimeCount) / jumpTime;
+
+        for (int i = 0; i < info.JumpInfo.JumpPlayerInfoList.Count; i++)
+        {
+            JumpPlayerInfo jumpPlayerInfo = info.JumpInfo.JumpPlayerInfoList[i];
+            playerBodys[jumpPlayerInfo.PlayerId].position = CalcLarpPoint(jumpPlayerInfo.Start, jumpPlayerInfo.Half, jumpPlayerInfo.End, rate);
+        }
+
+        info.JumpInfo.JumpTimeCount -= Time.deltaTime;
+
+        if (info.JumpInfo.JumpTimeCount <= 0.0f)
+        {
+            info.JumpInfo.JumpTimeCount = 0.0f;
+            info.JumpInfo.IsJump = false;
+            for (int i = 0; i < info.JumpInfo.JumpPlayerInfoList.Count; i++)
+            {
+                int playerId = info.JumpInfo.JumpPlayerInfoList[i].PlayerId;
+                playerSpriteRenderer[playerId].sortingOrder = defaultSortLayer;
+                players.GetChild(playerId).GetComponent<PlayerController>().Revival();
+            }
+        }
     }
 
     private Vector2 CalcLarpPoint(Vector2 start, Vector2 half, Vector2 end, float rate)
@@ -277,30 +259,32 @@ public class SpownTruckManager : MonoBehaviour
         return Vector2.Lerp(a, b, rate);
     }
 
-    public void Spown(int playerIndex)
+    public void SetSpown(int playerIndex)
     {
         Transform truck;
-        if (playerIndex == -1)
-        {
-            truck = Instantiate(firstTruckPrefab, transform.GetChild(4)).transform;
-            truckList.Add(new TruckInfo(truck, -1));
-            for (int i = 0; i < players.childCount; i++)
-            {
-                if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
 
-                truckList[truckList.Count - 1].JumpParam.Add(new JumpInfo());
-                players.GetChild(i).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = firstSpownSortLayer;
-            }
-            truck.position = firstTruckInitialPos;
-        }
-        else
+        truck = Instantiate(respownTruckPrefab, truckParent).transform;
+        truck.position = respownTruckInitialPos;
+        truckList.Add(new TruckInfo(spownWaitTime, truck,
+            respownTruckInitialPos.x, respownTruckTargetPos.x));
+        truckList[truckList.Count - 1].JumpInfo.JumpPlayerInfoList.Add(new JumpPlayerInfo(playerIndex));
+        playerSpriteRenderer[playerIndex].sortingOrder = respownSortLayer;
+    }
+
+    public void SetSpownAll()
+    {
+        Transform truck;
+
+        truck = Instantiate(firstSpownTruckPrefab, truckParent).transform;
+        truckList.Add(new TruckInfo(spownWaitTime, truck,
+            firstSpownTruckInitialPos.x, firstSpownTruckTargetPos.x));
+        for (int i = 0; i < players.childCount; i++)
         {
-            truck = Instantiate(revivalTruckPrefab, transform.GetChild(4)).transform;
-            truckList.Add(new TruckInfo(truck, playerIndex));
-            truckList[truckList.Count - 1].JumpParam.Add(new JumpInfo());
-            players.GetChild(playerIndex).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = revivalSpownSortLayer;
-            truck.position = respownTruckInitialPos;
-            AudioManager.Instance.PlaySe("クラクション");
+            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
+
+            truckList[truckList.Count - 1].JumpInfo.JumpPlayerInfoList.Add(new JumpPlayerInfo(i));
+            playerSpriteRenderer[i].sortingOrder = firstSpownSortLayer;
         }
+        truck.position = firstSpownTruckInitialPos;
     }
 }

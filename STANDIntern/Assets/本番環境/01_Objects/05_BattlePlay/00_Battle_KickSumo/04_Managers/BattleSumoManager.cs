@@ -89,7 +89,7 @@ public class BattleSumoManager : MonoBehaviour
             pointFrontText[i] = pointTextParent.GetChild(i).GetChild(2).GetComponent<TextMeshProUGUI>();
 
             pointTextParent.GetChild(i).GetChild(3).GetComponent<Image>().sprite =
-                player[i].GetComponent<PlayerFaceManager>().PlayerSkinDataBase.PlayerSkinInfos[IsPlayerSkinId[i]].Normal;
+                player[i].GetComponent<PlayerFace>().PlayerSkinDataBase.PlayerSkinInfos[IsPlayerSkinId[i]].Normal;
         }
     }
 
@@ -133,7 +133,7 @@ public class BattleSumoManager : MonoBehaviour
             int markIndex = markPlayer[index].GetComponent<PlayerId>().Id;
             AddPoint(markIndex, 1);
             EffectContainer.Instance.PlayEffect("ƒLƒ‹", player[markIndex].transform.GetChild(0));
-            player[markIndex].GetComponent<PlayerFaceManager>().SetState((int)PlayerFaceManager.FaceState.Kill, 2.0f);
+            player[markIndex].GetComponent<PlayerFace>().SetState((int)PlayerFace.FaceState.Kill, 2.0f);
             debugText[markIndex].text = (markIndex + 1).ToString() + "P:" + points[markIndex];
 
             pointText[markIndex].text = points[markIndex].ToString() + "p";
@@ -195,7 +195,7 @@ public class BattleSumoManager : MonoBehaviour
     {
         for (int i = 0; i < player.Length; i++)
         {
-            player[i].CollisionStop();
+            player[i].Stop();
         }
     }
 }

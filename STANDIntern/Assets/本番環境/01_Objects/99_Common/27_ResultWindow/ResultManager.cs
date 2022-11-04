@@ -106,16 +106,16 @@ public class ResultManager : MonoBehaviour
             switch (resultInfo[i].Rank)
             {
                 case 1:
-                    resultInfo[i].PlayerFace = player[resultInfo[i].playerId].GetComponent<PlayerFaceManager>().SkinInfo.No1;
+                    resultInfo[i].PlayerFace = player[resultInfo[i].playerId].GetComponent<PlayerFace>().SkinInfo.No1;
                     break;
                 case 2:
-                    resultInfo[i].PlayerFace = player[resultInfo[i].playerId].GetComponent<PlayerFaceManager>().SkinInfo.No2;
+                    resultInfo[i].PlayerFace = player[resultInfo[i].playerId].GetComponent<PlayerFace>().SkinInfo.No2;
                     break;
                 case 3:
-                    resultInfo[i].PlayerFace = player[resultInfo[i].playerId].GetComponent<PlayerFaceManager>().SkinInfo.No3;
+                    resultInfo[i].PlayerFace = player[resultInfo[i].playerId].GetComponent<PlayerFace>().SkinInfo.No3;
                     break;
                 case 4:
-                    resultInfo[i].PlayerFace = player[resultInfo[i].playerId].GetComponent<PlayerFaceManager>().SkinInfo.No4;
+                    resultInfo[i].PlayerFace = player[resultInfo[i].playerId].GetComponent<PlayerFace>().SkinInfo.No4;
                     break;
             }
             transform.GetChild(1).GetChild(i).GetChild(0).GetComponent<Image>().sprite = resultInfo[i].PlayerFace;

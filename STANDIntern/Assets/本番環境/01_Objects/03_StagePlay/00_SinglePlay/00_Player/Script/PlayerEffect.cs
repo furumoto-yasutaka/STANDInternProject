@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerEffectManager : MonoBehaviour
+public class PlayerEffect : MonoBehaviour
 {
-    //private Rigidbody2D rb;             // リジッドボディ
+    [SerializeField]
     private ParticleSystem blowEffect;  // ぶっ飛びエフェクト
 
     public static readonly float impactWeakEffThreshold = 3.0f;
@@ -20,8 +20,7 @@ public class PlayerEffectManager : MonoBehaviour
 
     void Start()
     {
-        //rb = transform.GetChild(0).GetComponent<Rigidbody2D>();
-        blowEffect = transform.GetChild(0).GetChild(1).GetComponent<ParticleSystem>();
+
     }
 
     public void PlayBlowEff()

@@ -4,24 +4,33 @@ using UnityEngine;
 
 public class PlayerInvincible : MonoBehaviour
 {
-    private float invincibleTimeCount = 0.0f;
-    private bool isInvincible = false;
-
-    private float effectWeightMax = 0.5f;
-    private float effectWeightMin = 0.1f;
-    private float effectWeight = 0.0f;
-    private float effectSubSpeed = 0.6f;
-
+    //=====内部から取得
+    [SerializeField]
     private Material bodyMaterial;
+    [SerializeField]
     private Material legMaterial;
+
+    [SerializeField]
+    private float spownInvincibleTime = 2.0f;
+
+    // 無敵かどうか
+    private bool isInvincible = false;
+    // 残りの無敵時間
+    private float invincibleTimeCount = 0.0f;
+    // 加算色の強さ
+    private float effectColorWeight = 0.0f;
+
+    // 加算色の強さの最大値
+    private static readonly float effectWeightMax = 0.5f;
+    // 加算色の強さの最小値
+    private static readonly float effectWeightMin = 0.1f;
+    // 加算色の減衰速度(毎秒)
+    private static readonly float effectWeightSubSpeed = 0.6f;
 
     public bool IsInvincible { get { return isInvincible; } }
 
     void Awake()
     {
-        bodyMaterial = transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().material;
-        legMaterial = transform.GetChild(1).GetChild(0).GetComponent<SpriteRenderer>().material;
-
         bodyMaterial.SetColor("_AddColor", new Color(0.0f, 0.0f, 0.0f, 0.0f));
         legMaterial.SetColor("_AddColor", new Color(0.0f, 0.0f, 0.0f, 0.0f));
     }
@@ -36,8 +45,9 @@ public class PlayerInvincible : MonoBehaviour
     {
         if (isInvincible)
         {
+            //=====無敵時間の間点滅処理を繰り返す
             if (invincibleTimeCount <= 0.0f)
-            {
+            {// 点滅終了
                 invincibleTimeCount = 0.0f;
                 isInvincible = false;
 
@@ -45,26 +55,31 @@ public class PlayerInvincible : MonoBehaviour
                 legMaterial.SetColor("_AddColor", new Color(0.0f, 0.0f, 0.0f, 0.0f));
             }
             else
-            {
+            {// 点滅処理
                 invincibleTimeCount -= Time.deltaTime;
 
-                bodyMaterial.SetColor("_AddColor", new Color(effectWeight, effectWeight, effectWeight, 0.0f));
-                legMaterial.SetColor("_AddColor", new Color(effectWeight, effectWeight, effectWeight, 0.0f));
+                bodyMaterial.SetColor("_AddColor", new Color(effectColorWeight, effectColorWeight, effectColorWeight, 0.0f));
+                legMaterial.SetColor("_AddColor", new Color(effectColorWeight, effectColorWeight, effectColorWeight, 0.0f));
 
-                effectWeight -= effectSubSpeed * Time.deltaTime;
+                // 色の強さを減衰
+                effectColorWeight -= effectWeightSubSpeed * Time.deltaTime;
 
-                if (effectWeight <= effectWeightMin)
+                // 一定の値まで下がったら最大値に戻す
+                if (effectColorWeight <= effectWeightMin)
                 {
-                    effectWeight = effectWeightMax;
+                    effectColorWeight = effectWeightMax;
                 }
             }
         }
     }
 
-    public void SetInvincible(float invincibleTime)
+    /// <summary>
+    /// 無敵状態を開始
+    /// </summary>
+    public void StartSpownInvincible()
     {
         isInvincible = true;
-        invincibleTimeCount = invincibleTime;
-        effectWeight = effectWeightMax;
+        invincibleTimeCount = spownInvincibleTime;
+        effectColorWeight = effectWeightMax;
     }
 }
