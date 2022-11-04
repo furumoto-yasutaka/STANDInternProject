@@ -62,4 +62,14 @@ public class PlayerEffect : MonoBehaviour
     {
         EffectContainer.Instance.PlayEffect("キック(強)", pos);
     }
+
+    public void PlayFirstSpownEff(Vector3 pos)
+    {
+        EffectContainer.Instance.PlayEffect("スポーン", pos);
+    }
+
+    public void PlayRespownEff(Vector3 pos)
+    {
+        EffectContainer.Instance.PlayEffect("リスポーン", pos);
+    }
 }

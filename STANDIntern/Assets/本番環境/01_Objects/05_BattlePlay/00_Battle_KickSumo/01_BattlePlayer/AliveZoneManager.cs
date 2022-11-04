@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RevivalManager : MonoBehaviour
+public class AliveZoneManager : MonoBehaviour
 {
     private SpownTruckManager spownTruckManager;
 
