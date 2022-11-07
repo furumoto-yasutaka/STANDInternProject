@@ -22,6 +22,6 @@ public class BattleStageSelect_ButtonSelectManager : ButtonSelectManager
     {
         base.Select(index);
 
-        moveTarget = selecters[selectIndex].transform.GetComponent<RectTransform>().localPosition;
+        moveTarget = selecters[selectCursorIndex].transform.GetComponent<RectTransform>().localPosition;
     }
 }

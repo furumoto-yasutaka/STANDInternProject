@@ -9,7 +9,7 @@ public class BattleStageSelectArrowManager : MonoBehaviour
 
     public void CheckArrowActive()
     {
-        if (buttonSelectManager.SelectIndex == 0)
+        if (buttonSelectManager.SelectCursorIndex == 0)
         {
             transform.GetChild(0).gameObject.SetActive(false);
         }
@@ -18,7 +18,7 @@ public class BattleStageSelectArrowManager : MonoBehaviour
             transform.GetChild(0).gameObject.SetActive(true);
         }
 
-        if (buttonSelectManager.SelectIndex == buttonSelectManager.transform.childCount - 1)
+        if (buttonSelectManager.SelectCursorIndex == buttonSelectManager.transform.childCount - 1)
         {
             transform.GetChild(1).gameObject.SetActive(false);
         }

@@ -42,6 +42,6 @@ public class SceneChange_AtBattleStage : MonoBehaviour
 
     public void ChangeSceneCallBack()
     {
-        SceneManager.LoadScene(sceneName + (buttonSelectManager.SelectIndex + 1));
+        SceneManager.LoadScene(sceneName + (buttonSelectManager.SelectCursorIndex + 1));
     }
 }

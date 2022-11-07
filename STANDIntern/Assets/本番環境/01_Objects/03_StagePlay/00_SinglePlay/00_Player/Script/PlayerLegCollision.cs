@@ -7,19 +7,18 @@ public class PlayerLegCollision : MonoBehaviour
     [SerializeField]
     private PlayerController playerController;
     [SerializeField]
+    private PlayerBattleSumoPoint playerBattleSumoPoint;
+    [SerializeField]
     private PlayerEffect playerEffectManager;
     [SerializeField]
     private PlayerId playerId;
 
     // 接触したプレイヤー
     private List<Collider2D> playerList = new List<Collider2D>();
-    // ゲームマネージャー
-    private BattleSumoManager battleSumoManager;
 
     private void Start()
     {
-        int index = (int)BattleSumoModeManagerList.BattleSumoModeManagerId.BattleSumoManager;
-        battleSumoManager = GameObject.FindGameObjectWithTag("Managers").transform.GetChild(index).GetComponent<BattleSumoManager>();
+
     }
 
     private void OnEnable()
@@ -44,7 +43,8 @@ public class PlayerLegCollision : MonoBehaviour
                 playerController.KickPlayerAddForce();
 
                 // 自身のマークを削除
-                battleSumoManager.RequestDeleteMark(playerId.Id);
+                //battleSumoManager.RequestDeleteMark(playerId.Id);
+                playerBattleSumoPoint.RequestDeleteMark();
 
                 // 蹴った相手を記録して連続で蹴らないようにする
                 playerList.Add(collision);
@@ -56,9 +56,11 @@ public class PlayerLegCollision : MonoBehaviour
                         collision.transform.position - transform.position,
                         playerController.KickDirection,
                         collision.ClosestPoint(transform.position));
-                    battleSumoManager.RequestKickMark(
-                        collision.transform.parent.parent.GetComponent<PlayerId>().Id,
-                        playerId.Id);
+                    playerBattleSumoPoint.RequestKickMark(
+                        collision.transform.parent.parent.GetComponent<PlayerBattleSumoPoint>());
+                    //battleSumoManager.RequestKickMark(
+                    //    collision.transform.parent.parent.GetComponent<PlayerId>().Id,
+                    //    playerId.Id);
                 }
             }
         }

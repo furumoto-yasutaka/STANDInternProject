@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [CreateAssetMenu(fileName = "PlayerSkinDataBase", menuName = "CreatePlayerSkinDataBase")]
 public class PlayerSkinDataBase : ScriptableObject
@@ -36,4 +37,6 @@ public struct PlayerSkinInfo
     public Sprite No2;
     public Sprite No3;
     public Sprite No4;
+    [NonSerialized]
+    public bool isSelected;
 }

@@ -333,7 +333,7 @@ public class SpownTruckManager : MonoBehaviour
         //=====トラックに付随するプレイヤーの情報を追加
         for (int i = 0; i < players.childCount; i++)
         {
-            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
+            if (!DeviceManager.Instance.GetIsConnect(i)) { continue; }
 
             truckList[truckList.Count - 1].SpownPlayerInfoList.Add(new SpownPlayerInfo(i));
             // プレイヤーの描画順を変更

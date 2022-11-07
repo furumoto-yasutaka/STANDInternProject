@@ -81,7 +81,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 538712415207687454}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -169,6 +169,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9392e03c56b66094399ed40e7dfcdfd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerBattleSumoPoint: {fileID: 5600813891080226330}
+  playerEffectManager: {fileID: 920179443005582213}
+  playerId: {fileID: 4279395804704476915}
+  rb: {fileID: 538712414395237973}
 --- !u!1 &2893078462388772244
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,10 +183,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5319848771240178541}
   - component: {fileID: 4279395805669599768}
-  - component: {fileID: 4279395805669599775}
   - component: {fileID: 4279395805669599774}
-  - component: {fileID: 4279395804704476915}
   - component: {fileID: 6530864568551643499}
+  - component: {fileID: 920179443005582213}
+  - component: {fileID: 5600813891080226330}
+  - component: {fileID: 4279395804704476915}
   m_Layer: 0
   m_Name: BattlePlayer1
   m_TagString: Player
@@ -197,7 +202,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2893078462388772244}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -219,43 +224,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3efa0e1159e5eda43be9ae36f6ada169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 2.5
-  MoveDecaySpeed: 0.8
-  MoveThreshold: 2
-  KickExecStickFall: 0.7
-  KickExecSpeed: 0.6
-  KickRange: 0.77
-  KickTime: 0.1
-  KickReturnTime: 0.15
-  KickPower: 3.7
-  KickPlayerPower: 2
-  KickMagX: 1.3
-  KickAngularPower: 100
-  KickedAddPowerMin: 0.85
-  KickedAddPowerMax: 1.7
-  KickState: 0
-  startBlowThreshold: 10
-  endBlowThreshold: 5
---- !u!95 &4279395805669599775
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2893078462388772244}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cb90b60120a289d449c2598043c51df7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  moveSpeed: 2
+  moveDecaySpeed: 0.8
+  moveThreshold: 2
+  kickExecStickFall: 0.7
+  kickRange: 0.85
+  kickTime: 0.4
+  kickReturnTime: 0.6
+  kickPower: 1
+  kickPlayerPower: 2
+  kickMagX: 1.3
+  kickAngularPower: 100
+  kickedAddPowerMin: 0.85
+  kickedAddPowerMax: 1.7
+  kickState: 0
 --- !u!114 &4279395805669599774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,6 +250,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2994fd98730889478880c52915b1bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodySpriteRenderer: {fileID: 538712415207687455}
+  legSpriteRenderer: {fileID: 4279395805023281633}
+  spownInvincibleTime: 2
+--- !u!114 &6530864568551643499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2893078462388772244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acaf5d638facaaa4c90dc6099c14263f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyRenderer: {fileID: 538712415207687455}
+  legRenderer: {fileID: 4279395805023281633}
+  playerSkinDataBase: {fileID: 11400000, guid: 0c9d6bac6c87b1043a8803d5808f7cdf, type: 2}
+  rb: {fileID: 538712414395237973}
+--- !u!114 &920179443005582213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2893078462388772244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f35c64b239e7e11459059d8e0c208fdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blowEffect: {fileID: 103194657726341509}
+--- !u!114 &5600813891080226330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2893078462388772244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7bb840ec8498084fbb6c431232351ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointTextParent: {fileID: 0}
 --- !u!114 &4279395804704476915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,19 +308,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
---- !u!114 &6530864568551643499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2893078462388772244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acaf5d638facaaa4c90dc6099c14263f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerSkinDataBase: {fileID: 11400000, guid: 0c9d6bac6c87b1043a8803d5808f7cdf, type: 2}
 --- !u!1 &4279395805023281647
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,7 +405,7 @@ GameObject:
   - component: {fileID: 4279395805230144939}
   m_Layer: 6
   m_Name: PlayerLeg
-  m_TagString: Player
+  m_TagString: PlayerLeg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -451,6 +465,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 4279395805669599768}
+  playerBattleSumoPoint: {fileID: 5600813891080226330}
+  playerEffectManager: {fileID: 920179443005582213}
+  playerId: {fileID: 4279395804704476915}
 --- !u!1001 &8440417739001990021
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -519,5 +536,10 @@ PrefabInstance:
 --- !u!4 &103194657726341508 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8380352044034271745, guid: 040f2391576bedb499de1086ef31a298, type: 3}
+  m_PrefabInstance: {fileID: 8440417739001990021}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &103194657726341509 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8380352044034271744, guid: 040f2391576bedb499de1086ef31a298, type: 3}
   m_PrefabInstance: {fileID: 8440417739001990021}
   m_PrefabAsset: {fileID: 0}

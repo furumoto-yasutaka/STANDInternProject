@@ -46,8 +46,15 @@ public class PlayerFace : MonoBehaviour
             timeLimit[i] = 0.0f;
         }
 
-        int skinId = BattleSumoManager.IsPlayerSkinId[GetComponent<PlayerId>().Id];
-        skinInfo = playerSkinDataBase.PlayerSkinInfos[skinId];
+        int skinId = SkinSelectManager.PrevSkinId[GetComponent<PlayerId>().Id];
+        if (skinId != -1)
+        {
+            skinInfo = playerSkinDataBase.PlayerSkinInfos[skinId];
+        }
+        else
+        {
+            skinInfo = playerSkinDataBase.PlayerSkinInfos[0];
+        }
 
         ChangeFace();
 

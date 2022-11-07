@@ -14,7 +14,7 @@ public class BattleStageSelect_ButtonSelecter : ButtonSelecter
     {
         if (buttonSelectManager.IsCanInput)
         {
-            if (Index == buttonSelectManager.SelectIndex)
+            if (Index == buttonSelectManager.SelectCursorIndex)
             {
                 buttonSelectManager.Decition();
             }

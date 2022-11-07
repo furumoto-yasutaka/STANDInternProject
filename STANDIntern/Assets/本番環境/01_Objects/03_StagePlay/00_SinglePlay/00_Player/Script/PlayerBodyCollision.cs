@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerBodyCollision : MonoBehaviour
 {
-    private BattleSumoManager battleSumoManager;
+    [SerializeField]
+    private PlayerBattleSumoPoint playerBattleSumoPoint;
     [SerializeField]
     private PlayerEffect playerEffectManager;
     [SerializeField]
@@ -14,8 +15,7 @@ public class PlayerBodyCollision : MonoBehaviour
 
     private void Start()
     {
-        int index = (int)BattleSumoModeManagerList.BattleSumoModeManagerId.BattleSumoManager;
-        battleSumoManager = GameObject.FindGameObjectWithTag("Managers").transform.GetChild(index).GetComponent<BattleSumoManager>();
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -50,10 +50,10 @@ public class PlayerBodyCollision : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             // 敵プレイヤーに自分をマークするようリクエストする
-            battleSumoManager.RequestContactMark(
-                collision.transform.parent.GetComponent<PlayerId>().Id,
-                playerId.Id,
+            playerBattleSumoPoint.RequestContactMark(
+                collision.transform.parent.GetComponent<PlayerBattleSumoPoint>(),
                 collision.transform.GetComponent<Rigidbody2D>().velocity);
+
 
             // ぶっ飛びエフェクトの再生確認
             collision.transform.parent.GetComponent<PlayerController>().CheckBlowStart();

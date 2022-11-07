@@ -8,6 +8,7 @@ public class ArrowMove : MonoBehaviour
     private Vector2 moveRange;
     [SerializeField]
     private float moveSpeed;
+
     private Vector2 movePos = Vector2.zero;
     private float moveThreshold = 0.2f;
 

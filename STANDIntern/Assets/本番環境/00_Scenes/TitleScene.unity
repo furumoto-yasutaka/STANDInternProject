@@ -323,7 +323,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb2b4ed05f9ebfa4faa7289a938412f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91d2d2b3c8a6ca045abcb55c4adfeb44, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1157,10 +1157,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonLine: 0
-  OnSelectCallBack:
+  onSelectCallBack:
     m_PersistentCalls:
       m_Calls: []
-  OnUnselectCallBack:
+  onUnselectCallBack:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &155789783
@@ -1730,6 +1730,7 @@ GameObject:
   - component: {fileID: 192102213}
   - component: {fileID: 192102214}
   - component: {fileID: 192102215}
+  - component: {fileID: 192102216}
   m_Layer: 5
   m_Name: Player3
   m_TagString: Untagged
@@ -1804,6 +1805,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c5eea6ce8031949b54891efc8a1178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &192102216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192102211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82fdb3f72ab2bb4680a2786bc685b22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinPreview: {fileID: 1234560495}
+  skinPreviewBack: {fileID: 403635777}
+  notSelectIconObj: {fileID: 318835256}
 --- !u!1 &192225568
 GameObject:
   m_ObjectHideFlags: 0
@@ -3668,7 +3684,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb2b4ed05f9ebfa4faa7289a938412f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91d2d2b3c8a6ca045abcb55c4adfeb44, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5080,7 +5096,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb2b4ed05f9ebfa4faa7289a938412f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91d2d2b3c8a6ca045abcb55c4adfeb44, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5197,6 +5213,18 @@ MonoBehaviour:
       - m_Target: {fileID: 598604582887674486}
         m_TargetAssemblyTypeName: InputGroupParent, Assembly-CSharp
         m_MethodName: UnlockInputMyGroup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1478016767}
+        m_TargetAssemblyTypeName: SkinSelectManager, Assembly-CSharp
+        m_MethodName: DeleteSaveInfo
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5931,6 +5959,7 @@ GameObject:
   - component: {fileID: 635309279}
   - component: {fileID: 635309280}
   - component: {fileID: 635309281}
+  - component: {fileID: 635309282}
   m_Layer: 5
   m_Name: Player1
   m_TagString: Untagged
@@ -6005,6 +6034,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c5eea6ce8031949b54891efc8a1178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &635309282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635309277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82fdb3f72ab2bb4680a2786bc685b22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinPreview: {fileID: 2048882016}
+  skinPreviewBack: {fileID: 573848304}
+  notSelectIconObj: {fileID: 1407630408}
 --- !u!1 &642068181
 GameObject:
   m_ObjectHideFlags: 0
@@ -6139,7 +6183,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cc9f2171cc63bee43b893c6a2ed9df6f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91d2d2b3c8a6ca045abcb55c4adfeb44, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11136,7 +11180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cc9f2171cc63bee43b893c6a2ed9df6f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91d2d2b3c8a6ca045abcb55c4adfeb44, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11212,7 +11256,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cb2b4ed05f9ebfa4faa7289a938412f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91d2d2b3c8a6ca045abcb55c4adfeb44, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11894,6 +11938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonParent: {fileID: 1790245780}
+  textMeshPro: {fileID: 243881787}
 --- !u!114 &1269412569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14003,6 +14048,7 @@ GameObject:
   - component: {fileID: 1534044219}
   - component: {fileID: 1534044220}
   - component: {fileID: 1534044221}
+  - component: {fileID: 1534044222}
   m_Layer: 5
   m_Name: Player4
   m_TagString: Untagged
@@ -14077,6 +14123,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c5eea6ce8031949b54891efc8a1178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1534044222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534044217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82fdb3f72ab2bb4680a2786bc685b22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinPreview: {fileID: 1995563510}
+  skinPreviewBack: {fileID: 1239608768}
+  notSelectIconObj: {fileID: 1580685262}
 --- !u!1 &1534256986
 GameObject:
   m_ObjectHideFlags: 0
@@ -16650,22 +16711,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonLine: 1
-  OnSelectCallBack:
+  onSelectCallBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1269412568}
-        m_TargetAssemblyTypeName: ButtonCommentManager, Assembly-CSharp
-        m_MethodName: ChangeText
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnUnselectCallBack:
+      m_Calls: []
+  onUnselectCallBack:
     m_PersistentCalls:
       m_Calls: []
 --- !u!224 &1790245781
@@ -17538,6 +17587,7 @@ GameObject:
   - component: {fileID: 1860941534}
   - component: {fileID: 1860941535}
   - component: {fileID: 1860941536}
+  - component: {fileID: 1860941537}
   m_Layer: 5
   m_Name: Player2
   m_TagString: Untagged
@@ -17612,6 +17662,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c5eea6ce8031949b54891efc8a1178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1860941537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860941532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82fdb3f72ab2bb4680a2786bc685b22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinPreview: {fileID: 659912503}
+  skinPreviewBack: {fileID: 87270020}
+  notSelectIconObj: {fileID: 1701367539}
 --- !u!1 &1866304647
 GameObject:
   m_ObjectHideFlags: 0
@@ -17914,7 +17979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1505243681687030649, guid: cf343fb88cb80474681f6e0a9107e9d2, type: 3}
       propertyPath: inputGroupsInspector.Array.data[5].Elemants.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1505243681687030649, guid: cf343fb88cb80474681f6e0a9107e9d2, type: 3}
       propertyPath: inputGroupsInspector.Array.data[6].Elemants.Array.size
@@ -17968,6 +18033,22 @@ PrefabInstance:
       propertyPath: inputGroupsInspector.Array.data[5].Elemants.Array.data[1]
       value: 
       objectReference: {fileID: 1478016767}
+    - target: {fileID: 1505243681687030649, guid: cf343fb88cb80474681f6e0a9107e9d2, type: 3}
+      propertyPath: inputGroupsInspector.Array.data[5].Elemants.Array.data[2]
+      value: 
+      objectReference: {fileID: 635309282}
+    - target: {fileID: 1505243681687030649, guid: cf343fb88cb80474681f6e0a9107e9d2, type: 3}
+      propertyPath: inputGroupsInspector.Array.data[5].Elemants.Array.data[3]
+      value: 
+      objectReference: {fileID: 1860941537}
+    - target: {fileID: 1505243681687030649, guid: cf343fb88cb80474681f6e0a9107e9d2, type: 3}
+      propertyPath: inputGroupsInspector.Array.data[5].Elemants.Array.data[4]
+      value: 
+      objectReference: {fileID: 192102216}
+    - target: {fileID: 1505243681687030649, guid: cf343fb88cb80474681f6e0a9107e9d2, type: 3}
+      propertyPath: inputGroupsInspector.Array.data[5].Elemants.Array.data[5]
+      value: 
+      objectReference: {fileID: 1534044222}
     - target: {fileID: 1505243681687030649, guid: cf343fb88cb80474681f6e0a9107e9d2, type: 3}
       propertyPath: inputGroupsInspector.Array.data[6].Elemants.Array.data[0]
       value: 
@@ -19765,7 +19846,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cc9f2171cc63bee43b893c6a2ed9df6f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91d2d2b3c8a6ca045abcb55c4adfeb44, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -20492,7 +20573,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cc9f2171cc63bee43b893c6a2ed9df6f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91d2d2b3c8a6ca045abcb55c4adfeb44, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21936,18 +22017,6 @@ MonoBehaviour:
       - m_Target: {fileID: 580916111}
         m_TargetAssemblyTypeName: InputGroupParent, Assembly-CSharp
         m_MethodName: UnlockInputMyGroup
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1478016767}
-        m_TargetAssemblyTypeName: SkinSelectManager, Assembly-CSharp
-        m_MethodName: SkinReset
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25036,22 +25105,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonLine: 1
-  OnSelectCallBack:
+  onSelectCallBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3508838947708883546}
-        m_TargetAssemblyTypeName: ButtonCommentManager, Assembly-CSharp
-        m_MethodName: ChangeText
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnUnselectCallBack:
+      m_Calls: []
+  onUnselectCallBack:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &3508838947664092892
@@ -25320,6 +25377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonParent: {fileID: 3508838947664092890}
+  textMeshPro: {fileID: 3508838947162216337}
 --- !u!222 &3508838948504905620
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26159,34 +26217,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonLine: 1
-  OnSelectCallBack:
+  onSelectCallBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4407251036044285315}
-        m_TargetAssemblyTypeName: ButtonCommentManager, Assembly-CSharp
-        m_MethodName: ChangeText
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 979626487872305540}
-        m_TargetAssemblyTypeName: BattleStageSelectArrowManager, Assembly-CSharp
-        m_MethodName: CheckArrowActive
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnUnselectCallBack:
+      m_Calls: []
+  onUnselectCallBack:
     m_PersistentCalls:
       m_Calls: []
   moveSpeed: 0.1
@@ -26222,6 +26256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonParent: {fileID: 4407251035966986503}
+  textMeshPro: {fileID: 4407251035399311432}
 --- !u!222 &4407251036044285325
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -18,19 +18,12 @@ public class PlayerController : MonoBehaviour
 
     //=====内部から取得するもの
     [Header("プレハブ取得")]
-    [SerializeField, RenameField("PlayerIdスクリプト")]
     private PlayerId playerId;
-    [SerializeField, RenameField("FaceManagerスクリプト")]
     private PlayerFace playerFace;
-    [SerializeField, RenameField("EffectManagerスクリプト")]
     private PlayerEffect playerEffect;
-    [SerializeField, RenameField("Invincibleスクリプト")]
     private PlayerInvincible playerInvincible;
-    [SerializeField, RenameField("PlayerIdスクリプト")]
     private Transform body;
-    [SerializeField, RenameField("PlayerIdスクリプト")]
     private Transform leg; 
-    [SerializeField, RenameField("PlayerIdスクリプト")]
     private Rigidbody2D rb;
 
     [SerializeField, RenameField("プレイヤーの移動速度")]
@@ -44,8 +37,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField, RenameField("蹴りを発動させる入力しきい値(スティック)")]
     [Header("蹴り関係")]
     private float kickExecStickFall = 0.7f;
-    [SerializeField, RenameField("蹴りを発動させる速度のしきい値(マウス)")]
-    private float kickExecSpeed = 0.5f;
     [SerializeField, RenameField("足を伸ばす距離")]
     private float kickRange = 0.85f;
     [SerializeField, RenameField("足を伸ばす時間")]
@@ -103,8 +94,10 @@ public class PlayerController : MonoBehaviour
         leg.gameObject.SetActive(false);
 
         playerId = GetComponent<PlayerId>();
-        rb = body.GetComponent<Rigidbody2D>();
         playerFace = GetComponent<PlayerFace>();
+        playerEffect = GetComponent<PlayerEffect>();
+        playerInvincible = GetComponent<PlayerInvincible>();
+        rb = body.GetComponent<Rigidbody2D>();
 
         kickState = KickStateId.None;
         isDeath = true;
@@ -116,12 +109,12 @@ public class PlayerController : MonoBehaviour
         Stop();
 
         DeviceManager.Instance.Add_RemoveDevicePartsCallBack(PlayerNotActive, playerId.Id);
-        pad = DeviceManager.Instance.GetDeviceFromPlayerIndex(PlayerId);
+        pad = DeviceManager.Instance.GetDevice_FromPlayerIndex(PlayerId);
     }
 
     void Update()
     {
-        if (!BattleSumoManager.IsPlayerJoin[playerId.Id] || pad == null) { PlayerNotActive(); }
+        if (!DeviceManager.Instance.GetIsConnect(playerId.Id) || pad == null) { PlayerNotActive(); }
         if (isDeath) { return; }
 
         // 移動入力

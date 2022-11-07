@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AliveZoneManager : MonoBehaviour
 {
+    [SerializeField]
     private SpownTruckManager spownTruckManager;
 
     void Start()
