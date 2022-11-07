@@ -327,7 +327,7 @@ public class SpownTruckManager : MonoBehaviour
         // トラックを生成・初期化
         truck = Instantiate(firstSpownTruckPrefab, truckParent).transform;
         truck.position = firstSpownTruckInitialPos;
-        truckList.Add(new TruckInfo(spownWaitTime, truck,
+        truckList.Add(new TruckInfo(0.0f, truck,
             firstSpownTruckInitialPos.x, firstSpownTruckTargetPos.x));
 
         //=====トラックに付随するプレイヤーの情報を追加

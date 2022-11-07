@@ -3246,6 +3246,10 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8854226386444925057, guid: b304b061828100c48b3f767c1036b719, type: 3}
+      propertyPath: truckMoveSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8854226386444925057, guid: b304b061828100c48b3f767c1036b719, type: 3}
       propertyPath: respownTruckPrefab
       value: 
       objectReference: {fileID: 8295681184220794461, guid: 081f026026dfa2544a61f0c5ae162946, type: 3}

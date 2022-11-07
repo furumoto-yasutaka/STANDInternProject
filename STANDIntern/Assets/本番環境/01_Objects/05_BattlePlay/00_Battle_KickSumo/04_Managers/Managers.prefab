@@ -119,7 +119,7 @@ MonoBehaviour:
   jumpTime: 1
   firstPositionDataBase: {fileID: 11400000, guid: 8ec4e2025cd41a54380d56d55f955ec2, type: 2}
   defaultSortLayer: -10
-  truckMoveSpeed: 1
+  truckMoveSpeed: 8
   spownWaitTime: 2
 --- !u!1 &8854226386851978713
 GameObject:
