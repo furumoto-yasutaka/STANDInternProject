@@ -27,7 +27,7 @@ public class PlayerBodyCollision : MonoBehaviour
 
             if (sqrMag >= PlayerEffect.impactStrongEffThreshold * PlayerEffect.impactStrongEffThreshold)
             {
-                playerEffectManager.PlayImpactWeakEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
+                playerEffectManager.PlayImpactStrongEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
             }
             else if (sqrMag >= PlayerEffect.impactMiddleEffThreshold * PlayerEffect.impactMiddleEffThreshold)
             {
@@ -35,7 +35,7 @@ public class PlayerBodyCollision : MonoBehaviour
             }
             else if (sqrMag >= PlayerEffect.impactWeakEffThreshold * PlayerEffect.impactWeakEffThreshold)
             {
-                playerEffectManager.PlayImpactStrongEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
+                playerEffectManager.PlayImpactWeakEff(collision.contacts[0].point, Quaternion.AngleAxis(angle, Vector3.back));
             }
         }
 

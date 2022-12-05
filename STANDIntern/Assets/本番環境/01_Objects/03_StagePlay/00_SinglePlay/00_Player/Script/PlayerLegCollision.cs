@@ -32,7 +32,7 @@ public class PlayerLegCollision : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("PlayerLeg"))
+        if (collision.CompareTag("Player"))
         {//=====敵プレイヤーを蹴った
             //=====まだ衝突を確認していない
             if (!playerList.Contains(collision))
@@ -41,7 +41,6 @@ public class PlayerLegCollision : MonoBehaviour
                 playerController.KickPlayerAddForce();
 
                 // 自身のマークを削除
-                //battleSumoManager.RequestDeleteMark(playerId.Id);
                 playerBattleSumoPoint.RequestDeleteMark();
 
                 // 蹴った相手を記録して連続で蹴らないようにする
@@ -56,9 +55,6 @@ public class PlayerLegCollision : MonoBehaviour
                         collision.ClosestPoint(transform.position));
                     playerBattleSumoPoint.RequestKickMark(
                         collision.transform.parent.parent.GetComponent<PlayerBattleSumoPoint>());
-                    //battleSumoManager.RequestKickMark(
-                    //    collision.transform.parent.parent.GetComponent<PlayerId>().Id,
-                    //    playerId.Id);
                 }
             }
         }
