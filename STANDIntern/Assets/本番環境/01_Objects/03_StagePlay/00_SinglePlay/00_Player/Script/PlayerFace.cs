@@ -19,14 +19,12 @@ public class PlayerFace : MonoBehaviour
     [SerializeField]
     private SpriteRenderer legRenderer;
     [SerializeField]
-    private PlayerSkinDataBase playerSkinDataBase;
-    [SerializeField]
     private Rigidbody2D rb;
 
+    // プレイヤー情報
+    private PlayerInfo playerInfo;
     // ステート
     private int faceState = (int)FaceState.Normal;
-    // 各顔のスプライト情報
-    private PlayerSkinInfo skinInfo;
     // 各顔の有効時間
     private float[] timeLimit = new float[(int)FaceState.Length];
     
@@ -35,31 +33,19 @@ public class PlayerFace : MonoBehaviour
     private static readonly float kickedStrongFaceThreshold = 15.0f;
 
 
-    public PlayerSkinInfo SkinInfo { get { return skinInfo; } }
-    public PlayerSkinDataBase PlayerSkinDataBase { get { return playerSkinDataBase; } }
-
-
     void Start()
     {
+        playerInfo = GetComponent<PlayerInfo>();
+
         for (int i = 0; i < timeLimit.Length; i++)
         {
             timeLimit[i] = 0.0f;
         }
 
-        int skinId = SkinSelectManager.PrevSkinId[GetComponent<PlayerId>().Id];
-        if (skinId != -1)
-        {
-            skinInfo = playerSkinDataBase.PlayerSkinInfos[skinId];
-        }
-        else
-        {
-            skinInfo = playerSkinDataBase.PlayerSkinInfos[0];
-        }
-
         ChangeFace();
 
-        legRenderer.sprite = skinInfo.Leg;
-        legRenderer.material.SetTexture("_Maintex", skinInfo.Leg.texture);
+        legRenderer.sprite = playerInfo.SkinInfo.Leg;
+        legRenderer.material.SetTexture("_Maintex", playerInfo.SkinInfo.Leg.texture);
     }
 
     void Update()
@@ -138,19 +124,19 @@ public class PlayerFace : MonoBehaviour
         switch (faceState)
         {
             case (int)FaceState.Normal:
-                bodyRenderer.sprite = skinInfo.Normal;
-                bodyRenderer.material.SetTexture("_Maintex", skinInfo.Normal.texture);
+                bodyRenderer.sprite = playerInfo.SkinInfo.Normal;
+                bodyRenderer.material.SetTexture("_Maintex", playerInfo.SkinInfo.Normal.texture);
                 break;
             case (int)FaceState.Kick:
-                bodyRenderer.sprite = skinInfo.Kick;
-                bodyRenderer.material.SetTexture("_Maintex", skinInfo.Kick.texture);
+                bodyRenderer.sprite = playerInfo.SkinInfo.Kick;
+                bodyRenderer.material.SetTexture("_Maintex", playerInfo.SkinInfo.Kick.texture);
                 break;
             case (int)FaceState.Kicked:
                 CheckKickedFace();
                 break;
             case (int)FaceState.Kill:
-                bodyRenderer.sprite = skinInfo.Kill;
-                bodyRenderer.material.SetTexture("_Maintex", skinInfo.Kill.texture);
+                bodyRenderer.sprite = playerInfo.SkinInfo.Kill;
+                bodyRenderer.material.SetTexture("_Maintex", playerInfo.SkinInfo.Kill.texture);
                 break;
         }
     }
@@ -165,13 +151,13 @@ public class PlayerFace : MonoBehaviour
         // 速度に応じて顔を指定
         if (sqrMag >= kickedStrongFaceThreshold * kickedStrongFaceThreshold)
         {
-            bodyRenderer.sprite = skinInfo.KickedStrong;
-            bodyRenderer.material.SetTexture("_Maintex", skinInfo.KickedStrong.texture);
+            bodyRenderer.sprite = playerInfo.SkinInfo.KickedStrong;
+            bodyRenderer.material.SetTexture("_Maintex", playerInfo.SkinInfo.KickedStrong.texture);
         }
         else if (sqrMag >= kickedFaceThreshold * kickedFaceThreshold)
         {
-            bodyRenderer.sprite = skinInfo.Kicked;
-            bodyRenderer.material.SetTexture("_Maintex", skinInfo.Kicked.texture);
+            bodyRenderer.sprite = playerInfo.SkinInfo.Kicked;
+            bodyRenderer.material.SetTexture("_Maintex", playerInfo.SkinInfo.Kicked.texture);
         }
         else
         {
@@ -193,5 +179,10 @@ public class PlayerFace : MonoBehaviour
         }
 
         ChangeFace();
+    }
+
+    public PlayerSkinInfo GetSkinInfo()
+    {
+        return playerInfo.SkinInfo;
     }
 }

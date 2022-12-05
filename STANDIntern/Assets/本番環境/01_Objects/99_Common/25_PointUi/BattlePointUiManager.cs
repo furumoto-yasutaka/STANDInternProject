@@ -10,8 +10,6 @@ public class BattlePointUiManager : MonoBehaviour
 
     void Start()
     {
-        if (!DeviceManager.Instance.GetIsConnect(playerId)) { UiNotActive(); }
-
         for (int i = 0; i < transform.parent.childCount; i++)
         {
             if (transform == transform.parent.GetChild(i))
@@ -21,6 +19,8 @@ public class BattlePointUiManager : MonoBehaviour
                 break;
             }
         }
+
+        if (!DeviceManager.Instance.GetIsConnect(playerId)) { UiNotActive(); }
     }
 
     private void OnEnable()

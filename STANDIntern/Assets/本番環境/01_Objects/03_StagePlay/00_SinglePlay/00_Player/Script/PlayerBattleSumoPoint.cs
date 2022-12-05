@@ -9,7 +9,7 @@ public class PlayerBattleSumoPoint : MonoBehaviour
     [SerializeField]
     private Transform pointTextParent;
 
-    private PlayerId playerId;
+    private PlayerInfo playerInfo;
     private int point = 0;
     private bool isMark = false;
     private PlayerBattleSumoPoint markPlayer = null;
@@ -28,13 +28,13 @@ public class PlayerBattleSumoPoint : MonoBehaviour
 
     void Start()
     {
-        playerId = GetComponent<PlayerId>();
-        pointTextTrans = pointTextParent.GetChild(playerId.Id);
+        playerInfo = GetComponent<PlayerInfo>();
+        pointTextTrans = pointTextParent.GetChild(playerInfo.Id);
         pointText = pointTextTrans.GetChild(1).GetComponent<TextMeshProUGUI>();
         pointFrontText = pointTextTrans.GetChild(2).GetComponent<TextMeshProUGUI>();
 
         pointTextTrans.GetChild(3).GetComponent<Image>().sprite =
-            playerId.GetComponent<PlayerFace>().SkinInfo.Normal;
+            playerInfo.SkinInfo.Normal;
     }
 
     void Update()

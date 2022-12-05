@@ -33,6 +33,7 @@ public class SkinSelectWindow : InputLockElement
     private Animator animator;              // ウィンドウのアニメーター
     private int playerId = 0;               // 担当のプレイヤーID
     private int selectSkinId = 0;           // 選択したスキンのID
+    [SerializeField]
     private bool isSkinSubmit = false;      // スキンを確定したか
     private bool isCanInputMove = true;    // カーソル移動ができる状態か
     
@@ -80,11 +81,16 @@ public class SkinSelectWindow : InputLockElement
     {
         inputPattern = (int)InputPattern.None;
 
-        if (!isCanInputMove) { return; }
-
         Gamepad pad = DeviceManager.Instance.GetDevice_FromPlayerIndex(playerId);
         float stickHorizontal = pad.leftStick.ReadValue().x;
         float dpadHorizontal = pad.dpad.ReadValue().x;
+
+        if (pad.bButton.wasPressedThisFrame)
+        {
+            inputPattern |= (int)InputPattern.Submit;
+        }
+
+        if (!isCanInputMove) { return; }
 
         if (stickHorizontal <= -inputMoveThreshold ||
             dpadHorizontal <= -inputMoveThreshold)
@@ -95,10 +101,6 @@ public class SkinSelectWindow : InputLockElement
             dpadHorizontal >= inputMoveThreshold)
         {
             inputPattern |= (int)InputPattern.Plus;
-        }
-        if (pad.bButton.wasPressedThisFrame)
-        {
-            inputPattern |= (int)InputPattern.Submit;
         }
     }
 

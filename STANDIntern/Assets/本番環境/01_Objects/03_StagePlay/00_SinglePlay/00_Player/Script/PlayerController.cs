@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     //=====内部から取得するもの
     [Header("プレハブ取得")]
-    private PlayerId playerId;
+    private PlayerInfo playerInfo;
     private PlayerFace playerFace;
     private PlayerEffect playerEffect;
     private PlayerInvincible playerInvincible;
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
     private Gamepad pad;
 
 
-    public int PlayerId { get { return playerId.Id; } }
+    public int PlayerId { get { return playerInfo.Id; } }
     public Vector2 KickDirection { get { return kickDirection; } }
     public bool IsDeath { get { return isDeath; } }
 
@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
         leg = transform.GetChild(1);
         leg.gameObject.SetActive(false);
 
-        playerId = GetComponent<PlayerId>();
+        playerInfo = GetComponent<PlayerInfo>();
         playerFace = GetComponent<PlayerFace>();
         playerEffect = GetComponent<PlayerEffect>();
         playerInvincible = GetComponent<PlayerInvincible>();
@@ -108,13 +108,13 @@ public class PlayerController : MonoBehaviour
         // コリジョンを止めておく
         Stop();
 
-        DeviceManager.Instance.Add_RemoveDevicePartsCallBack(PlayerNotActive, playerId.Id);
-        pad = DeviceManager.Instance.GetDevice_FromPlayerIndex(PlayerId);
+        DeviceManager.Instance.Add_RemoveDevicePartsCallBack(PlayerNotActive, playerInfo.Id);
+        pad = DeviceManager.Instance.GetDevice_FromPlayerIndex(playerInfo.Id);
     }
 
     void Update()
     {
-        if (!DeviceManager.Instance.GetIsConnect(playerId.Id) || pad == null) { PlayerNotActive(); }
+        if (!DeviceManager.Instance.GetIsConnect(playerInfo.Id) || pad == null) { PlayerNotActive(); }
         if (isDeath) { return; }
 
         // 移動入力

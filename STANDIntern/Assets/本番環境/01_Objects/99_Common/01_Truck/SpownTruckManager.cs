@@ -199,6 +199,21 @@ public class SpownTruckManager : MonoBehaviour
         else
         {//=====ˆÚ“®‹——£‚æ‚è’†ŠÔ’n“_‚Ü‚Å‚Ì‹——£‚ª‘å‚«‚¢ê‡
             info.Truck.position += moveAngle * moveLength;
+
+            if (info.SpownPlayerInfoList.Count == 1)
+            {
+                for (int i = 0; i < info.SpownPlayerInfoList.Count; i++)
+                {
+                    playerBodys[info.SpownPlayerInfoList[i].PlayerId].position = info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < info.SpownPlayerInfoList.Count; i++)
+                {
+                    playerBodys[info.SpownPlayerInfoList[i].PlayerId].position = info.Truck.position + new Vector3(i * 0.666f, 0.0f, 0.0f);
+                }
+            }
         }
     }
 

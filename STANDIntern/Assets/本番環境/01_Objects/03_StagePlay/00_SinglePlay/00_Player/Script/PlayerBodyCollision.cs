@@ -9,8 +9,6 @@ public class PlayerBodyCollision : MonoBehaviour
     [SerializeField]
     private PlayerEffect playerEffectManager;
     [SerializeField]
-    private PlayerId playerId;
-    [SerializeField]
     private Rigidbody2D rb;
 
     private void Start()

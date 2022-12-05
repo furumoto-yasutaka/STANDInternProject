@@ -416,6 +416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 921209a38ea38e141ba71851d3f8c19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerSkinDataBase: {fileID: 11400000, guid: 0c9d6bac6c87b1043a8803d5808f7cdf, type: 2}
 --- !u!114 &67371348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -880,6 +881,14 @@ PrefabInstance:
     - target: {fileID: 7518086123214179037, guid: aae7e55914c382c4b931f918d7148a84, type: 3}
       propertyPath: m_Name
       value: BackGround_Stage4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7518086124385870731, guid: aae7e55914c382c4b931f918d7148a84, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8092962
+      objectReference: {fileID: 0}
+    - target: {fileID: 7518086124385870731, guid: aae7e55914c382c4b931f918d7148a84, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.0011
       objectReference: {fileID: 0}
     - target: {fileID: 7518086124609629699, guid: aae7e55914c382c4b931f918d7148a84, type: 3}
       propertyPath: m_LocalPosition.z

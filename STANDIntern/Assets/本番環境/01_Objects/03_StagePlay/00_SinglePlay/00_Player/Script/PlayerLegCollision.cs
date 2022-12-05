@@ -10,8 +10,6 @@ public class PlayerLegCollision : MonoBehaviour
     private PlayerBattleSumoPoint playerBattleSumoPoint;
     [SerializeField]
     private PlayerEffect playerEffectManager;
-    [SerializeField]
-    private PlayerId playerId;
 
     // ÚG‚µ‚½ƒvƒŒƒCƒ„[
     private List<Collider2D> playerList = new List<Collider2D>();

@@ -138,7 +138,7 @@ public class BattleSumoResultManager : MonoBehaviour
 
             // ‡ˆÊ‚É‚æ‚Á‚½•\²‘ä‚Ì‰æ‘œ‚ğİ’è‚·‚é
             Sprite playerFaceSprite;
-            PlayerSkinInfo skinInfo = players.GetChild(resultInfo[index].playerId).GetComponent<PlayerFace>().SkinInfo;
+            PlayerSkinInfo skinInfo = players.GetChild(resultInfo[index].playerId).GetComponent<PlayerFace>().GetSkinInfo();
             switch (resultInfo[index].Rank)
             {
                 case 1:
