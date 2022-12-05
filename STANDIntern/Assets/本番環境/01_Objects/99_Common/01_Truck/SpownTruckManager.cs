@@ -262,7 +262,7 @@ public class SpownTruckManager : MonoBehaviour
             info.SpownPlayerInfoList[i].Start = start;
             info.SpownPlayerInfoList[i].End = end;
             info.SpownPlayerInfoList[i].Half = half;
-            info.SpownPlayerInfoList[i].Half.y += firstPositionDataBase.BattleStageInfos[stageId].JumpRerativeHeight;
+            info.SpownPlayerInfoList[i].Half.y = end.y + firstPositionDataBase.BattleStageInfos[stageId].JumpRerativeHeight;
         }
     }
 
