@@ -18,6 +18,8 @@ public class AliveZoneManager : MonoBehaviour
         {
             GameObject playerParent = collision.transform.parent.parent.gameObject;
             int playerId = playerParent.GetComponent<PlayerInfo>().Id;
+            playerParent.GetComponent<PlayerController>().Death();
+            playerParent.GetComponent<PlayerBattleSumoPoint>().CalcPoint_Death();
 
             spownTruckManager.SetSpown(playerId);
         }

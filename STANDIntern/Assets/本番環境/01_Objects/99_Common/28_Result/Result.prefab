@@ -2387,7 +2387,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   podiumParent: {fileID: 1002875493303433472}
-  PadiumSpriteSample: []
+  PadiumSpriteSample:
+  - {fileID: 21300000, guid: 8511695a3e817604c82dbde49df62d42, type: 3}
+  - {fileID: 21300000, guid: 43f0c92141ac3e243ab0840e69a83df2, type: 3}
+  - {fileID: 21300000, guid: afd72863c40674e46ba42d9fa800a73e, type: 3}
+  - {fileID: 21300000, guid: be11b571b301c62459a754b471142daf, type: 3}
   players: {fileID: 0}
 --- !u!114 &8775503981587165684
 MonoBehaviour:

@@ -40,21 +40,22 @@ public class PlayerLegCollision : MonoBehaviour
                 // 蹴った反動を反映
                 playerController.KickPlayerAddForce();
 
-                // 自身のマークを削除
+                // 自身のマークを削除を要求
                 playerBattleSumoPoint.RequestDeleteMark();
 
                 // 蹴った相手を記録して連続で蹴らないようにする
                 playerList.Add(collision);
 
                 // 無敵状態でない場合のみ相手を蹴り飛ばす
-                if (!collision.transform.parent.parent.GetComponent<PlayerInvincible>().IsInvincible)
+                Transform targetParent = collision.transform.parent.parent;
+                if (!targetParent.GetComponent<PlayerInvincible>().IsInvincible)
                 {
-                    collision.transform.parent.parent.GetComponent<PlayerController>().KickedAddForce(
+                    targetParent.GetComponent<PlayerController>().KickedAddForce(
                         collision.transform.position - transform.position,
                         playerController.KickDirection,
                         collision.ClosestPoint(transform.position));
-                    playerBattleSumoPoint.RequestKickMark(
-                        collision.transform.parent.parent.GetComponent<PlayerBattleSumoPoint>());
+                    targetParent.GetComponent<PlayerBattleSumoPoint>().RequestKickMark(
+                        playerBattleSumoPoint);
                 }
             }
         }

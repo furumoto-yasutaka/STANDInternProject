@@ -188,12 +188,12 @@ public class SpownTruckManager : MonoBehaviour
             // エフェクト、効果音をそれぞれ再生
             if (info.SpownPlayerInfoList.Count == 1)
             {
-                EffectContainer.Instance.PlayEffect("スポーン", info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
+                EffectContainer.Instance.PlayEffect("リスポーン", info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
+                AudioManager.Instance.PlaySe("リスポーン時の音");
             }
             else
             {
-                EffectContainer.Instance.PlayEffect("リスポーン", info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
-                AudioManager.Instance.PlaySe("リスポーン時の音");
+                EffectContainer.Instance.PlayEffect("スポーン", info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
             }
         }
         else

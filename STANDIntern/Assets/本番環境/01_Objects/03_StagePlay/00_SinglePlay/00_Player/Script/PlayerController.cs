@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
     private float kickTimeCount = 0.0f;
     // 操作対象のデバイス
     private Gamepad pad;
+    private bool IsCanInput = false;
 
 
     public int PlayerId { get { return playerInfo.Id; } }
@@ -130,6 +131,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void MoveAction()
     {
+        if (!IsCanInput) { return; }
+
         //=====入力状態取得
         float stickHorizontal = pad.leftStick.ReadValue().x;
         float dpadHorizontal = pad.dpad.ReadValue().x;
@@ -171,6 +174,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Kick_NoneAction()
     {
+        if (!IsCanInput) { return; } 
+
         //=====入力・方向取得
         Vector2 moveInput = pad.rightStick.ReadValue();
         float sqrMagnitude = moveInput.sqrMagnitude;
@@ -384,13 +389,13 @@ public class PlayerController : MonoBehaviour
     {
         isDeath = true;
 
-        // コリジョンを止める
-        Stop();
-
         // 死亡エフェクト発生
         Vector2 normal = -new Vector2(rb.velocity.x, rb.velocity.y).normalized;
         float angle = Vector2.SignedAngle(Vector2.up, normal);
         playerEffect.PlayDeathEff(body.position + (Vector3)normal * 2.0f, Quaternion.AngleAxis(angle, Vector3.forward));
+
+        // コリジョンを止める
+        Stop();
 
         // 吹っ飛びエフェクトを停止
         EndBlow();
@@ -405,6 +410,8 @@ public class PlayerController : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0.0f;
+
+        IsCanInput = false;
 
         // 当たり判定を無効
         body.GetChild(0).GetComponent<CircleCollider2D>().enabled = false;
@@ -421,6 +428,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Revival()
     {
+        IsCanInput = true;
         isDeath = false;
 
         // リジッドボディを有効

@@ -72,7 +72,7 @@ public class PlayerBattleSumoPoint : MonoBehaviour
         {
             markPlayer.AddPoint(1);
 
-            EffectContainer.Instance.PlayEffect("ƒLƒ‹", transform.GetChild(0));
+            EffectContainer.Instance.PlayEffect("ƒLƒ‹", markPlayer.transform.GetChild(0));
             markPlayer.GetComponent<PlayerFace>().SetState((int)PlayerFace.FaceState.Kill, 2.0f);
             markPlayer.SetPointText();
         }

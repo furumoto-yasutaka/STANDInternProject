@@ -114,7 +114,7 @@ MonoBehaviour:
   firstSpownTruckPrefab: {fileID: 8295681184220794461, guid: bef0966e68149d34382adfbb465e1e1c, type: 3}
   firstSpownSortLayer: 13
   respownTruckPrefab: {fileID: 8295681184220794461, guid: 081f026026dfa2544a61f0c5ae162946, type: 3}
-  respownSortLayer: 0
+  respownSortLayer: -27
   players: {fileID: 0}
   jumpTime: 1
   firstPositionDataBase: {fileID: 11400000, guid: 8ec4e2025cd41a54380d56d55f955ec2, type: 2}
@@ -264,7 +264,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 17.77, y: 10}
+  m_Size: {x: 19.6, y: 11}
   m_EdgeRadius: 0
 --- !u!114 &8854226387782532708
 MonoBehaviour:

@@ -3218,46 +3218,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 710717112001049322, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3110866127570083349, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854226386395921158, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: players
-      value: 
-      objectReference: {fileID: 67371346}
-    - target: {fileID: 8854226386395921158, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: debugTextParent
-      value: 
-      objectReference: {fileID: 42816533}
-    - target: {fileID: 8854226386395921158, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: pointTextParent
-      value: 
-      objectReference: {fileID: 4831359386755832486}
     - target: {fileID: 8854226386444925057, guid: b304b061828100c48b3f767c1036b719, type: 3}
       propertyPath: players
       value: 
       objectReference: {fileID: 67371346}
-    - target: {fileID: 8854226386444925057, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: moveSpeed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854226386444925057, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: truckMoveSpeed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854226386444925057, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: respownTruckPrefab
-      value: 
-      objectReference: {fileID: 8295681184220794461, guid: 081f026026dfa2544a61f0c5ae162946, type: 3}
-    - target: {fileID: 8854226386444925057, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: firstSpownTruckPrefab
-      value: 
-      objectReference: {fileID: 8295681184220794461, guid: bef0966e68149d34382adfbb465e1e1c, type: 3}
     - target: {fileID: 8854226387383281816, guid: b304b061828100c48b3f767c1036b719, type: 3}
       propertyPath: m_Name
       value: Managers
@@ -3305,26 +3269,6 @@ PrefabInstance:
     - target: {fileID: 8854226387383281817, guid: b304b061828100c48b3f767c1036b719, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854226387782532708, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: players
-      value: 
-      objectReference: {fileID: 67371345}
-    - target: {fileID: 8854226387782532729, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: m_Size.x
-      value: 19.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854226387782532729, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: m_Size.y
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854226387796453068, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 28
-      objectReference: {fileID: 0}
-    - target: {fileID: 8854226387936563366, guid: b304b061828100c48b3f767c1036b719, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -26
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b304b061828100c48b3f767c1036b719, type: 3}
