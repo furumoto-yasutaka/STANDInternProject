@@ -5,11 +5,14 @@ using UnityEngine.InputSystem;
 
 public class PlayerIdSetter : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerSkinDataBase playerSkinDataBase;
+
     void Awake()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            transform.GetChild(i).GetComponent<PlayerId>().SetId(i);
+            transform.GetChild(i).GetComponent<PlayerInfo>().SetId(i, playerSkinDataBase);
         }
     }
 }

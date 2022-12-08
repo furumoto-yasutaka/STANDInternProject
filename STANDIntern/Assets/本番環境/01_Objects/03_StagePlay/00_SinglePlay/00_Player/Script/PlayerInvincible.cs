@@ -6,13 +6,14 @@ public class PlayerInvincible : MonoBehaviour
 {
     //=====“à•”‚©‚çŽæ“¾
     [SerializeField]
-    private Material bodyMaterial;
+    private SpriteRenderer bodySpriteRenderer;
     [SerializeField]
-    private Material legMaterial;
-
+    private SpriteRenderer legSpriteRenderer;
     [SerializeField]
     private float spownInvincibleTime = 2.0f;
 
+    private Material bodyMaterial;
+    private Material legMaterial;
     // –³“G‚©‚Ç‚¤‚©
     private bool isInvincible = false;
     // Žc‚è‚Ì–³“GŽžŠÔ
@@ -29,14 +30,11 @@ public class PlayerInvincible : MonoBehaviour
 
     public bool IsInvincible { get { return isInvincible; } }
 
-    void Awake()
-    {
-        bodyMaterial.SetColor("_AddColor", new Color(0.0f, 0.0f, 0.0f, 0.0f));
-        legMaterial.SetColor("_AddColor", new Color(0.0f, 0.0f, 0.0f, 0.0f));
-    }
-
     void Start()
     {
+        bodyMaterial = bodySpriteRenderer.material;
+        legMaterial = legSpriteRenderer.material;
+
         bodyMaterial.SetColor("_AddColor", new Color(0.0f, 0.0f, 0.0f, 0.0f));
         legMaterial.SetColor("_AddColor", new Color(0.0f, 0.0f, 0.0f, 0.0f));
     }

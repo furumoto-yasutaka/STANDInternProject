@@ -6,6 +6,8 @@ public class BattlePointUiManager : MonoBehaviour
 {
     private int playerId = 0;
 
+    private bool isFirstEnable = true;
+
     void Start()
     {
         for (int i = 0; i < transform.parent.childCount; i++)
@@ -17,11 +19,20 @@ public class BattlePointUiManager : MonoBehaviour
                 break;
             }
         }
+
+        if (!DeviceManager.Instance.GetIsConnect(playerId)) { UiNotActive(); }
     }
 
-    void Update()
+    private void OnEnable()
     {
-        if (!BattleSumoManager.IsPlayerJoin[playerId]) { UiNotActive(); }
+        if (!isFirstEnable)
+        {
+            DeviceManager.Instance.Remove_RemoveDevicePartsCallBack(UiNotActive, playerId);
+        }
+        else
+        {
+            isFirstEnable = false;
+        }
     }
 
     public void UiNotActive()

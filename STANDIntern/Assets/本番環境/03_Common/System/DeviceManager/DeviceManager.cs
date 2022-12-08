@@ -6,30 +6,34 @@ using UnityEngine.Events;
 
 public class DeviceManager : SingletonMonoBehaviour<DeviceManager>
 {
-    public const int deviceNum = 4;
-    public Gamepad[] gameDevice = new Gamepad[deviceNum];
-    public int[] gameDeviceId = new int[deviceNum];
-    private int[] removeDeviceId = new int[deviceNum];
-    public int deviceCount = 0;
+    public class DeviceInfo
+    {
+        public bool IsConnect = false;                  // プレイヤーと連携しているか
+        public Gamepad Device = null;                   // デバイス
+        public UnityEvent addDevicePartsCallBack = new UnityEvent();       // 該当プレイヤーデバイス接続時コールバック
+        public UnityEvent removeDevicePartsCallBack = new UnityEvent();    // 該当プレイヤーデバイス切断時コールバック
+    }
 
-    [SerializeField]
-    private UnityEvent addDeviceCallBack;
-    [SerializeField]
-    private UnityEvent[] addDevicePartsCallBack = new UnityEvent[deviceNum];
-    [SerializeField]
-    private UnityEvent removeDeviceCallBack;
-    [SerializeField]
-    private UnityEvent[] removeDevicePartsCallBack = new UnityEvent[deviceNum];
+    public const int DeviceNum = 4;     // 最大デバイス数
+
+    private DeviceInfo[] deviceInfos;   // プレイヤーごとのデバイス情報
+    private List<Gamepad> tempDevice;   // コントローラー更新用リスト
+    public int deviceCount = 0;         // 接続デバイス数
+
+    private UnityEvent addDeviceCallBack = new UnityEvent();       // デバイス接続時コールバック
+    private UnityEvent removeDeviceCallBack = new UnityEvent();    // デバイス切断時コールバック
 
     protected override void Awake()
     {
         base.Awake();
 
-        for (int i = 0; i < deviceNum; i++)
+        deviceInfos = new DeviceInfo[DeviceNum];
+        for (int i = 0; i < DeviceNum; i++)
         {
-            gameDeviceId[i] = -1;
-            removeDeviceId[i] = -1;
+            deviceInfos[i] = new DeviceInfo();
         }
+
+        tempDevice = new List<Gamepad>();
 
         for (int i = 0; i < Gamepad.all.Count; i++)
         {
@@ -39,73 +43,89 @@ public class DeviceManager : SingletonMonoBehaviour<DeviceManager>
 
     void Update()
     {
-        gameDeviceId.CopyTo(removeDeviceId, 0);
-
+        // 現在接続されているコントローラーのIDを仮リストに追加
         for (int i = 0; i < Gamepad.all.Count; i++)
         {
-            Gamepad pad = Gamepad.all[i];
-            int elemIndex = IndexOfElement(removeDeviceId, pad.deviceId);
+            tempDevice.Add(Gamepad.all[i]);
+        }
 
-            if (elemIndex == -1)
+        // プレイヤーと連携済みのコントローラーを全て調べる
+        for (int i = 0; i < DeviceNum; i++)
+        {
+            if (deviceInfos[i].IsConnect)
             {
-                int emptyIndex = IndexOfEmpty(gameDeviceId);
+                Gamepad pad = deviceInfos[i].Device;
+                // コントローラーがまだ存在しているか探索する
+                int elemIndex = IndexOfDeviceId_FromTempDevice(pad.deviceId);
 
-                if (emptyIndex != -1)
-                {
-                    AddDevice(pad, emptyIndex);
+                if (elemIndex == -1)
+                {//=====切断されている
+                    // 該当のコントローラー情報を初期化する
+                    RemoveDevice(i);
                 }
+                else
+                {//=====接続が継続されている
+                    // 既に連携済みのコントローラーなので仮リストから削除する
+                    tempDevice.RemoveAt(elemIndex);
+                }
+            }
+        }
+
+        // tempDeviceに残った要素は新しく接続されたコントローラーなので登録する
+        for (int i = 0; i < tempDevice.Count; i++)
+        {
+            int emptyIndex = IndexOfEmptyDevice();
+
+            // プレイヤーに空きがあれば登録を認める
+            if (emptyIndex != -1)
+            {
+                AddDevice(tempDevice[i], emptyIndex);
             }
             else
             {
-                removeDeviceId[elemIndex] = -1;
+                // 空きがない場合は続けても意味がないので
+                break;
             }
         }
 
-        for (int i = 0; i < removeDeviceId.Length; i++)
-        {
-            if (removeDeviceId[i] == gameDeviceId[i] && removeDeviceId[i] != -1)
-            {
-                RemoveDevice(i);
-            }
-        }
+        tempDevice.Clear();
     }
 
-    public void AddDevice(Gamepad device, int index)
+    /// <summary>
+    /// デバイス登録
+    /// </summary>
+    public void AddDevice(Gamepad device, int playerId)
     {
-        gameDevice[index] = device;
-        gameDeviceId[index] = device.deviceId;
         deviceCount++;
+        deviceInfos[playerId].IsConnect = true;
+        deviceInfos[playerId].Device = device;
         addDeviceCallBack.Invoke();
-        addDevicePartsCallBack[index].Invoke();
+        deviceInfos[playerId].addDevicePartsCallBack.Invoke();
     }
 
-    public void RemoveDevice(int index)
+    /// <summary>
+    /// デバイス削除
+    /// </summary>
+    public void RemoveDevice(int playerId)
     {
-        gameDevice[index] = null;
-        gameDeviceId[index] = -1;
         deviceCount--;
+        deviceInfos[playerId].IsConnect = false;
+        deviceInfos[playerId].Device = null;
         removeDeviceCallBack.Invoke();
-        removeDevicePartsCallBack[index].Invoke();
+        deviceInfos[playerId].removeDevicePartsCallBack.Invoke();
     }
 
 
-    public bool GetIsConnect(int index)
+    public bool GetIsConnect(int playerId)
     {
-        if (gameDeviceId[index] == -1)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return deviceInfos[playerId].IsConnect;
     }
 
-    public Gamepad GetDeviceFromPlayerIndex(int index)
+    public Gamepad GetDevice_FromPlayerIndex(int playerId)
     {
-        if (gameDeviceId[index] != -1)
+        if (deviceInfos[playerId].IsConnect)
         {
-            return gameDevice[index];
+            return deviceInfos[playerId].Device;
         }
         else
         {
@@ -113,7 +133,7 @@ public class DeviceManager : SingletonMonoBehaviour<DeviceManager>
         }
     }
 
-    public Gamepad GetDeviceFromSystemInput(int index)
+    public Gamepad GetDevice_FromSystemInput(int index)
     {
         if (Gamepad.all.Count > index)
         {
@@ -126,53 +146,79 @@ public class DeviceManager : SingletonMonoBehaviour<DeviceManager>
     }
 
 
+    /// <summary>
+    /// デバイス登録時コールバック登録
+    /// </summary>
     public void Add_AddDeviceCallBack(UnityAction action)
     {
         addDeviceCallBack.AddListener(action);
     }
 
+    /// <summary>
+    /// デバイス削除時コールバック登録
+    /// </summary>
     public void Add_RemoveDeviceCallBack(UnityAction action)
     {
         removeDeviceCallBack.AddListener(action);
     }
 
+    /// <summary>
+    /// デバイス登録時コールバック削除
+    /// </summary>
     public void Remove_AddDeviceCallBack(UnityAction action)
     {
         addDeviceCallBack.RemoveListener(action);
     }
 
+    /// <summary>
+    /// デバイス削除時コールバック削除
+    /// </summary>
     public void Remove_RemoveDeviceCallBack(UnityAction action)
     {
         removeDeviceCallBack.RemoveListener(action);
     }
 
-
-    public void Add_AddDevicePartsCallBack(UnityAction action, int index)
+    /// <summary>
+    /// 該当プレイヤーデバイス登録時コールバック登録
+    /// </summary>
+    public void Add_AddDevicePartsCallBack(UnityAction action, int playerId)
     {
-        addDevicePartsCallBack[index].AddListener(action);
+        deviceInfos[playerId].addDevicePartsCallBack.AddListener(action);
     }
 
-    public void Add_RemoveDevicePartsCallBack(UnityAction action, int index)
+    /// <summary>
+    /// 該当プレイヤーデバイス登録時コールバック削除
+    /// </summary>
+    public void Add_RemoveDevicePartsCallBack(UnityAction action, int playerId)
     {
-        removeDevicePartsCallBack[index].AddListener(action);
+        deviceInfos[playerId].removeDevicePartsCallBack.AddListener(action);
     }
 
-    public void Remove_AddDevicePartsCallBack(UnityAction action, int index)
+    /// <summary>
+    /// 該当プレイヤーデバイス削除時コールバック登録
+    /// </summary>
+    public void Remove_AddDevicePartsCallBack(UnityAction action, int playerId)
     {
-        addDevicePartsCallBack[index].RemoveListener(action);
+        deviceInfos[playerId].addDevicePartsCallBack.RemoveListener(action);
     }
 
-    public void Remove_RemoveDevicePartsCallBack(UnityAction action, int index)
+    /// <summary>
+    /// 該当プレイヤーデバイス削除時コールバック削除
+    /// </summary>
+    public void Remove_RemoveDevicePartsCallBack(UnityAction action, int playerId)
     {
-        removeDevicePartsCallBack[index].RemoveListener(action);
+        deviceInfos[playerId].removeDevicePartsCallBack.RemoveListener(action);
     }
 
 
-    private int IndexOfElement(int[] source, int elem)
+    /// <summary>
+    /// 指定したデバイスIdが存在するかDeviceInfosから探索
+    /// </summary>
+    public int IndexOfDeviceId_FromDeviceInfos(int deviceId)
     {
-        for (int i = 0; i < source.Length; i++)
+        for (int i = 0; i < deviceInfos.Length; i++)
         {
-            if (source[i] == elem)
+            if (deviceInfos[i].Device.deviceId == deviceId)
             {
                 return i;
             }
@@ -181,11 +227,14 @@ public class DeviceManager : SingletonMonoBehaviour<DeviceManager>
         return -1;
     }
 
-    private int IndexOfEmpty(int[] source)
+    /// <summary>
+    /// 指定したデバイスIdが存在するかTempDeviceから探索
+    /// </summary>
+    private int IndexOfDeviceId_FromTempDevice(int deviceId)
     {
-        for (int i = 0; i < source.Length; i++)
+        for (int i = 0; i < tempDevice.Count; i++)
         {
-            if (source[i] == -1)
+            if (tempDevice[i].deviceId == deviceId)
             {
                 return i;
             }
@@ -194,11 +243,14 @@ public class DeviceManager : SingletonMonoBehaviour<DeviceManager>
         return -1;
     }
 
-    public int IndexOfPlayerNum(int elem)
+    /// <summary>
+    /// 未登録の枠が空いているか探索
+    /// </summary>
+    private int IndexOfEmptyDevice()
     {
-        for (int i = 0; i < gameDeviceId.Length; i++)
+        for (int i = 0; i < deviceInfos.Length; i++)
         {
-            if (gameDeviceId[i] == elem)
+            if (!deviceInfos[i].IsConnect)
             {
                 return i;
             }

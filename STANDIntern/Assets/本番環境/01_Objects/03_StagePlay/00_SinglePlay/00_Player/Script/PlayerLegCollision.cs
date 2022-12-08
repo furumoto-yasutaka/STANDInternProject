@@ -7,19 +7,16 @@ public class PlayerLegCollision : MonoBehaviour
     [SerializeField]
     private PlayerController playerController;
     [SerializeField]
-    private PlayerEffect playerEffectManager;
+    private PlayerBattleSumoPoint playerBattleSumoPoint;
     [SerializeField]
-    private PlayerId playerId;
+    private PlayerEffect playerEffectManager;
 
     // 接触したプレイヤー
     private List<Collider2D> playerList = new List<Collider2D>();
-    // ゲームマネージャー
-    private BattleSumoManager battleSumoManager;
 
     private void Start()
     {
-        int index = (int)BattleSumoModeManagerList.BattleSumoModeManagerId.BattleSumoManager;
-        battleSumoManager = GameObject.FindGameObjectWithTag("Managers").transform.GetChild(index).GetComponent<BattleSumoManager>();
+
     }
 
     private void OnEnable()
@@ -35,7 +32,7 @@ public class PlayerLegCollision : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("PlayerLeg"))
+        if (collision.CompareTag("Player"))
         {//=====敵プレイヤーを蹴った
             //=====まだ衝突を確認していない
             if (!playerList.Contains(collision))
@@ -43,22 +40,22 @@ public class PlayerLegCollision : MonoBehaviour
                 // 蹴った反動を反映
                 playerController.KickPlayerAddForce();
 
-                // 自身のマークを削除
-                battleSumoManager.RequestDeleteMark(playerId.Id);
+                // 自身のマークを削除を要求
+                playerBattleSumoPoint.RequestDeleteMark();
 
                 // 蹴った相手を記録して連続で蹴らないようにする
                 playerList.Add(collision);
 
                 // 無敵状態でない場合のみ相手を蹴り飛ばす
-                if (!collision.transform.parent.parent.GetComponent<PlayerInvincible>().IsInvincible)
+                Transform targetParent = collision.transform.parent.parent;
+                if (!targetParent.GetComponent<PlayerInvincible>().IsInvincible)
                 {
-                    collision.transform.parent.parent.GetComponent<PlayerController>().KickedAddForce(
+                    targetParent.GetComponent<PlayerController>().KickedAddForce(
                         collision.transform.position - transform.position,
                         playerController.KickDirection,
                         collision.ClosestPoint(transform.position));
-                    battleSumoManager.RequestKickMark(
-                        collision.transform.parent.parent.GetComponent<PlayerId>().Id,
-                        playerId.Id);
+                    targetParent.GetComponent<PlayerBattleSumoPoint>().RequestKickMark(
+                        playerBattleSumoPoint);
                 }
             }
         }

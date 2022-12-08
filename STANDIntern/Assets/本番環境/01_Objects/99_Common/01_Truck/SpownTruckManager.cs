@@ -188,17 +188,32 @@ public class SpownTruckManager : MonoBehaviour
             // エフェクト、効果音をそれぞれ再生
             if (info.SpownPlayerInfoList.Count == 1)
             {
-                EffectContainer.Instance.PlayEffect("スポーン", info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
+                EffectContainer.Instance.PlayEffect("リスポーン", info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
+                AudioManager.Instance.PlaySe("リスポーン時の音");
             }
             else
             {
-                EffectContainer.Instance.PlayEffect("リスポーン", info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
-                AudioManager.Instance.PlaySe("リスポーン時の音");
+                EffectContainer.Instance.PlayEffect("スポーン", info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f));
             }
         }
         else
         {//=====移動距離より中間地点までの距離が大きい場合
             info.Truck.position += moveAngle * moveLength;
+
+            if (info.SpownPlayerInfoList.Count == 1)
+            {
+                for (int i = 0; i < info.SpownPlayerInfoList.Count; i++)
+                {
+                    playerBodys[info.SpownPlayerInfoList[i].PlayerId].position = info.Truck.position + new Vector3(-1.0f, 0.0f, 0.0f);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < info.SpownPlayerInfoList.Count; i++)
+                {
+                    playerBodys[info.SpownPlayerInfoList[i].PlayerId].position = info.Truck.position + new Vector3(i * 0.666f, 0.0f, 0.0f);
+                }
+            }
         }
     }
 
@@ -247,7 +262,7 @@ public class SpownTruckManager : MonoBehaviour
             info.SpownPlayerInfoList[i].Start = start;
             info.SpownPlayerInfoList[i].End = end;
             info.SpownPlayerInfoList[i].Half = half;
-            info.SpownPlayerInfoList[i].Half.y += firstPositionDataBase.BattleStageInfos[stageId].JumpRerativeHeight;
+            info.SpownPlayerInfoList[i].Half.y = end.y + firstPositionDataBase.BattleStageInfos[stageId].JumpRerativeHeight;
         }
     }
 
@@ -327,13 +342,13 @@ public class SpownTruckManager : MonoBehaviour
         // トラックを生成・初期化
         truck = Instantiate(firstSpownTruckPrefab, truckParent).transform;
         truck.position = firstSpownTruckInitialPos;
-        truckList.Add(new TruckInfo(spownWaitTime, truck,
+        truckList.Add(new TruckInfo(0.0f, truck,
             firstSpownTruckInitialPos.x, firstSpownTruckTargetPos.x));
 
         //=====トラックに付随するプレイヤーの情報を追加
         for (int i = 0; i < players.childCount; i++)
         {
-            if (!BattleSumoManager.IsPlayerJoin[i]) { continue; }
+            if (!DeviceManager.Instance.GetIsConnect(i)) { continue; }
 
             truckList[truckList.Count - 1].SpownPlayerInfoList.Add(new SpownPlayerInfo(i));
             // プレイヤーの描画順を変更

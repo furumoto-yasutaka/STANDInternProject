@@ -52,10 +52,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d78b32ede65d44bbe4460b597f7c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minAndSecText: {fileID: 4091814081749165258}
+  msecText: {fileID: 4091814080665116750}
+  countDownStaging: {fileID: 4091814080535340029}
   timeMin: 1
-  timeCountSec: 0
-  timeupTimeScale: 0.1
-  timeUpObj: {fileID: 0}
+  timeUpObjPrefab: {fileID: 0}
 --- !u!1 &4091814080535340016
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,7 +226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d46bc7623f3e346bf8abcd905491e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  count: 5
 --- !u!1 &4091814080665116748
 GameObject:
   m_ObjectHideFlags: 0

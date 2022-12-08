@@ -18,19 +18,12 @@ public class PlayerController : MonoBehaviour
 
     //=====内部から取得するもの
     [Header("プレハブ取得")]
-    [SerializeField, RenameField("PlayerIdスクリプト")]
-    private PlayerId playerId;
-    [SerializeField, RenameField("FaceManagerスクリプト")]
+    private PlayerInfo playerInfo;
     private PlayerFace playerFace;
-    [SerializeField, RenameField("EffectManagerスクリプト")]
     private PlayerEffect playerEffect;
-    [SerializeField, RenameField("Invincibleスクリプト")]
     private PlayerInvincible playerInvincible;
-    [SerializeField, RenameField("PlayerIdスクリプト")]
     private Transform body;
-    [SerializeField, RenameField("PlayerIdスクリプト")]
     private Transform leg; 
-    [SerializeField, RenameField("PlayerIdスクリプト")]
     private Rigidbody2D rb;
 
     [SerializeField, RenameField("プレイヤーの移動速度")]
@@ -44,8 +37,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField, RenameField("蹴りを発動させる入力しきい値(スティック)")]
     [Header("蹴り関係")]
     private float kickExecStickFall = 0.7f;
-    [SerializeField, RenameField("蹴りを発動させる速度のしきい値(マウス)")]
-    private float kickExecSpeed = 0.5f;
     [SerializeField, RenameField("足を伸ばす距離")]
     private float kickRange = 0.85f;
     [SerializeField, RenameField("足を伸ばす時間")]
@@ -89,9 +80,10 @@ public class PlayerController : MonoBehaviour
     private float kickTimeCount = 0.0f;
     // 操作対象のデバイス
     private Gamepad pad;
+    private bool IsCanInput = false;
 
 
-    public int PlayerId { get { return playerId.Id; } }
+    public int PlayerId { get { return playerInfo.Id; } }
     public Vector2 KickDirection { get { return kickDirection; } }
     public bool IsDeath { get { return isDeath; } }
 
@@ -102,9 +94,11 @@ public class PlayerController : MonoBehaviour
         leg = transform.GetChild(1);
         leg.gameObject.SetActive(false);
 
-        playerId = GetComponent<PlayerId>();
-        rb = body.GetComponent<Rigidbody2D>();
+        playerInfo = GetComponent<PlayerInfo>();
         playerFace = GetComponent<PlayerFace>();
+        playerEffect = GetComponent<PlayerEffect>();
+        playerInvincible = GetComponent<PlayerInvincible>();
+        rb = body.GetComponent<Rigidbody2D>();
 
         kickState = KickStateId.None;
         isDeath = true;
@@ -115,13 +109,13 @@ public class PlayerController : MonoBehaviour
         // コリジョンを止めておく
         Stop();
 
-        DeviceManager.Instance.Add_RemoveDevicePartsCallBack(PlayerNotActive, playerId.Id);
-        pad = DeviceManager.Instance.GetDeviceFromPlayerIndex(PlayerId);
+        DeviceManager.Instance.Add_RemoveDevicePartsCallBack(PlayerNotActive, playerInfo.Id);
+        pad = DeviceManager.Instance.GetDevice_FromPlayerIndex(playerInfo.Id);
     }
 
     void Update()
     {
-        if (!BattleSumoManager.IsPlayerJoin[playerId.Id] || pad == null) { PlayerNotActive(); }
+        if (!DeviceManager.Instance.GetIsConnect(playerInfo.Id) || pad == null) { PlayerNotActive(); }
         if (isDeath) { return; }
 
         // 移動入力
@@ -137,6 +131,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void MoveAction()
     {
+        if (!IsCanInput) { return; }
+
         //=====入力状態取得
         float stickHorizontal = pad.leftStick.ReadValue().x;
         float dpadHorizontal = pad.dpad.ReadValue().x;
@@ -178,6 +174,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Kick_NoneAction()
     {
+        if (!IsCanInput) { return; } 
+
         //=====入力・方向取得
         Vector2 moveInput = pad.rightStick.ReadValue();
         float sqrMagnitude = moveInput.sqrMagnitude;
@@ -391,13 +389,13 @@ public class PlayerController : MonoBehaviour
     {
         isDeath = true;
 
-        // コリジョンを止める
-        Stop();
-
         // 死亡エフェクト発生
         Vector2 normal = -new Vector2(rb.velocity.x, rb.velocity.y).normalized;
         float angle = Vector2.SignedAngle(Vector2.up, normal);
         playerEffect.PlayDeathEff(body.position + (Vector3)normal * 2.0f, Quaternion.AngleAxis(angle, Vector3.forward));
+
+        // コリジョンを止める
+        Stop();
 
         // 吹っ飛びエフェクトを停止
         EndBlow();
@@ -412,6 +410,8 @@ public class PlayerController : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0.0f;
+
+        IsCanInput = false;
 
         // 当たり判定を無効
         body.GetChild(0).GetComponent<CircleCollider2D>().enabled = false;
@@ -428,6 +428,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Revival()
     {
+        IsCanInput = true;
         isDeath = false;
 
         // リジッドボディを有効
