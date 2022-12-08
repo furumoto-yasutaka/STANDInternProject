@@ -148,7 +148,7 @@ Shader "Custom/tree_wind"
                 fixed4 combinecolor;
                 //テクスチャの設定
                 fixed4 color = tex2D(_Maintex,i.uv);
-                //color = mul(_Tint, color);
+  
                 color.rgb = lerp( _FogColor.rgb, color.rgb, _FogColor.a);
                 
                 return color;

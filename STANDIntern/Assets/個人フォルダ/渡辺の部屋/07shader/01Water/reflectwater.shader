@@ -9,6 +9,13 @@ Shader "Custom/reflectwater"
         _CellShuffleSpeed("CellShuffleSpeed",Float) = 0
         _WavePower("WavePower",Range(0,1)) = 0.5
         _WhiteStrongs("WhiteStrongs",Float) = 10
+
+        _RippleScale("RippleScale",Float) = 10
+        _ReflectionStrength("ReflectStrength",Float) = 1
+        _CausticScale("CausticScale",Vector) = (1,1,1,1)
+        _CellSize("CellSize",Float)=0.03
+        _CausticBrightNess("CausticBrightNess",Float)=1
+        _WaveStrength("WaveStrength",Range(0,1))=0.5
     }
 
         CGINCLUDE
@@ -23,18 +30,26 @@ Shader "Custom/reflectwater"
     float  _WavePower;
     float4 _Color;
     float  _WhiteStrongs;
-
+    float  _RippleScale;
+    float  _ReflectionStrength;
+    float4 _CausticScale;
+    float _CellSize;
+    float _CausticBrightNess;
+    float _WaveStrength;
     float4 zeroColor = float4(0, 0, 0, 0);
-
-
-
-
+    
 
     //タイリングUV
     float2 TileUV(float2 UV, float2 Tile, float2 Offset)
     {
         return UV * Tile + Offset;
     }
+    //Remap
+    float Remap(float4 In, float2 InMinMax, float2 OutMinMax)
+    {
+        return OutMinMax.x + (In - InMinMax.x) * (OutMinMax.x) / (InMinMax.y - InMinMax.x);
+    }
+
     //ノイズの動く方向
     float2 voronoi_noise_randomvector(float2 UV, float offset)
     {
@@ -97,11 +112,52 @@ Shader "Custom/reflectwater"
         return  unity_gradientNoise(UV * Scale) + 0.5;
     }
     
+    float UvAutScrollSpeed;
+    float2 UVDown;
+    float2 UVUp;
+    float GradientNoiseUP;
+    float GradientNoiseDown;
+    float MixGradientNoise;
+
+    float TopGradient;
+    float RemapReflection;
+    float2 VornoiUV;
+    float Vornoi;
+
+    float VornoiSpeed;
+
+    //コースティック
+    float CausticShuffleSpeed;
+
+    float2 MixGradientVornoi;
 
     float4 frag(v2f_img i) : SV_Target
     {
+        //波のノイズ生成
+        UvAutScrollSpeed=mul(_Time.y,0.05);
+        UVDown = TileUV(i.uv, float2(0.18, 1.0), float2(0, UvAutScrollSpeed));
+        UVUp = TileUV(i.uv, float2(0.18, 1.0), float2(0, 1 - UvAutScrollSpeed));
+        GradientNoiseUP = Unity_GradientNoise_float(UVUp, _RippleScale);
+        GradientNoiseDown = Unity_GradientNoise_float(UVDown, _RippleScale);
+        MixGradientNoise = mul(GradientNoiseDown, GradientNoiseUP);
 
-        return (1,1,1,1);
+        //ノイズの強さの割合UVの位置によってを決定
+        TopGradient = pow(abs(i.uv.y),13.1);
+        RemapReflection = Remap(_ReflectionStrength, float2(0, 1), float2(0, 0.02));
+        MixGradientNoise = mul(MixGradientNoise, RemapReflection);
+        MixGradientNoise = lerp(MixGradientNoise, 0, TopGradient);
+
+        //ボロノイ
+        CausticShuffleSpeed = mul(_Time.y, 0.58);
+        VornoiUV = TileUV(i.pos, _CausticScale,float2(0,0));
+        Vornoi = Voronoi(VornoiUV, CausticShuffleSpeed, _CellSize);
+        Vornoi = clamp(pow(abs(mul(Vornoi, _CausticBrightNess)),8),0,1);
+        VornoiSpeed = mul(Vornoi, _WaveStrength);
+
+        MixGradientVornoi = float2(MixGradientNoise, VornoiSpeed) + float2(0,1);
+
+
+        return (i.uv.x,i.uv.y,0,1);
     }
         ENDCG
 
